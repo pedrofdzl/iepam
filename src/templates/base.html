@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Material icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    {% block head %} {% endblock %}
+</head>
+<body>
+    <nav class="navbar-back">
+        <div class="navbar-container">
+            <a href="/" class="navbar-title"><img src="{% static 'svg/iepam-logo-white.svg' %}"><p>IEPAM</p></a>
+            <div class="navbar-items">
+                <ul>
+                    <il id="Inicio" class="list active">
+                        <a href="#"><span class="material-icons">home</span><p>Inicio</p></a>
+                    </il>
+                    <il id="Capacitaciones" class="list">
+                        <a href="#"><span class="material-icons">class</span><p>Capacitaciones</p></a>
+                    </il>
+                    <il id="Progreso" class="list">
+                        <a href="#"><span class="material-icons">analytics</span><p>Mi progreso</p></a>
+                    </il>
+                    <il id="Perfil" class="list">
+                        <a href="#"><span class="material-icons">account_circle</span><p>Perfil</p></a>
+                    </il>
+                    <div class="navbar-item-bg"></div>
+                    <div class="navbar-item-of"></div>
+
+                    <il id="Logout" class="nav-end">
+                        <a href="#"><span class="material-icons">logout</span><p>Logout</p></a>
+                    </il>
+                </ul>
+            </div>
+            
+        </div>
+        
+    </nav>
+    <main>
+        <div class="container">
+            <!-- Block for main content of child templates -->
+            {% block body %} {% endblock %}
+        </div>
+        <script src="{% static 'js/nav.js' %}"></script>
+    </main>
+</body>
+</html>
