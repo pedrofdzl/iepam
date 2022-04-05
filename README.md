@@ -3,9 +3,10 @@ Web app construida sobre Django para el Instituto Estatal para las Personas Adul
 
 
 # Importante: Antes de Usar ❗❗❗
-Antes de empezar a usar la aplicación por favor cerciorate de tener todos los puntos en este check list
+Antes de empezar a usar la aplicación por favor cerciorate de tener todos los puntos en este check list [x]
 
 Pre
-* [x] Tener dependencias y ambiente virual instalado y actualizado
-* [x] Tener archivo .env con todos los valores del ejemplo actualizados
-* [x] Haber hecho todas las migraciones en mi base de datos
+
+* [ ] Tener dependencias y ambiente virual instalado y actualizado
+* [ ] Tener archivo .env con todos los valores del ejemplo actualizados
+* [ ] Haber hecho todas las migraciones en mi base de datos
