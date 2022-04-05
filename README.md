@@ -10,3 +10,8 @@ Pre
 * [ ] Tener dependencias y ambiente virual instalado y actualizado
 * [ ] Tener archivo .env con todos los valores del ejemplo actualizados
 * [ ] Haber hecho todas las migraciones en mi base de datos
+
+# Importante: A que no hacer push ❗❗❗
+* [ ] No hacer push a la DB
+* [ ] No hacer push a su .env
+* [ ] Solo hacer push a sus cambios hechos en .html .css .py o .js
