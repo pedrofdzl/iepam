@@ -33,19 +33,19 @@
             <div class="navbar-items">
                 <ul>
                     <il id="Inicio" class="list active">
-                        <a href="#"><span class="material-icons">home</span><p>Inicio</p></a>
+                        <a id="InicioA" href="#"><span class="material-icons">home</span><p>Inicio</p></a>
                     </il>
                     <il id="Capacitaciones" class="list">
-                        <a href="#"><span class="material-icons">class</span><p>Capacitaciones</p></a>
+                        <a id="CapacitacionesA" href="#"><span class="material-icons">class</span><p>Capacitaciones</p></a>
                     </il>
                     <il id="Progreso" class="list">
-                        <a href="#"><span class="material-icons">analytics</span><p>Mi progreso</p></a>
+                        <a id="ProgresoA" href="#"><span class="material-icons">analytics</span><p>Mi progreso</p></a>
                     </il>
                     <il id="Perfil" class="list">
-                        <a href="#"><span class="material-icons">account_circle</span><p>Perfil</p></a>
+                        <a id="PerfilA" href="#"><span class="material-icons">account_circle</span><p>Perfil</p></a>
                     </il>
-                    <div class="navbar-item-bg"></div>
-                    <div class="navbar-item-of"></div>
+                    <div id="navbar-item-01" class="navbar-item-bg"></div>
+                    <div id="navbar-item-02" class="navbar-item-of"></div>
 
                     <il id="Logout" class="nav-end">
                         <a href="#"><span class="material-icons">logout</span><p>Logout</p></a>
@@ -61,6 +61,7 @@
             <!-- Block for main content of child templates -->
             {% block body %} {% endblock %}
         </div>
+
         <script src="{% static 'js/nav.js' %}"></script>
     </main>
 </body>
