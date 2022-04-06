@@ -11,6 +11,7 @@ from .models import ExtendedUser
 
 User = get_user_model()
 
+template_prefix = 'users/'
 # Create your views here.
 
 ############################
@@ -19,6 +20,7 @@ User = get_user_model()
 
 def user_register_view(request):
     context = {}
+    template_name = template_prefix + 'user_register.html'
 
     register_form = RegisterForm()
 
@@ -64,17 +66,18 @@ def user_register_view(request):
                       
     context["form"] = register_form
 
-    return render(request, "users/user_register.html", context)
+    return render(request, template_name, context)
 
 
 def user_list_view(request):
     context = {}
+    template_name = template_prefix + 'user_detail.html'
 
     users = ExtendedUser.objects.all()
     
     context["users"] = users
 
-    return render(request, "users/user_list.html", context)
+    return render(request, template_name, context)
 
 
 def user_profile_view(request, id):
@@ -89,17 +92,20 @@ def user_profile_view(request, id):
 
 def user_detail_view(request, id):
     context = {}
+    template_name = template_prefix + 'user_detail.html'
 
     user = get_object_or_404(User, pk=id)
     extended_user = user.extended_user
 
     context["extended_user"] = extended_user
 
-    return render(request, "user/user_detail.html", context)
+    return render(request, template_name, context)
 
 
 def user_update_view(request, id):
-    
+    context = {}
+    template_name = template_prefix + 'user_update_form.html'
+
     user = get_object_or_404(User, pk=id)
 
     initial_data = {
@@ -135,7 +141,16 @@ def user_update_view(request, id):
             user.last_name = first_last_name
             
             user.extended_user.second_last_name = second_last_name
-            user.extended
+            user.extended_user.academic_level = academic_level
+            user.extended_user.birthdate = birthdate
+
+            user.save()
+
+        else:
+            print(update_form.errors)
+
+    context["form"] = update_form
+    return render(request, template_name, context)
 
 
 def user_delete_view(request, id):
