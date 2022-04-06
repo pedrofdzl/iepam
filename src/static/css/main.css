@@ -3,7 +3,7 @@
 }
 
 .container {
-    --container-width: calc(100vw - 220px);
+    --container-width: calc(100vw - 240px);
     position: absolute;
     top: 0;
     left: 220px;
@@ -71,7 +71,7 @@
 }
 .navbar-items {
     margin-top: 100px;
-    height: 80vh;
+    height: 70vh;
 }
 .navbar-items ul {
     list-style-type: none;
@@ -185,7 +185,8 @@
 .nav-end {
     position: absolute;
     left: 4px;
-    bottom: 0px;
+    bottom: 20px;
+    margin-bottom: 0;
 }
 
 .container-window {
