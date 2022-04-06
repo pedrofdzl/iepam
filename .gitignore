@@ -4,5 +4,7 @@ src/iepam/environment/.env
 
 
 !src/users/migrations/__init__.py
+!src/cursos/migrations/__init__.py
 
 src/users/migrations
+src/cursos/migrations
