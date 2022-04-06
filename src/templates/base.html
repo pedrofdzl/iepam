@@ -34,10 +34,10 @@
             <div class="navbar-items">
                 <ul>
                     <il id="Inicio" class="list active">
-                        <a id="InicioA" href="#"><span class="material-icons">home</span><p>Inicio</p></a>
+                        <a id="InicioA" href="{% url 'index' %}"><span class="material-icons">home</span><p>Inicio</p></a>
                     </il>
                     <il id="Capacitaciones" class="list">
-                        <a id="CapacitacionesA" href="#"><span class="material-icons">class</span><p>Capacitaciones</p></a>
+                        <a id="CapacitacionesA" href="{% url 'cursos:menu' %}"><span class="material-icons">class</span><p>Capacitaciones</p></a>
                     </il>
                     <il id="Progreso" class="list">
                         <a id="ProgresoA" href="#"><span class="material-icons">analytics</span><p>Mi progreso</p></a>

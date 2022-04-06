@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% load static %}
+<title>Capacitacion</title>
+
+{% endblock %}
+
+{% block body %}
+
+<div id="id-app" style="display: none;">cap</div>
+
+<div class="container-window">
+    <input class="searchbar" placeholder="Buscar...">
+    <span class="material-icons searchbar-icon">search</span>
+
+    <div class="tag-container">
+        <div class="tags">
+            <ul>
+                <il class="active">
+                    <a>Todas</a>
+                </il>
+                <il>
+                    <a>No tomadas</a>
+                </il>
+                <il>
+                    <a>En curso</a>
+                </il>
+                <il>
+                    <a>Completadas</a>
+                </il>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <a href="{% url 'cursos:curso' %}">
+            <div class="card">
+                <div class="card-img-container">
+                    <img src="{% static 'img/view.jpg' %}">
+                </div>
+                <div class="card-title">
+                    Capacitacion en taltal
+                </div>
+                <div class="card-content">
+                    Aqui una descripcion corta de la capacitacion para informar a los usuarios.
+                </div>
+                <div style="display: inline-flex">
+                    <div class="card-members">
+                        <span class="material-icons">people</span>
+                        <p>12</p>
+                    </div>
+                    <div class="card-likes">
+                        <span class="material-icons">thumb_up</span>
+                        <p>3</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="{% url 'cursos:curso' %}">
+            <div class="card">
+                <div class="card-img-container">
+                    <img src="{% static 'img/view.jpg' %}">
+                </div>
+                <div class="card-title">
+                    Capacitacion en taltal
+                </div>
+                <div class="card-content">
+                    Aqui una descripcion corta de la capacitacion para informar a los usuarios.
+                </div>
+                <div style="display: inline-flex">
+                    <div class="card-members">
+                        <span class="material-icons">people</span>
+                        <p>12</p>
+                    </div>
+                    <div class="card-likes">
+                        <span class="material-icons">thumb_up</span>
+                        <p>3</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+{% endblock %}
