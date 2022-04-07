@@ -1,4 +1,4 @@
-
+src/db.sqlite3
 
 src/iepam/environment/.env
 
@@ -7,4 +7,8 @@ src/iepam/environment/.env
 !src/cursos/migrations/__init__.py
 
 src/users/migrations
+src/users/__pycache__
+src/iepam/__pycache__
+src/cursos/__pycache__
+
 src/cursos/migrations
