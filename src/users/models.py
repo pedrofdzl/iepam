@@ -19,7 +19,6 @@ def cv_upload_handler(instance, filename):
 
 def file_extension_validator(value):
     extension = os.path.splitext(value.name)[1]
-    print(extension)
     
     if not extension.lower() in ['.pdf',]:
         raise ValidationError('Solo se aceptan valores')

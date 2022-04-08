@@ -1,8 +1,8 @@
-from turtle import update
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
 from django.http import Http404
+from django.urls import reverse
 
 from datetime import date
 
@@ -67,6 +67,8 @@ def aduser_member_register_View(request):
                 extendedUser.cv = request.FILES["cv"]
 
             extendedUser.save()
+
+            return redirect(reverse('users:user_detail', kwargs={'id':user.pk}))
                       
     context["form"] = register_form
 
@@ -140,6 +142,8 @@ def aduser_update_view(request, id):
 
             user.save()
 
+            return redirect(reverse('users:user_detail', kwargs={'id': user.pk}))
+
         else:
             print(update_form.errors)
 
@@ -150,10 +154,14 @@ def aduser_update_view(request, id):
 def aduser_deactivate_view(request, id):
     context = {}
     template_name = admin_template_pre + "user_deactivate.html"
-
     user = get_object_or_404(User, pk=id)
-    user.is_active = False
-    user.save()
+
+
+    if request.method == 'POST':
+        user.is_active = False
+        user.save()
+
+        return redirect(reverse('users:user_detail', kwargs={'id': user.pk}))
 
     return render(request, template_name, context)
 
@@ -233,6 +241,8 @@ def memuser_update_view(request):
 
             user.save()
 
+            return redirect(reverse('users:user_profile'))
+
         else:
             print(user_form.errors)
 
@@ -247,21 +257,22 @@ def memuser_changeCV_view(request):
 
     user = request.user
 
-    cv = user.extended_user.cv
-    initial_data = {'cv':cv}
 
-    cv_form = UserCVForm(initial=initial_data)
+    cv_form = UserCVForm(instance=user.extended_user)
 
     if request.method == 'POST':
-        cv_form = UserCVForm(request.POST, initial=initial_data, files=request.FILES)
+        cv_form = UserCVForm(request.POST, instance=user.extended_user, files=request.FILES)
 
         if cv_form.is_valid():
+            extended = cv_form.save(commit=False)
+
             if 'cv' in request.FILES:
-                user.extended_user.cv = cv
-                user.save()
+                extended.cv = request.FILES['cv']
+                extended.save()
         else:
             print(cv_form.errors)
     
+    context['form'] = cv_form
 
     return render(request, template_name, context)
 
@@ -269,6 +280,12 @@ def memuser_changeCV_view(request):
 def user_login_view(request):
     template_name = template_prefix + 'user_login.html'
     return render(request, template_name)
+
+
+
+
+
+
 
 def user_register_view(request):
     context = {}
