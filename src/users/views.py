@@ -266,6 +266,9 @@ def memuser_changeCV_view(request):
     return render(request, template_name, context)
 
 
+def user_login_view(request):
+    template_name = template_prefix + 'user_login.html'
+    return render(request, template_name)
 
 def user_register_view(request):
     context = {}
