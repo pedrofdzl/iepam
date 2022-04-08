@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+    <h4>Eliminar {{ course.name }}</h4>
+    <form method="post">
+        {% csrf_token %}
+
+        <button>Eliminar</button>
+
+    </form>
+
+{% endblock %}

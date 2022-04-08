@@ -15,12 +15,92 @@
 
 <div class="container-window">
     <div class="admin-title">Registrar nuevo usuario</div>
-
+    <br>
     <div class="register-container">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Registrar</button>
+            {{ form.non_field_errors}}
+    
+            <div class="form-col-1">
+                <label>Usuario</label>
+                <div>
+                    {{ form.username.errors }}
+                    {{ form.username }}
+                </div>
+                
+                <label>Nombre</label>
+                <div>
+                    {{ form.first_name.errors }}
+                    {{ form.first_name }}
+                </div>
+        
+                <label>Apellido Paterno</label>
+                <div>
+                    {{ form.first_last_name.errors }}
+                    {{ form.first_last_name }}
+                </div>
+        
+                <label>Apellido Materno</label>
+                <div>
+                    {{ form.second_last_name.errors }}
+                    {{ form.second_last_name }}
+                </div>
+        
+                <label>Correo Electronico</label>
+                <div>
+                    {{ form.email.errors }}
+                    {{ form.email }}
+                </div>
+
+                <label>CV</label>
+                <div>
+                    {{ form.cv.errors }}
+                    {{ form.cv }}
+                </div>
+            
+            </div>
+            
+            <div class="form-col-2">
+                <label>Dia</label>
+                <div>
+                    {{ form.day.errors }}
+                    {{ form.day }}
+                </div>
+                
+                <label>Mes</label>
+                <div>
+                    {{ form.month.errors }}
+                    {{ form.month }}
+                </div>
+                
+                <label>Año</label>
+                <div>
+                    {{ form.year.errors }}
+                    {{ form.year }}
+                </div>
+                
+                <label>Nivel Academico</label>
+                <div>
+                    {{ form.academic_level.errors }}
+                    {{ form.academic_level }}
+                </div>
+        
+        
+                <label>Contraseña</label>
+                <div>
+                    {{ form.password.errors }}
+                    {{ form.password }}
+                </div>
+                
+                
+                <label>Confirma Contraseña</label>
+                <div>
+                    {{ form.v_password.errors }}
+                    {{ form.v_password }}
+                </div>
+            </div>
+    
+            <button class="btn-register" type="submit">Registrar</button>
         </form>
     </div>
 </div>

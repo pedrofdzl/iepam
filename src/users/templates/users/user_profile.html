@@ -26,8 +26,14 @@
         <img src="{% static 'img/view.jpg' %}">
     </div>
     <div class="profile-name">
-        <p class="profile-main-name">Nombre Usuario</p>
-        <p class="profile-secondary-name">Capacitador</p>
+        <p class="profile-main-name">{{ user.get_full_name }}</p>
+        <p class="profile-secondary-name">
+            {% if user.canTeach == true %}
+                Capacitador
+            {% else %}
+                Usuario
+            {% endif %}
+        </p>
     </div>
 
     <a href="{% url 'miembros:user_profile_update' %}" class="user-edit-info">Editar Perfil</a>
@@ -37,19 +43,19 @@
         <hr class="hr-nice">
         <div class="user-info-field-container">
             <p class="user-info-prompt">Nombre Completo</p>
-            <input class="user-info-field" readonly=true value="Nombre Completo User">
+            <input class="user-info-field" readonly=true value="{{ user.get_full_name }}">
         </div>
         <div class="user-info-field-container">
             <p class="user-info-prompt">Correo electrónico</p>
-            <input class="user-info-field" readonly=true value="ejemplo@dominio.mx">
+            <input class="user-info-field" readonly=true value="{{ user.email }}">
         </div>
         <div class="user-info-field-container">
             <p class="user-info-prompt">Fecha de Nacimiento</p>
-            <input class="user-info-field" readonly=true value="03/11/1982">
+            <input class="user-info-field" readonly=true value="{{ user.extended_user.birthdate }}">
         </div>
         <div class="user-info-field-container">
             <p class="user-info-prompt">Nivel Académico</p>
-            <input class="user-info-field" readonly=true value="Preparatoria">
+            <input class="user-info-field" readonly=true value="{{ user.extended_user.academic_level }}">
         </div>
         <div class="user-info-field-container" style="text-align: center; margin-top: 2rem; margin-bottom: 0.6rem;">
             <a class="user-info-cv" href="">Descargar CV&nbsp;<span class="material-icons">file_download</span></a>

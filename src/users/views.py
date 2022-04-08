@@ -192,6 +192,10 @@ def memuser_profile_view(request):
     context = {}
     template_name = template_prefix + "user_profile.html"
 
+    user = request.user
+
+    context["user"] = user
+
     return render(request, template_name, context)
 
 
