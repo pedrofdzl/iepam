@@ -17,6 +17,12 @@ if(document.getElementById('id-app').textContent == 'profile'){
     document.getElementById('Perfil').classList.add('active');
 }
 
+if(document.getElementById('id-app').textContent == 'admin'){
+    list.forEach((item) =>
+    item.classList.remove('active'));
+    document.getElementById('Admin').classList.add('active');
+}
+
 // function activeLink() {
 //     list.forEach((item) =>
 //     item.classList.remove('active'));
