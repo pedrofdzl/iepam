@@ -8,22 +8,12 @@
 {% endblock %}
 
 {% block body %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
 
 <div id="id-app" style="display: none;">main</div>
 
 <div class="container-window">
-
-</div>
-
-<div id="04" class="container-window" style="display: none;">
-    <div class="profile-background"></div>
-    <div class="profile-picture">
-        <img src="{% static 'img/view.jpg' %}">
-    </div>
-    <div class="profile-name">
-        <p class="profile-main-name">Nombre Usuario</p>
-        <p class="profile-secondary-name">Capacitador</p>
-    </div>
+    <div class="index-title">Bienvenido de vuelta, {user}</div>
 </div>
 
 {% endblock %}

@@ -11,6 +11,12 @@ if(document.getElementById('id-app').textContent == 'cap'){
     document.getElementById('Capacitaciones').classList.add('active');
 }
 
+if(document.getElementById('id-app').textContent == 'profile'){
+    list.forEach((item) =>
+    item.classList.remove('active'));
+    document.getElementById('Perfil').classList.add('active');
+}
+
 // function activeLink() {
 //     list.forEach((item) =>
 //     item.classList.remove('active'));
