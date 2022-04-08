@@ -35,9 +35,12 @@
             <div class="login-container">
                 <div class="login-title">Inicia sesión</div>
                 <div class="login-form">
-                    <input class="login-input" placeholder="Nombre de usuario">
-                    <input class="login-input-psw" placeholder="Contraseña">
-                    <button class="login-submit"><p>Continuar</p></button>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input class="login-input" name="username" placeholder="Nombre de usuario">
+                        <input class="login-input-psw" name="password" placeholder="Contraseña">
+                        <button class="login-submit" type="submit"><p>Continuar</p></button>
+                    </form>
                     <div class="login-submit-fill"></div>
                 </div>
             </div>
