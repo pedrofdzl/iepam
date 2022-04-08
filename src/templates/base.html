@@ -44,8 +44,12 @@
                     <il id="Perfil" class="list">
                         <a id="PerfilA" href="{% url 'miembros:user_profile' %}"><span class="material-icons">account_circle</span><p>Perfil</p></a>
                     </il>
+                    <il id="Admin" class="list">
+                        <a id="AdminA" href="{% url 'miembros:user_profile' %}"><span class="material-icons">admin_panel_settings</span><p>Admin Panel</p></a>
+                    </il>
                     <div id="navbar-item-01" class="navbar-item-bg"></div>
                     <div id="navbar-item-02" class="navbar-item-of"></div>
+
 
                     <il id="Logout" class="nav-end">
                         <a href="{% url 'users:logout' %}"><span class="material-icons">logout</span><p>Logout</p></a>

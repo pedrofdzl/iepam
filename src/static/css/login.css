@@ -132,6 +132,7 @@ body {
     border: 0;
     margin-top: 1rem;
     padding-left: 0.5rem;
+    border-radius: 0.3rem;
     box-shadow: 0 0 10px #d6d6d6;
     border-bottom: 3px solid #202022;
 }
@@ -146,6 +147,7 @@ body {
     border: 0;
     margin-top: 1.5rem;
     padding-left: 0.5rem;
+    border-radius: 0.3rem;
     border-bottom: 3px solid #202022;
     box-shadow: 0 0 10px #d6d6d6;
     -webkit-text-security: square;
@@ -162,6 +164,7 @@ body {
     border: 3px solid #202022;
     margin-top: 2rem;
     padding-left: 0.5rem;
+    border-radius: 0.3rem;
     border-bottom: 3px solid #202022;
     letter-spacing: 3px;
     box-shadow: 0 0 10px #d6d6d6;
@@ -177,7 +180,7 @@ body {
     height: 39px;
     background-color: #202022;
     transform-origin: left;
-    transform: translateY(-42px) scaleX(0);
+    transform: translate(2px, -42px) scaleX(0);
     transition: all 0.5s ease-in-out;
     z-index: -1;
     border-radius: 0 3rem 3rem 0;
@@ -188,6 +191,6 @@ body {
     color: whitesmoke;
 }
 .login-submit:hover ~ .login-submit-fill {
-    transform: translateY(-42px) scaleX(1);
-    border-radius: 0;
+    transform: translate(2px, -42px) scaleX(1);
+    border-radius: 0.3rem;
 }
