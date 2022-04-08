@@ -4,7 +4,8 @@ from django.contrib.auth import get_user_model
 from datetime import date
 from calendar import monthrange
 from pathlib import Path
-import os
+
+from .models import ExtendedUser
 
 MONTHS = [
     (1, "Enero"), (2, "Febrero"), (3, "Marzo"), (4, "Abril"),
@@ -117,6 +118,9 @@ class UserUpdateForm(forms.Form):
             raise forms.ValidationError('No es una fecha valida')
 
 
-class UserCVForm(forms.Form):
-    cv = forms.FileField()
+class UserCVForm(forms.ModelForm):
+    cv = forms.FileField(validators=[file_max_size(CV_MAX_SIZE), validate_file_extension])
+    class Meta:
+        model = ExtendedUser
+        fields = ('cv',)
 
