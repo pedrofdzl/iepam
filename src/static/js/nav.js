@@ -79,3 +79,4 @@ function setActiveLink(hey) {
     setWindow(hey.id);
     document.title = hey.id;
 }
+
