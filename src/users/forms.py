@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 
 from datetime import date
 from calendar import monthrange
+from pathlib import Path
+import os
 
 MONTHS = [
     (1, "Enero"), (2, "Febrero"), (3, "Marzo"), (4, "Abril"),
@@ -13,12 +15,21 @@ MONTHS = [
 User = get_user_model()
 
 CV_MAX_SIZE = 1024 * 1024 * 5
+# CV_MAX_SIZE = 5
 
 def file_max_size(max_size: int):
     def helper(value):
         if value.size > max_size:
             raise forms.ValidationError('Archivo excede limite de espacio')
     return helper
+
+def validate_file_extension(value):
+    import os
+    from django.core.exceptions import ValidationError
+    extension = os.path.splitext(value.name)[1]
+    valid_extensions = ['.pdf',]
+    if not extension.lower() in valid_extensions:
+        raise ValidationError('Solo se aceptan archivos pdf')
 
 
 class RegisterForm(forms.Form):
@@ -33,15 +44,22 @@ class RegisterForm(forms.Form):
     year = forms.IntegerField(min_value=1900, max_value=date.today().year, initial=date.today().year, widget=forms.Select(choices=[(year, year) for year in range(1900, date.today().year+1)]))
 
     academic_level = forms.CharField(max_length=255)
-    password = forms.PasswordInput()
-    v_password = forms.PasswordInput()
-    cv = forms.FileField(required=False, validators=[file_max_size(CV_MAX_SIZE)])
+    password = forms.CharField(max_length=300, widget=forms.PasswordInput())
+    v_password = forms.CharField(max_length=300, widget=forms.PasswordInput())
+    cv = forms.FileField(required=False, validators=[
+                                                        file_max_size(CV_MAX_SIZE), validate_file_extension])
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def clean(self):
         all_clean_data = super().clean()
+
+        # Username uniqueness
+        username = all_clean_data['username']
+
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError('Usuario ya esta registrado')
 
         # Password validation
         password = all_clean_data['password']
@@ -97,3 +115,8 @@ class UserUpdateForm(forms.Form):
 
         if days < day:
             raise forms.ValidationError('No es una fecha valida')
+
+
+class UserCVForm(forms.Form):
+    cv = forms.FileField()
+
