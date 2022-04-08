@@ -18,6 +18,10 @@ template_prefix = 'users/'
 ######## Admin Views #######
 ############################
 
+def user_login_view(request):
+    template_name = template_prefix + 'user_login.html'
+    return render(request, template_name)
+
 def user_register_view(request):
     context = {}
     template_name = template_prefix + 'user_register.html'
