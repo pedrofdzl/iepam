@@ -1,11 +1,27 @@
 {% extends 'base.html' %}
+
+{% block head %}
+
+{% load static %}
+<title>Registrar Usuario</title>
+
+{% endblock %}
+
 {% block body %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
 
+<div id="id-app" style="display: none;">admin</div>
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Registrar</button>
+<div class="container-window">
+    <div class="admin-title">Registrar nuevo usuario</div>
 
-    </form>
+    <div class="register-container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Registrar</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

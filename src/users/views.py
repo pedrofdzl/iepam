@@ -198,7 +198,7 @@ def memuser_profile_view(request):
 
 def memuser_update_view(request):
     context = {}
-    template_name = template_prefix + "user_update_form.html"
+    template_name = template_prefix + "user_profile_form.html"
 
     user = request.user
 

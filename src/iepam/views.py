@@ -24,4 +24,4 @@ def panel(request):
     context['users'] = users
     context['courses'] = courses
 
-    return render(request, '', context)
+    return render(request, 'admin.html', context)
