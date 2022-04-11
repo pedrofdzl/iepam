@@ -17,6 +17,7 @@ import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR / 'templates'
 STATIC_DIR = BASE_DIR / 'static'
+MEDIA_DIR = BASE_DIR / 'media'
 ENVIRONMENT_DIR = BASE_DIR / 'iepam' / 'environment' / '.env'
 
 # Env
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users.apps.UsersConfig',
     'cursos.apps.CursosConfig',
 ]
 
@@ -135,3 +137,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Media
+MEDIA_URL = 'media/'
+MEDIA_ROOT = MEDIA_DIR

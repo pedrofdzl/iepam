@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <label for="">Nombre:</label>
+        <div>
+            {{ form.name.errors }}
+            {{ form.name }}
+        </div>
+
+
+        <label for="">Descripción</label>
+        <div>
+            {{ form.description.errors }}
+            {{ form.description }}
+        </div>
+
+    </form>
+
+
+{% endblock %}

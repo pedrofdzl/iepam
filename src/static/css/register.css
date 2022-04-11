@@ -1,0 +1,236 @@
+* {
+    font-family: 'Kumbh Sans', sans-serif;
+}
+
+body {
+    background-color: #202022;
+    overflow: hidden;
+}
+
+.title {
+    text-decoration: none;
+    display: inline-flex;
+    color: whitesmoke;
+    font-weight: 700;
+    font-size: 42px;
+    margin-top: 16px;
+    margin-left: 24px;
+}
+.title p {
+    margin-top: 24px;
+    margin-bottom: 0px;
+    margin-left: 10px;
+    height: 40px;
+}
+.title img {
+    margin-left: 10px;
+    margin-top: 16px;
+    width: 60px;
+}
+
+.register-container {
+    width: fit-content;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: whitesmoke;
+    padding: 1.6rem;
+    padding-left: 1.8rem;
+    padding-right: 1.6rem;
+    padding-bottom: 1.8rem;
+    border-radius: 1.4rem;
+}
+
+.register-title {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 1.6rem;
+}
+
+.register-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    width: fit-content;
+}
+
+.form-col {
+    width: fit-content;
+}
+
+input {
+    width: 220px;
+    font-size: 16px;
+    border: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.36rem;
+    padding-left: 0.5rem;
+    box-shadow: 0 0 10px #d6d6d6;
+    border-bottom: 3px solid #acacac;
+    transition: all 0.2s ease-in-out;
+}
+input:focus {
+    outline: none;
+    border-bottom: 3px solid #202022;
+    box-shadow: 0 0 10px #acacac;
+}
+
+label {
+    letter-spacing: 0.08rem;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.date-row {
+    width: 230px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 5px;
+}
+
+select {
+    width: 100%;
+    font-size: 16px;
+    font-weight: 500;
+    border: 3px solid #202022;
+    margin: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.3rem;
+    padding-left: 0.5rem;
+    box-shadow: 0 0 10px #d6d6d6;
+    outline: none;
+    border: none;
+    border-bottom: 3px solid #acacac;
+    transition: all 0.2s ease-in-out;
+}
+select:focus {
+    outline: none;
+    border: none;
+    border-bottom: 3px solid #202022;
+    box-shadow: 0 0 10px #acacac;
+}
+
+.password-input {
+    width: 220px;
+    font-size: 16px;
+    border: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.36rem;
+    padding-left: 0.5rem;
+    box-shadow: 0 0 10px #d6d6d6;
+    -webkit-text-security: square;
+    border-bottom: 3px solid #acacac;
+    transition: all 0.2s ease-in-out;
+}
+input:focus {
+    outline: none;
+    border-bottom: 3px solid #202022;
+    box-shadow: 0 0 10px #acacac;
+}
+
+.custom-file-input {
+    width: 220px;
+    font-size: 16px;
+    border: 0;
+    margin-top: 0.3rem;
+    padding-top: 0rem;
+    padding-left: 0;
+    box-shadow: none;
+    border-bottom: none;
+    transition: all 0.2s ease-in-out;
+}
+.custom-file-input:focus {
+    outline: none;
+    border-bottom: none;
+    box-shadow: none;
+}
+
+input[type=file] {
+    height: 28px;
+}
+
+.file-upload-button {
+    border: none;
+    border-radius: 0.2rem;
+    padding: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+    background-color: #202022;
+    transition: all 0.2s ease-in-out;
+}
+.file-upload-button:hover {
+    background-color: #acacac;
+}
+
+input[type=file]::-webkit-file-upload-button {
+    border: none;
+    border-radius: 0.2rem;
+    padding: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+    background-color: #202022;
+    transition: all 0.2s ease-in-out;
+}
+input[type=file]::-webkit-file-upload-button:hover {
+    background-color: #acacac;
+}
+
+button {
+    width: 250px;
+    height: 42px;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #20CC82;
+    margin-top: 2rem;
+    padding-left: 0.5rem;
+    border-radius: 0.3rem;
+    letter-spacing: 2px;
+    box-shadow: 0 0 10px #d6d6d6;
+    transition: all 0.2s ease-in-out;
+}
+button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 10px #20CC82;
+}
+
+a {
+    text-decoration: none;
+}
+
+.btn-cancel {
+    width: 250px;
+    height: 32px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #202022;
+    margin-top: 2rem;
+    padding: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 0.1rem;
+    border-radius: 0.3rem;
+    letter-spacing: 2px;
+    box-shadow: 0 0 10px #d6d6d6;
+    transition: all 0.2s ease-in-out;
+}
+.btn-cancel:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 10px #202022;
+}

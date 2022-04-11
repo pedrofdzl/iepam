@@ -81,7 +81,7 @@
 .navbar-items ul il {
     margin-left: 8px;
     margin-right: 8px;
-}
+}   
 .navbar-items ul .navbar-item-bg {
     position: absolute;
     width: 120%;
@@ -92,7 +92,7 @@
     background-color: rgb(255, 255, 255);
     z-index: -1;
     opacity: 1;
-    transition: all 0.2s ease-in-out;
+    /* transition: all 0.2s ease-in-out; */
 }
 .navbar-items ul .navbar-item-of {
     position: absolute;
@@ -101,7 +101,7 @@
     transform-origin: right;
     background-color: rgb(255, 255, 255);
     z-index: -2;
-    transition: all 0.2s ease-in-out;
+    /* transition: all 0.2s ease-in-out; */
 }
 .navbar-items ul .navbar-item-of::after {
     content: '';
@@ -112,7 +112,7 @@
     height: 60px;
     border-radius: 4rem;
     transform-origin: left;
-    transition: all 0.2s ease-in-out;
+    /* transition: all 0.2s ease-in-out; */
     background-color: #202022;
 }
 .navbar-items ul .navbar-item-of::before {
@@ -124,7 +124,7 @@
     height: 60px;
     border-radius: 4rem;
     transform-origin: left;
-    transition: all 0.2s ease-in-out;
+    /* transition: all 0.2s ease-in-out; */
     background-color: #202022;
 }
 .navbar-items ul il.active a span {
@@ -138,14 +138,14 @@
     width: 80%;
     text-decoration: none;
     margin-bottom: 14px;
-    transition: all 0.3s ease-in-out;
+    /* transition: all 0.3s ease-in-out; */
 }
 .navbar-items ul il a span {
     color: whitesmoke;
     font-size: 28px;
     margin-left: 0px;
     margin-right: 0px;
-    transition: all 0.2s ease-in-out;
+    /* transition: all 0.2s ease-in-out; */
 }
 .navbar-items ul il a p {
     color: whitesmoke;
@@ -153,45 +153,64 @@
     font-weight: 500;
     margin-left: 6px;
     margin-top: 4px;
-    transition: all 0.2s ease-in-out;
+    /* transition: all 0.2s ease-in-out; */
 }
 
 .navbar-items ul il:nth-child(1).active ~ .navbar-item-bg {
-    transform: translateY(calc(-56.5px * 4));
+    transform: translateY(calc(-56px * 5));
 }
 .navbar-items ul il:nth-child(2).active ~ .navbar-item-bg {
-    transform: translateY(calc(-57.5px * 3));
+    transform: translateY(calc(-56.5px * 4));
 }
 .navbar-items ul il:nth-child(3).active ~ .navbar-item-bg {
-    transform: translateY(calc(-59.5px * 2));
+    transform: translateY(calc(-57.5px * 3));
 }
 .navbar-items ul il:nth-child(4).active ~ .navbar-item-bg {
+    transform: translateY(calc(-59.5px * 2));
+}
+.navbar-items ul il:nth-child(5).active ~ .navbar-item-bg {
     transform: translateY(calc(-65px * 1));
 }
 
 .navbar-items ul il:nth-child(1).active ~ .navbar-item-of {
-    transform: translateY(-250px) translateX(180px);
+    transform: translateY(-304px) translateX(180px);
 }
 .navbar-items ul il:nth-child(2).active ~ .navbar-item-of {
-    transform: translateY(-196.5px) translateX(180px);
+    transform: translateY(-250px) translateX(180px);
 }
 .navbar-items ul il:nth-child(3).active ~ .navbar-item-of {
-    transform: translateY(-143px) translateX(180px);
+    transform: translateY(-196.5px) translateX(180px);
 }
 .navbar-items ul il:nth-child(4).active ~ .navbar-item-of {
+    transform: translateY(-143px) translateX(180px);
+}
+.navbar-items ul il:nth-child(5).active ~ .navbar-item-of {
     transform: translateY(-89px) translateX(180px);
 }
 
 .nav-end {
     position: absolute;
-    left: 4px;
-    bottom: 20px;
-    margin-bottom: 0;
+    height: 40px;
+    padding-top: 0.6rem;
+    padding-bottom: 0rem;
+    padding-left: 1rem;
+    padding-right: 1.5rem;
+    margin-bottom: 0rem;
+    margin-left: 0;
+    border-radius: 1rem;
+    left: -6px;
+    bottom: 0px;
+    transition: all 0.2s ease-in-out;
+}
+.nav-end:hover {
+    background-color: rgb(52, 52, 52);
 }
 
 .container-window {
+    height: 90vh;
     margin: 0;
     padding: 2rem;
+    overflow: hidden;
 }
 
 .searchbar {
@@ -306,6 +325,7 @@
 .card-members {
     display: inline-flex;
     margin: 1rem;
+    transition: all 0.2s ease-in-out;
 }
 .card-members span {
     font-size: 24px;
@@ -316,12 +336,16 @@
     margin-top: 2px;
     margin-left: 4px;
 }
+.card:hover .card-members{
+    transform: translateY(-8px);
+}
 
 .card-likes {
     display: inline-flex;
     margin: 1rem;
     margin-top: 1.1rem;
     margin-left: 105px;
+    transition: all 0.2s ease-in-out;
 }
 .card-likes span {
     font-size: 20px;
@@ -331,4 +355,29 @@
     padding: 0;
     margin-top: 0.5px;
     margin-left: 5px;
+}
+.card:hover .card-likes{
+    transform: translate(6px, -8px);
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 0.5rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 0.5rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

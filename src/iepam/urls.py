@@ -22,7 +22,9 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('cursos/', include("cursos.urls")),
+    path('panel/', views.panel, name='panel'),
+    path('cursos/', include(('cursos.urls'), namespace='cursos')),
+    path('miembros/', include(('users.urls'), namespace='miembros')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_DIR)

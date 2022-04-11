@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors}}
+
+        <label>Nombre:</label>
+        <div>
+            {{ form.first_name.errors }}
+            {{ form.first_name }}
+        </div>
+
+
+        <label>Apellido Paterno:</label>
+        <div>
+            {{ form.first_last_name.errors }}
+            {{ form.first_last_name }}
+        </div>
+
+
+        <label>Apellido Materno:</label>
+        <div>
+            {{ form.second_last_name.errors }}
+            {{ form.second_last_name }}
+        </div>
+        
+        <label>Dia:</label>
+        <div>
+            {{ form.day.errors }}
+            {{ form.day }}
+        </div>
+        
+        <label>Mes:</label>
+        <div>
+            {{ form.month.errors }}
+            {{ form.month }}
+        </div>
+        
+        <label>Año:</label>
+        <div>
+            {{ form.year.errors }}
+            {{ form.year }}
+        </div>
+        
+        <label>Nivel Academico:</label>
+        <div>
+            {{ form.academic_level.errors }}
+            {{ form.academic_level }}
+        </div>
+
+        <button type="submit">Cambiar</button>
+    </form>
+
+{% endblock %}
