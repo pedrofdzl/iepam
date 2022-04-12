@@ -10,7 +10,7 @@ from .models import ExtendedUser
 
 MONTHS = [
     (1, "Enero"), (2, "Febrero"), (3, "Marzo"), (4, "Abril"),
-    (5, "Mayo"), (6, "Juni"), (7, "Julio"), (8, "Agosto"),
+    (5, "Mayo"), (6, "Junio"), (7, "Julio"), (8, "Agosto"),
     (9, "Septiembre"), (10, "Octubre"), (11, "Noviembre"), (12, "Diciembre")
 ]
 
@@ -46,8 +46,8 @@ class RegisterForm(forms.Form):
     year = forms.IntegerField(min_value=1900, max_value=date.today().year, initial=date.today().year, widget=forms.Select(choices=[(year, year) for year in range(1900, date.today().year+1)]))
 
     academic_level = forms.CharField(max_length=255)
-    password = forms.CharField(max_length=300, widget=forms.TextInput(attrs={'class':'password-input'}))
-    v_password = forms.CharField(max_length=300, widget=forms.TextInput(attrs={'class':'password-input'}))
+    password = forms.CharField(max_length=300, widget=forms.PasswordInput(attrs={'class':'password-input'}))
+    v_password = forms.CharField(max_length=300, widget=forms.PasswordInput(attrs={'class':'password-input'}))
     cv = forms.FileField(required=False, validators=[
                                                         file_max_size(CV_MAX_SIZE), validate_file_extension],
                                                         widget=forms.FileInput(attrs={'class':'custom-file-input', 'id':'file'}))

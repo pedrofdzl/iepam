@@ -107,6 +107,7 @@ a {
     vertical-align: middle;
 }
 .user-info-cv:hover {
+    box-shadow: 0 0 10px #813cc7;
     background-color: #813cc7;
 }
 
@@ -175,6 +176,7 @@ a {
 }
 .user-edit-info:hover {
     background-color: #813cc7;
+    box-shadow: 0 0 10px #813cc7;
 }
 
 .user-edit-info-secondary {
@@ -196,6 +198,7 @@ a {
     transition: all 0.2s ease-in-out;
 }
 .user-edit-info-secondary:hover {
+    box-shadow: 0 0 10px #676767;
     background-color: #676767;
 }
 

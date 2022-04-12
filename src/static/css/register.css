@@ -31,6 +31,7 @@ body {
 .register-container {
     width: fit-content;
     height: fit-content;
+    max-height: 72vh;
     margin-left: auto;
     margin-right: auto;
     background-color: whitesmoke;
@@ -195,7 +196,7 @@ button {
     outline: none;
     color: white;
     background-color: #20CC82;
-    margin-top: 2rem;
+    margin-top: 0rem;
     padding-left: 0.5rem;
     border-radius: 0.3rem;
     letter-spacing: 2px;
@@ -221,7 +222,7 @@ a {
     outline: none;
     color: white;
     background-color: #202022;
-    margin-top: 2rem;
+    margin-top: 0rem;
     padding: 0;
     padding-top: 0.5rem;
     padding-bottom: 0.1rem;

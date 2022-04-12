@@ -93,10 +93,15 @@ label {
     padding-top: 0.3rem;
     padding-left: 0.5rem;
     padding-bottom: 0.5rem;
-    border-radius: 0.3rem;
     border: none;
-    border-bottom: 2px solid #202022;
     outline: none;
+    border-bottom: 3px solid #acacac;
+    transition: all 0.2s ease-in-out;
+}
+input:focus {
+    outline: none;
+    border-bottom: 3px solid #202022;
+    box-shadow: 0 0 10px #acacac;
 }
 .user-info-field-container select{
     max-width: 80px;
@@ -110,10 +115,15 @@ label {
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
     padding-left: 0.3rem;
-    border-radius: 0.3rem;
     border: none;
-    border-bottom: 2px solid #202022;
     outline: none;
+    border-bottom: 3px solid #acacac;
+    transition: all 0.2s ease-in-out;
+}
+input:focus {
+    outline: none;
+    border-bottom: 3px solid #202022;
+    box-shadow: 0 0 10px #acacac;
 }
 
 .user-info-cv {
@@ -133,6 +143,7 @@ label {
 }
 .user-info-cv:hover {
     background-color: #813cc7;
+    box-shadow: 0 0 10px #813cc7;
 }
 
 .hr-nice {
@@ -200,6 +211,7 @@ label {
 }
 .user-edit-info:hover {
     background-color: #813cc7;
+    box-shadow: 0 0 10px #813cc7;
 }
 
 .user-edit-info-secondary {

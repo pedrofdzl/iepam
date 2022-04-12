@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
 
     <title>Ingresar</title>
+    <link rel="icon" type="svg" href="{% static 'svg/iepam-logo-white.svg' %}">
 </head>
 <body>
     <style>
@@ -45,7 +46,7 @@
                     <form method="post">
                         {% csrf_token %}
                         <input class="login-input" name="username" placeholder="Nombre de usuario">
-                        <input class="login-input-psw" name="password" placeholder="Contraseña">
+                        <input type="password" class="login-input-psw" name="password" placeholder="Contraseña" style="-webkit-text-security: square;">
                         <button class="login-submit" type="submit"><p>Continuar</p></button>
                         <div class="login-submit-fill"></div>
                     </form>
