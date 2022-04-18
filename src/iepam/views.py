@@ -7,11 +7,16 @@ from cursos.models import Course
 # Create your views here.
 
 def index(request):
+    context = {}
 
     if not request.user.is_authenticated:
         return redirect(reverse('users:login'))
 
-    return render(request, 'index.html')
+    user = request.user
+
+    context["user"] = user
+
+    return render(request, 'index.html',  context)
 
 
 def panel(request):
