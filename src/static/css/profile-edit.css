@@ -63,33 +63,69 @@ a {
     font-weight: 700;
     margin-bottom: 0.3rem;
 }
-.user-info-prompt {
+
+label {
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 0.1rem;
 }
-.user-info-field {
-    font-size: 16px;
-    font-weight: 400;
-    color:#7c7c7c;
-    margin-bottom: 0.2rem;
-    border: none;
-    outline: none;
+
+.user-info-group-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
 }
 
-.user-info-field-editable {
+.user-info-field-container {
+    width: fit-content;
+    margin: 0;
+}
+.user-info-field-container input{
+    width: 100%;
     font-size: 16px;
     font-weight: 400;
     background-color: whitesmoke;
     color:#202022;
-    margin-bottom: 0.2rem;
+    margin-bottom: 1rem;
+    margin-top: 0.3rem;
+    padding-top: 0.3rem;
+    padding-left: 0.5rem;
+    padding-bottom: 0.5rem;
+    border: none;
+    outline: none;
+    border-bottom: 3px solid #acacac;
+    transition: all 0.2s ease-in-out;
+}
+input:focus {
+    outline: none;
+    border-bottom: 3px solid #202022;
+    box-shadow: 0 0 10px #acacac;
+}
+.user-info-field-container select{
+    max-width: 80px;
+    font-size: 16px;
+    font-weight: 400;
+    background-color: whitesmoke;
+    color:#202022;
+    margin-bottom: 1rem;
+    margin-top: 0.3rem;
+    margin-right: 0.5rem;
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
-    border-radius: 0.3rem;
+    padding-left: 0.3rem;
     border: none;
-    border-bottom: 2px solid #202022;
     outline: none;
+    border-bottom: 3px solid #acacac;
+    transition: all 0.2s ease-in-out;
 }
+input:focus {
+    outline: none;
+    border-bottom: 3px solid #202022;
+    box-shadow: 0 0 10px #acacac;
+}
+
 .user-info-cv {
     width: 100%;
     text-decoration: none;
@@ -100,15 +136,14 @@ a {
     padding-right: 1rem;
     background-color: #4e039b;
     border-radius: 1rem;
-    transition: all 0.2s ease-in-out;
 }
 .user-info-cv span {
     font-size: 18px;
     vertical-align: middle;
 }
 .user-info-cv:hover {
-    box-shadow: 0 0 10px #813cc7;
     background-color: #813cc7;
+    box-shadow: 0 0 10px #813cc7;
 }
 
 .hr-nice {
@@ -198,7 +233,6 @@ a {
     transition: all 0.2s ease-in-out;
 }
 .user-edit-info-secondary:hover {
-    box-shadow: 0 0 10px #676767;
     background-color: #676767;
 }
 

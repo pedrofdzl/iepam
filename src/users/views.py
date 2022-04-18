@@ -243,6 +243,7 @@ def memuser_update_view(request):
             user.extended_user.academic_level = academic_level
             user.extended_user.birthdate = birthdate
 
+            user.extended_user.save()
             user.save()
 
             return redirect(reverse('users:user_profile'))

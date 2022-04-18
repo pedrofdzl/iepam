@@ -2,7 +2,6 @@ src/db.sqlite3
 
 src/iepam/environment/.env
 
-
 !src/users/migrations/__init__.py
 !src/cursos/migrations/__init__.py
 

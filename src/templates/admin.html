@@ -16,20 +16,29 @@
     <div class="admin-title">Panel de administración</div>
 
     <div class="admin-container">
-        <div class="admin-buttons">
-            <a href="{% url 'miembros:user_create' %}" class="admin-btn-register">Registrar Usuario</a>
-            <a class="admin-btn-register">Registrar Capacitación</a>
-        </div>
     
         <div class="admin-list">
             <div class="admin-list-title">Administrar Usuarios</div>
+
             <hr class="hr-nice">
-            
-            <a href="#">
+            <div class="admin-list-header">
+                <div class="admin-list-search-container">
+                    <input class="admin-list-search" placeholder="Buscar...">
+                    <span class="material-icons admin-list-search-icon">search</span>
+                </div>
+                <a href="{% url 'miembros:user_create' %}" class="admin-btn-register tooltip">
+                    <span class="material-icons">add</span>
+                    <div class="tooltiptext">Registrar nuevo usuario</div>
+                </a>
+
+            </div>
+            {% for user in users %}
+            <a href="{% url 'users:user_detail' id=user.pk %}">
                 <div class="admin-list-item">
-                    <div class="admin-list-item-title">Nombre 1</div>
+                    <div class="admin-list-item-title">{{ user.get_full_name }}</div>
                 </div>
             </a>
+            {% endfor %}
 
         </div>
     
@@ -37,11 +46,25 @@
             <div class="admin-list-title">Administrar Capacitaciones</div>
             <hr class="hr-nice">
 
+            <div class="admin-list-header">
+                <div class="admin-list-search-container">
+                    <input class="admin-list-search" placeholder="Buscar...">
+                    <span class="material-icons admin-list-search-icon">search</span>
+                </div>
+                <a href="{% url 'miembros:user_create' %}" class="admin-btn-register tooltip">
+                    <span class="material-icons">add</span>
+                    <div class="tooltiptext">Registrar nueva capacitación</div>
+                </a>
+
+            </div>
+
+            {% for course in courses %}
             <a href="#">
                 <div class="admin-list-item">
-                    <div class="admin-list-item-title">Capacitacion 1</div>
+                    <div class="admin-list-item-title">{{ course.name }}</div>
                 </div>
             </a>
+            {% endfor %}
 
         </div>
     </div>
