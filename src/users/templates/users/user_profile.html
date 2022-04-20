@@ -18,7 +18,7 @@
         <img src="{% static 'img/view.jpg' %}">
     </div>
     <div class="profile-name">
-        <p class="profile-main-name">{{ user.get_full_name }}</p>
+        <p class="profile-main-name">{{ user.extended_user.get_full_name }}</p>
         <p class="profile-secondary-name">
             {% if user.canTeach == true %}
                 Capacitador
@@ -36,7 +36,7 @@
             <hr class="hr-nice">
             <div class="user-info-field-container">
                 <p class="user-info-prompt">Nombre Completo</p>
-                <input class="user-info-field" readonly=true value="{{ user.get_full_name }}">
+                <input class="user-info-field" readonly=true value="{{ user.extended_user.get_full_name }}">
             </div>
             <div class="user-info-field-container">
                 <p class="user-info-prompt">Correo electrónico</p>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Material icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- CSS -->    
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+    <title>Registrar Usuario</title>
+    <link rel="icon" type="svg" href="{% static 'svg/iepam-logo-white.svg' %}">
+</head>
+<body>
+    
+    <main>
+        <div class="container">
+            <a class="title"><img src="{% static 'svg/iepam-logo-white.svg' %}"><p>IEPAM</p></a>
+            <div class="register-container">
+                <div class="register-title">Añadir actividad</div>
+                
+                <label>¿Que tipo de actividad es?</label>
+
+                <div class="register-activity-type-list">
+                    <a href="{% url 'cursos:course_create_item' id=modulo.pk action=1 %}" class="no-style-a"><div id="lectura" class="register-activity-type-item"><span class="material-icons">book</span><p>Lectura</p></div></a>
+                    <a href="{% url 'cursos:course_create_item' id=modulo.pk action=2 %}" class="no-style-a"><div id="actividad" class="register-activity-type-item"><span class="material-icons">description</span><p>Actividad</p></div></a>
+                    <a href="{% url 'cursos:course_create_item' id=modulo.pk action=3 %}" class="no-style-a"><div id="video" class="register-activity-type-item"><span class="material-icons">smart_display</span><p>Video</p></div></a>
+                    <a href="{% url 'cursos:course_create_item' id=modulo.pk action=4 %}" class="no-style-a"><div id="quiz" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Quiz</p></div></a>
+                </div>
+
+                <div id="div-lectura" class="">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ lec_form.non_field_errors}}
+                
+                        <label>Título</label>
+                        <div class="input-line">
+                            {{ lec_form.name.errors }}
+                            {{ lec_form.name }}
+                        </div>
+
+                        <label>Contenido</label>
+                        <div class="input-line">
+                            {{ lec_form.description.errors }}
+                            {{ lec_form.description }}
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}" class="btn-cancel margin-right-btn">Cancelar operación</a>
+                            <button class="btn-register" type="submit">Registrar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="div-actividad" class="">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ act_form.non_field_errors}}
+                
+                        <label>Título</label>
+                        <div class="input-line">
+                            {{ act_form.name.errors }}
+                            {{ act_form.name }}
+                        </div>
+
+                        <label>Instrucciones</label>
+                        <div class="input-line">
+                            {{ act_form.description.errors }}
+                            {{ act_form.description }}
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}" class="btn-cancel margin-right-btn">Cancelar operación</a>
+                            <button class="btn-register" type="submit">Registrar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="div-video" class="">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ vid_form.non_field_errors}}
+                
+                        <label>Título</label>
+                        <div class="input-line">
+                            {{ vid_form.name.errors }}
+                            {{ vid_form.name }}
+                        </div>
+
+                        <label>URL (Link al video)</label>
+                        <div class="input-line">
+                            {{ vid_form.url.errors }}
+                            {{ vid_form.url }}
+                        </div>
+
+                        <label>Descripción</label>
+                        <div class="input-line">
+                            {{ vid_form.description.errors }}
+                            {{ vid_form.description }}
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}" class="btn-cancel margin-right-btn">Cancelar operación</a>
+                            <button class="btn-register" type="submit">Registrar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="div-quiz" class="">
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- HIDDEN ARGS FOR JS -->
+        <div id="action" style="visibility: hidden;">{{ action }}</div>
+
+        <script src="{% static 'js/create-item.js' %}"></script>
+    </main>    
+</body>
+</html>

@@ -77,6 +77,24 @@ input:focus {
     box-shadow: 0 0 10px #acacac;
 }
 
+textarea {
+    width: 220px;
+    font-size: 16px;
+    border: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.36rem;
+    padding-left: 0.5rem;
+    box-shadow: 0 0 10px #d6d6d6;
+    border-bottom: 3px solid #acacac;
+    transition: all 0.2s ease-in-out;
+}
+textarea:focus {
+    outline: none;
+    border-bottom: 3px solid #202022;
+    box-shadow: 0 0 10px #acacac;
+}
+
 label {
     letter-spacing: 0.08rem;
     font-size: 16px;
@@ -214,7 +232,6 @@ a {
 
 .btn-cancel {
     width: 250px;
-    height: 32px;
     font-size: 18px;
     font-weight: 600;
     text-align: center;
@@ -223,9 +240,9 @@ a {
     color: white;
     background-color: #202022;
     margin-top: 0rem;
-    padding: 0;
-    padding-top: 0.5rem;
-    padding-bottom: 0.1rem;
+    padding: 1rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
     border-radius: 0.3rem;
     letter-spacing: 2px;
     box-shadow: 0 0 10px #d6d6d6;
@@ -234,4 +251,71 @@ a {
 .btn-cancel:hover {
     transform: scale(1.02);
     box-shadow: 0 0 10px #202022;
+}
+
+.margin-right-btn {
+    margin-right: 1rem;
+}
+
+.input-line input {
+    width: 96%;
+}
+
+.input-line textarea {
+    width: 96%;
+}
+
+.register-activity-type-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: 0;
+    background-color: rgb(228, 228, 228);
+    border-radius: 0.8rem;
+    margin-top: 0.6rem;
+    margin-bottom: 0.6rem;
+    width: 660px;
+    overflow: hidden;
+}
+
+.register-activity-type-item {
+    display: grid;
+    grid-template-columns: 0fr 1fr;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.register-activity-type-item:hover {
+    background-color: lightgray;
+}
+
+.register-activity-type-item p {
+    margin: 0;
+    margin-left: 0.5rem;
+    font-size: 18px;
+    font-weight: 500;
+    z-index: 1;
+}
+
+.register-activity-type-item span {
+    margin: 0;
+    z-index: 1;
+}
+
+.input-line input {
+    width: 97%;
+}
+
+.no-style-a {
+    text-decoration: none;
+    color: #202022;
+}
+
+.active {
+    background-color: #202022;
+    color: whitesmoke;
+}
+.active:hover {
+    background-color: #202022;
+    color: whitesmoke;
 }

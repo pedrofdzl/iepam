@@ -1,7 +1,7 @@
 .course-title {
     margin: 1rem;
     margin-top: 0.4rem;
-    margin-bottom: 0;
+    margin-bottom: 0.5rem;
     font-size: 52px;
     font-weight: 700;
     color: #202022;
@@ -13,7 +13,7 @@
     margin-bottom: 0;
     font-size: 18px;
     font-weight: 400;
-    color: #202022;
+    color: rgb(102, 102, 102);
 }
 
 .course-info {
@@ -42,4 +42,98 @@
 
 .course-info-num {
     font-weight: 700;
+}
+
+.course-module-container {
+    width: fit-content;
+    height: fit-content;
+    margin: 1rem;
+}
+
+.module {
+    width: 40vw;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+    margin-bottom: 1.2rem;
+}
+
+.module-header {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+    grid-gap: 5px;
+}
+
+.module-title {
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.module-title-main {
+    font-weight: 700;
+    font-size: 32px;
+    margin-left: 2rem;
+}
+
+.button-add {
+    width: 32px;
+    height: 31px;
+    padding-top: 0.5rem;
+    padding-left: 0.5rem;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    margin-left: 0.5rem;
+    border: none;
+    background-color: #20CC82;
+    color: white;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+}
+.button-add:hover {
+    background-color: #20CC82;
+    box-shadow: 0 0 10px #20CC82;
+}
+
+.module-item {
+    display: grid;
+    grid-template-columns: 0fr 1fr;
+    background-color: whitesmoke;
+    border: 1px solid lightgrey;
+    padding: 0.5rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+}
+
+.module-item-icon {
+    font-size: 28px;
+    margin-top: 0.4rem;
+    margin-right: 0.8rem;
+}
+
+.module-item-title {
+    font-weight: 600;
+}
+
+.module-item-grade {
+    color: rgb(102, 102, 102);
+}
+
+.module-add {
+    width: 100%;
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: #20CC82;
+    color: white;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+}
+.module-add:hover {
+    background-color: #20CC82;
+    box-shadow: 0 0 10px #20CC82;
 }

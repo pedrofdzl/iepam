@@ -351,6 +351,7 @@
     margin: 1rem;
     margin-top: 0.2rem;
     font-size: 16px;
+    height: 60px;
 }
 .card-members {
     display: inline-flex;
