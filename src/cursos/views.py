@@ -14,7 +14,7 @@ User = get_user_model()
 # Create your views here.
 
 
-template_prefix = 'courses/'
+template_prefix = 'cursos/'
 template_admin_pre = template_prefix + 'admin/'
 
 ############################
@@ -93,7 +93,7 @@ def adcourse_addmember_view(request, id):
 
     course = get_object_or_404(Course, pk=id)
 
-    users = ExtendedUser.objects.filter(~Q(courses__course=course))
+    users = ExtendedUser.objects.filter(~Q(courses__course=course)).exclude(Q(own_courses=course))
     context['users'] = users
 
     course = get_object_or_404(Course, pk=id)
@@ -133,6 +133,13 @@ def adcourse_delete_view(request, id):
     context['course'] = course
 
     return render(request, template_name, context)
+
+
+
+############################
+######## Member Views #######
+############################
+
 
 
 
