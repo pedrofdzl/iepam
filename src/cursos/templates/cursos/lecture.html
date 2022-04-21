@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% load static %}
+<title>Capacitacion</title>
+
+{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{% static 'css/activities.css' %}">
+
+<div id="id-app" style="display: none;">cap</div>
+
+<div class="container-window">
+
+    <a href="{% url 'cursos:course_detail' id=lecture.modulo.curso.pk %}" class="no-style-a">
+        <div class="return">
+            <span class="material-icons">chevron_left</span>
+            Volver a la capacitación
+        </div>
+    </a>
+
+    <div class="description">{{ lecture.modulo.name }}</div>
+
+    <div class="title">{{ lecture.name }}</div>
+
+    <div class="lecture-container">
+        {{ lecture.description }}
+    </div>
+
+</div>
+
+{% endblock %}

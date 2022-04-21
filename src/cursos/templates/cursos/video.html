@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% load static %}
+<title>Capacitacion</title>
+
+{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{% static 'css/activities.css' %}">
+
+<div id="id-app" style="display: none;">cap</div>
+
+<div class="container-window">
+
+    <a href="{% url 'cursos:course_detail' id=video.modulo.curso.pk %}" class="no-style-a">
+        <div class="return">
+            <span class="material-icons">chevron_left</span>
+            Volver a la capacitación
+        </div>
+    </a>
+
+    <div class="description">{{ video.modulo.name }}</div>
+
+    <div class="title">{{ video.name }}</div>
+
+    <div class="lecture-container">
+        {{ video.description }}
+        <br>
+        <div style="text-align: center;">
+            <iframe class="video" 
+                    src="{{ video.url }}" 
+                    title="YouTube video player" 
+                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

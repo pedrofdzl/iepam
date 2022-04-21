@@ -38,33 +38,39 @@
             <br>
 
             {% for lec in mod.lecturas.all %}
-            <div class="module-item">
-                <span class="material-icons module-item-icon">book</span>
-                <div>
-                    <div class="module-item-title">Lectura: {{ lec.name }}</div>
-                    <div class="module-item-grade">No leído</div>
+            <a href="{% url 'cursos:course_lecture' id=lec.pk %}" class="no-style-a">
+                <div class="module-item">
+                    <span class="material-icons module-item-icon">book</span>
+                    <div>
+                        <div class="module-item-title">Lectura: {{ lec.name }}</div>
+                        <div class="module-item-grade">No leído</div>
+                    </div>
                 </div>
-            </div>
+            </a>
             {% endfor %}
 
             {% for act in mod.actividades.all %}
-            <div class="module-item">
-                <span class="material-icons module-item-icon">description</span>
-                <div>
-                    <div class="module-item-title">Actividad: {{ act.name }}</div>
-                    <div class="module-item-grade">No entregado</div>
+            <a href="{% url 'cursos:course_activity' id=act.pk %}" class="no-style-a">
+                <div class="module-item">
+                    <span class="material-icons module-item-icon">description</span>
+                    <div>
+                        <div class="module-item-title">Actividad: {{ act.name }}</div>
+                        <div class="module-item-grade">No entregado</div>
+                    </div>
                 </div>
-            </div>
+            </a>
             {% endfor %}
 
             {% for vid in mod.videos.all %}
-            <div class="module-item">
-                <span class="material-icons module-item-icon">smart_display</span>
-                <div>
-                    <div class="module-item-title">Video: {{ vid.name }}</div>
-                    <div class="module-item-grade">No Visto</div>
+            <a href="{% url 'cursos:course_video' id=vid.pk %}" class="no-style-a">
+                <div class="module-item">
+                    <span class="material-icons module-item-icon">smart_display</span>
+                    <div>
+                        <div class="module-item-title">Video: {{ vid.name }}</div>
+                        <div class="module-item-grade">No Visto</div>
+                    </div>
                 </div>
-            </div>
+            </a>
             {% endfor %}
 
             {% for quiz in mod.quizzes.all %}
@@ -80,49 +86,6 @@
         </div>
         {% endfor %}
         <!-- END OF MODULES -->
-
-        <div class="module">
-
-            <div class="module-header">
-                <div class="module-title">Módulo: Introduccion a la capacitación</div>
-                <a href="" class="button-add tooltip">
-                    <span class="material-icons">add</span>
-                    <div class="tooltiptext">Agregar elemento</div>
-                </a>
-            </div>
-            
-            <br>
-
-            <div class="module-item">
-                <span class="material-icons module-item-icon">book</span>
-                <div>
-                    <div class="module-item-title">Lectura: Aplicaciones de la plataforma</div>
-                    <div class="module-item-grade">No entregado</div>
-                </div>
-            </div>
-            <div class="module-item">
-                <span class="material-icons module-item-icon">description</span>
-                <div>
-                    <div class="module-item-title">Actividad: Familiarizate con la plataforma</div>
-                    <div class="module-item-grade">No entregado</div>
-                </div>
-            </div>
-            <div class="module-item">
-                <span class="material-icons module-item-icon">smart_display</span>
-                <div>
-                    <div class="module-item-title">Video: Como subir tus actividades</div>
-                    <div class="module-item-grade">No entregado</div>
-                </div>
-            </div>
-            <div class="module-item">
-                <span class="material-icons module-item-icon">quiz</span>
-                <div>
-                    <div class="module-item-title">Quiz: Pon aprueba tus aprendizajes</div>
-                    <div class="module-item-grade">No entregado</div>
-                </div>
-            </div>
-
-        </div>
 
         <a href="{% url 'cursos:course_create_module' id=course.pk %}" style="text-decoration: none;">
             <div class="module-add">Agregar Módulo</div>

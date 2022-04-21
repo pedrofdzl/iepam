@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% load static %}
+<title>Capacitacion</title>
+
+{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{% static 'css/activities.css' %}">
+
+<div id="id-app" style="display: none;">cap</div>
+
+<div class="container-window">
+
+    <a href="{% url 'cursos:course_detail' id=activity.modulo.curso.pk %}" class="no-style-a">
+        <div class="return">
+            <span class="material-icons">chevron_left</span>
+            Volver a la capacitación
+        </div>
+    </a>
+
+    <div class="description">{{ activity.modulo.name }}</div>
+
+    <div class="title">{{ activity.name }}</div>
+
+    <div class="lecture-container">
+        <div class="subtitle">Instrucciones para la actividad</div>
+        {{ activity.description }}
+
+        <div class="spaceing"></div>
+
+        <div class="subtitle">Especificaciones de entrega</div>
+    </div>
+
+    <div class="upload-container">
+        <div class="subtitle">Entregar actividad</div>
+        <form class="form-col-2" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ entrega_form.non_field_errors}}
+    
+            <div class="custom-file-input">
+                {{ entrega_form.file.errors }}
+                {{ entrega_form.file }}
+            </div>
+            
+            <div style="text-align: end;">
+                <button class="submit-button" type="submit">Subir</button>
+            </div>
+        </form>
+        <div class="small-subtitle">Recuerda que los tipos de archivo aceptados son: .pdf, .docx, .xlsx y .pptx.</div>
+    </div>
+
+</div>
+
+{% endblock %}

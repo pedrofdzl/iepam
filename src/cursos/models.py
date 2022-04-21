@@ -68,8 +68,8 @@ class Actividad(models.Model):
 class Entrega(models.Model):
     actividad = models.ForeignKey(Actividad, on_delete=models.CASCADE, related_name='entregas', verbose_name='actividad')
     user = models.ForeignKey(ExtendedUser, on_delete=models.CASCADE, related_name='entregas', verbose_name='users')
-    file = models.FileField('file', upload_to='entregas', blank=True, null=True, validators=[FileExtensionValidator(allowed_extensions=['pdf', 'docx', 'xlsx', 'pptx'])])
-    grade = models.FloatField('grade', validators=[MinValueValidator(0), MaxValueValidator(100)])
+    file = models.FileField('file', upload_to='entregas', blank=True, null=True, validators=[FileExtensionValidator(allowed_extensions=['.pdf', '.docx', '.xlsx', '.pptx'])])
+    grade = models.FloatField('grade', validators=[MinValueValidator(-1), MaxValueValidator(100)])
 
 
 class Video(models.Model):

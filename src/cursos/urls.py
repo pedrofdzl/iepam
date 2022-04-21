@@ -17,5 +17,8 @@ urlpatterns = [
     path('curso/<int:id>/', views.course_detail_view, name='course_detail'),
     path('curso/agregar-modulo/<int:id>/', views.course_create_module_view, name='course_create_module'),
     path('curso/agregar-actividad/<int:id>/<int:action>/', views.course_create_item_view, name='course_create_item'),
+    path('curso/lectura/<int:id>/', views.course_lecture_view, name='course_lecture'),
+    path('curso/actividad/<int:id>/', views.course_activity_view, name='course_activity'),
+    path('curso/video/<int:id>/', views.course_video_view, name='course_video'),
 ]
 

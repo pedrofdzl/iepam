@@ -1,7 +1,7 @@
 from email.policy import default
 from django import forms
 
-from django.core.validators import MaxLengthValidator
+from django.core.validators import MaxLengthValidator, FileExtensionValidator
 
 class CourseCreateForm(forms.Form):
     name = forms.CharField(max_length=255)
@@ -17,6 +17,9 @@ class LectureAddForm(forms.Form):
 class ActivityAddForm(forms.Form):
     name = forms.CharField(max_length=255)
     description = forms.CharField(widget=forms.Textarea(), validators=[MaxLengthValidator(500)])
+
+class EntregaAddForm(forms.Form):
+    file = forms.FileField(validators=[FileExtensionValidator(allowed_extensions=['.pdf', '.docx', '.xlsx', '.pptx'])])
 
 class VideoAddForm(forms.Form):
     name = forms.CharField(max_length=255)
