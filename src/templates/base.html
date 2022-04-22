@@ -24,6 +24,7 @@
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+    <link rel="icon" type="svg" href="{% static 'svg/iepam-logo-white.svg' %}">
     {% block head %} {% endblock %}
 </head>
 <body>
@@ -44,9 +45,17 @@
                     <il id="Perfil" class="list">
                         <a id="PerfilA" href="{% url 'miembros:user_profile' %}"><span class="material-icons">account_circle</span><p>Perfil</p></a>
                     </il>
+
+                    {% if perms.users.is_admin %}
                     <il id="Admin" class="list">
-                        <a id="AdminA" href="{% url 'miembros:user_profile' %}"><span class="material-icons">admin_panel_settings</span><p>Admin Panel</p></a>
+                        <a id="AdminA" href="{% url 'panel' %}"><span class="material-icons">admin_panel_settings</span><p>Admin Panel</p></a>
                     </il>
+                    {% else %}
+                    <il id="Admin" class="list" style="visibility: hidden;">
+                        <a id="AdminA" href=""><span class="material-icons">admin_panel_settings</span><p>Admin Panel</p></a>
+                    </il>
+                    {% endif %}
+
                     <div id="navbar-item-01" class="navbar-item-bg"></div>
                     <div id="navbar-item-02" class="navbar-item-of"></div>
 

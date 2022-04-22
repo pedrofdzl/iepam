@@ -1,5 +1,7 @@
+from inspect import Attribute
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 
 from datetime import date
 from calendar import monthrange
@@ -10,6 +12,14 @@ MONTHS = [
     (1, "Enero"), (2, "Febrero"), (3, "Marzo"), (4, "Abril"),
     (5, "Mayo"), (6, "Junio"), (7, "Julio"), (8, "Agosto"),
     (9, "Septiembre"), (10, "Octubre"), (11, "Noviembre"), (12, "Diciembre")
+]
+
+
+USER_TYPES = [
+    ('', '----------'),
+    ('Administradores', 'Administrador'),
+    ('Capacitadores', 'Capacitador'),
+    ('Estudiantes', 'Estudiante')
 ]
 
 User = get_user_model()
@@ -38,16 +48,20 @@ class RegisterForm(forms.Form):
     first_last_name = forms.CharField(max_length=255)
     second_last_name = forms.CharField(max_length=255)
     email = forms.EmailField(max_length=255)
+    user_type = forms.ChoiceField(choices=USER_TYPES)
 
     day = forms.IntegerField(max_value=31, min_value=1, initial=date.today().day, widget=forms.Select(choices=[(num, num) for num in range(1, 32)]))
     month = forms.IntegerField(max_value=12, min_value=1, initial=MONTHS[date.today().month-1], widget=forms.Select(choices=MONTHS))
     year = forms.IntegerField(min_value=1900, max_value=date.today().year, initial=date.today().year, widget=forms.Select(choices=[(year, year) for year in range(1900, date.today().year+1)]))
 
     academic_level = forms.CharField(max_length=255)
-    password = forms.CharField(max_length=300, widget=forms.PasswordInput())
-    v_password = forms.CharField(max_length=300, widget=forms.PasswordInput())
+    password = forms.CharField(max_length=300, widget=forms.PasswordInput(attrs={'class':'password-input'}))
+    v_password = forms.CharField(max_length=300, widget=forms.PasswordInput(attrs={'class':'password-input'}))
     cv = forms.FileField(required=False, validators=[
-                                                        file_max_size(CV_MAX_SIZE), validate_file_extension])
+                                                        file_max_size(CV_MAX_SIZE), validate_file_extension],
+                                                        widget=forms.FileInput(attrs={'class':'custom-file-input', 'id':'file'}))
+    
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -86,6 +100,15 @@ class RegisterForm(forms.Form):
 
         if day > days:
             raise forms.ValidationError('No es una fecha Valida!')
+
+
+        user_type = all_clean_data['user_type']
+        if user_type == '':
+            raise forms.ValidationError('Por favor escoger un un tipo de usuario')
+
+        if not Group.objects.filter(name=user_type).exists():
+            raise forms.ValidationError('Ese no es un grupo valido')
+
 
 
 class UserUpdateForm(forms.Form):

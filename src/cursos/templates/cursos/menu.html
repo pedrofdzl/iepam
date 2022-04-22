@@ -35,21 +35,23 @@
     </div>
 
     <div class="card-container">
-        <a href="{% url 'cursos:curso' %}">
+        <!-- FOR ALL COURSES -->
+        {% for curso in cursos %}
+        <a href="{% url 'cursos:course_detail' id=curso.pk %}">
             <div class="card">
                 <div class="card-img-container">
                     <img src="{% static 'img/view.jpg' %}">
                 </div>
                 <div class="card-title">
-                    Capacitacion en taltal
+                    {{ curso.name }}
                 </div>
                 <div class="card-content">
-                    Aqui una descripcion corta de la capacitacion para informar a los usuarios.
+                    {{ curso.description }}
                 </div>
                 <div style="display: inline-flex">
                     <div class="card-members">
                         <span class="material-icons">people</span>
-                        <p>12</p>
+                        <p>{{ curso.members.count }}</p>
                     </div>
                     <div class="card-likes">
                         <span class="material-icons">thumb_up</span>
@@ -58,29 +60,7 @@
                 </div>
             </div>
         </a>
-        <a href="{% url 'cursos:curso' %}">
-            <div class="card">
-                <div class="card-img-container">
-                    <img src="{% static 'img/view.jpg' %}">
-                </div>
-                <div class="card-title">
-                    Capacitacion en taltal
-                </div>
-                <div class="card-content">
-                    Aqui una descripcion corta de la capacitacion para informar a los usuarios.
-                </div>
-                <div style="display: inline-flex">
-                    <div class="card-members">
-                        <span class="material-icons">people</span>
-                        <p>12</p>
-                    </div>
-                    <div class="card-likes">
-                        <span class="material-icons">thumb_up</span>
-                        <p>3</p>
-                    </div>
-                </div>
-            </div>
-        </a>
+        {% endfor %}
     </div>
 </div>
 

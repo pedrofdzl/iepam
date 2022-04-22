@@ -207,8 +207,40 @@
 }
 
 .container-window {
+    height: 90vh;
     margin: 0;
     padding: 2rem;
+    overflow: hidden;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: fit-content;
+  background-color: white;
+  color: #202022;
+  text-align: center;
+  padding: 8px;
+  border-radius: 6px;
+  opacity: 0;
+  position: absolute;
+  transform: translate(calc(-50% + 6%), -215%);
+  box-shadow: 0 0 10px rgb(211, 211, 211);
+  z-index: 1;
+  transition: all 0.2s ease-in-out;
+}
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:  white transparent transparent transparent;
+  }
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
 
 .searchbar {
@@ -319,6 +351,7 @@
     margin: 1rem;
     margin-top: 0.2rem;
     font-size: 16px;
+    height: 60px;
 }
 .card-members {
     display: inline-flex;
@@ -356,4 +389,26 @@
 }
 .card:hover .card-likes{
     transform: translate(6px, -8px);
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 0.5rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 0.5rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

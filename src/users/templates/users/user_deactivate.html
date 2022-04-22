@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+    <title>{{ extended_user.get_full_name }}</title>
+{% endblock %}
+
+
+{% block body %}
+
+    <h3>¿Deseas desactivar la cuenta de {{extended_user.get_full_name}}</h3>
+    <p>
+        El miembro ya no podra acceder a su cuenta ni realizar ninguna funcion en la plataforma.
+        <br>
+        Sin embargo todas sus actividades podran ser auditadas
+    </p>
+    <form method="post">
+        {% csrf_token %}
+        <a href="{% url 'users:user_detail' id=extended_user.user.pk %}">Cancel</a>
+        <button type="submit">Desactivar</button>
+    </form>
+
+{% endblock %}

@@ -10,6 +10,7 @@ sqlparse = "==0.4.2"
 tzdata = "==2022.1"
 Django = "==4.0.3"
 django-environ = "==0.8.1"
+pillow = "==9.0"
 
 [dev-packages]
 

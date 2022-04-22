@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% load static %}
+<title>Mi Perfil</title>
+
+{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{% static 'css/profile-edit.css' %}">
+
+<style>
+    .container-window {
+        display: flex;
+        margin: 0;
+        padding: 2rem;
+    }
+</style>
+
+<div id="id-app" style="display: none;">profile</div>
+
+<div class="container-window">
+    <div class="profile-background"></div>
+    <div class="profile-picture">
+        <img src="{% static 'img/view.jpg' %}">
+    </div>
+    <div class="profile-name">
+        <p class="profile-main-name">{{ user.extended_user.get_full_name }}</p>
+        <p class="profile-secondary-name">
+            {% if user.canTeach == true %}
+                Capacitador
+            {% else %}
+                Usuario
+            {% endif %}
+        </p>
+    </div>
+    <div class="user-cards-container">
+        <div class="user-info-container">    
+            <p class="user-info-title">Información del usuario</p>
+            <hr class="hr-nice">
+
+            <form method="post">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <div class="user-info-field-container">
+                    <label for="">Nombre</label>
+                    <div>
+                        {{ form.first_name.error }}
+                        {{ form.first_name }}
+                    </div>
+                </div>
+
+                <div class="user-info-field-container">
+                    <label for="">Apellido Paterno</label>
+                    <div>
+                        {{ form.first_last_name.error }}
+                        {{ form.first_last_name }}
+                    </div>
+                </div>
+
+                <div class="user-info-field-container">
+                    <label for="">Apellido Materno</label>
+                    <div>
+                        {{ form.second_last_name.error }}
+                        {{ form.second_last_name }}
+                    </div>
+                </div>
+
+                <div class="user-info-group-container">
+                    <div class="user-info-field-container">
+                        <label for="">Dia</label>
+                        <div>
+                            {{ form.day.error }}
+                            {{ form.day }}
+                        </div>
+                    </div>
+                    
+                    <div class="user-info-field-container">
+                        <label for="">Mes</label>
+                        <div>
+                            {{ form.month.error }}
+                            {{ form.month }}
+                        </div>
+                    </div>
+                    
+                    <div class="user-info-field-container">
+                        <label for="">Año</label>
+                        <div>
+                            {{ form.year.error }}
+                            {{ form.year }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="user-info-field-container">
+                    <label for="">Nivel Academico</label>
+                    <div>
+                        {{ form.academic_level.error }}
+                        {{ form.academic_level }}
+                    </div>
+                </div>
+
+                <button type="submit" class="user-edit-info">Guardar cambios</button>
+            </form>
+            <br>
+        </div>
+
+        <div class="user-current-courses-container">
+            <p class="user-info-title">Capacitaciones actuales</p>
+            <hr class="hr-nice">
+
+            <div class="user-course-card">
+                <div class="user-course-card-title">Capacitacion en Algo</div>
+                <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+            </div>
+
+            <div class="user-course-card">
+                <div class="user-course-card-title">Capacitacion en Otra</div>
+                <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+            </div>
+
+            <div class="user-course-card">
+                <div class="user-course-card-title">Capacitacion en Tris</div>
+                <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+            </div>
+
+            <br>
+        </div>
+
+        <div class="user-current-courses-container">
+            <p class="user-info-title">Capacitaciones Completadas</p>
+            <hr class="hr-nice">
+
+            <div class="user-course-card">
+                <div class="user-course-card-title">Capacitacion en BlahBlah</div>
+                <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+            </div>
+
+            <div class="user-course-card">
+                <div class="user-course-card-title">Capacitacion en WeeHyy</div>
+                <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+            </div>
+
+            <div class="user-course-card">
+                <div class="user-course-card-title">Capacitacion en Word y Powerpoint</div>
+                <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+            </div>
+
+            <br>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -11,10 +11,15 @@ urlpatterns = [
 
 
     path('', views.aduser_list_view, name='users_list'),
+    
+    # Admin views
     path('register/', views.aduser_member_register_View, name='user_create'),
     path('user-detail/<int:id>/', views.aduser_detail_view, name='user_detail'),
     path('user-detail/<int:id>/update/', views.aduser_update_view, name='user_update'),
     path('user-detail/<int:id>/deactivate/', views.aduser_deactivate_view, name='user_deactivate'),
+    path('user-detail/<int:id>/activate/', views.aduser_activate_view, name='user_activate'),
+
+    # Profile views
     path('profile/', views.memuser_profile_view, name='user_profile'),
     path('profile/update/', views.memuser_update_view, name='user_profile_update'),
     path('profile/update/cv/', views.memuser_changeCV_view, name='user_profile_updateCV'),

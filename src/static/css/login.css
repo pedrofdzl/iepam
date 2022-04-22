@@ -30,7 +30,7 @@ body {
 
 .hero-container {
     width: 40vw;
-    margin-left: 10vw;
+    margin-left: 9vw;
     margin-right: 0;
     margin-top: 8vw;
 }
@@ -103,7 +103,7 @@ body {
 }
 .login-container {
     position: absolute;
-    width: 40vw;
+    width: 30vw;
     height: 100vh;
     top: 0;
     right: 0;
@@ -132,13 +132,16 @@ body {
     border: 0;
     margin-top: 1rem;
     padding-left: 0.5rem;
-    border-radius: 0.3rem;
     box-shadow: 0 0 10px #d6d6d6;
-    border-bottom: 3px solid #202022;
+    border-bottom: 3px solid #acacac;
+    transition: all 0.2s ease-in-out;
 }
 .login-input:focus {
-    outline: 0;
+    outline: none;
+    border-bottom: 3px solid #202022;
+    box-shadow: 0 0 10px #acacac;
 }
+
 
 .login-input-psw {
     width: 100%;
@@ -147,13 +150,16 @@ body {
     border: 0;
     margin-top: 1.5rem;
     padding-left: 0.5rem;
-    border-radius: 0.3rem;
-    border-bottom: 3px solid #202022;
     box-shadow: 0 0 10px #d6d6d6;
     -webkit-text-security: square;
+    box-shadow: 0 0 10px #d6d6d6;
+    border-bottom: 3px solid #acacac;
+    transition: all 0.2s ease-in-out;
 }
 .login-input-psw:focus {
-    outline: 0;
+    outline: none;
+    border-bottom: 3px solid #202022;
+    box-shadow: 0 0 10px #acacac;
 }
 
 .login-submit {

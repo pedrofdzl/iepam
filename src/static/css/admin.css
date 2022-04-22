@@ -1,3 +1,12 @@
+a {
+    text-decoration: none;
+    color: #202022;
+}
+
+.admin-container {
+    display: flex;
+}
+
 .admin-title {
     margin: 1rem;
     margin-top: 0.4rem;
@@ -5,4 +14,112 @@
     font-size: 52px;
     font-weight: 700;
     color: #202022;
+}
+
+.admin-buttons {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    margin: 1rem;
+    float: right;
+}
+
+.hr-nice {
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+    height: 2px;
+    background-color: #7c7c7c;
+    border: none;
+    border-radius: 1rem;
+}
+
+.admin-btn-register {
+    width: 32px;
+    height: 31px;
+    padding-top: 0.5rem;
+    padding-left: 0.5rem;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    margin-left: 0.5rem;
+    border: none;
+    background-color: #20CC82;
+    color: white;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+}
+.admin-btn-register:hover {
+    background-color: #20CC82;
+    box-shadow: 0 0 10px #20CC82;
+}
+
+.admin-list {
+    margin: 1rem;
+    padding-left: 1.4rem;
+    padding-right: 1.4rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+}
+.admin-list-header {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 0.2fr;
+    grid-gap: 5px;
+}
+.admin-list-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.admin-list-search {
+    margin: 0;
+    margin-bottom: 0.8rem;
+    padding: 0.5rem;
+    padding-left: 0.6rem;
+    padding-right: 2rem;
+    width: calc(100% - 2.6rem);
+    height: fit-content;
+    background-color: white;
+    border-radius: 0.5rem;
+    font-size: 18px;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+    border: none;
+    outline: none;
+    overflow: hidden;
+}
+.admin-list-search-icon {
+    position: absolute;
+    margin: 0;
+    color: gray;
+    transform: translate(-30px, 8px);
+}
+
+.admin-list-item {
+    margin: 0;
+    padding: 0.5rem;
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+    width: calc(100% - 1.2rem);
+    height: fit-content;
+    background-color: white;
+    border-radius: 0.3rem;
+    /* border-bottom: 3px solid rgb(211, 211, 211); */
+    overflow: hidden;
+}
+.admin-list-item:hover {
+    background-color: whitesmoke;
+}
+.admin-list-item-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+.admin-list-item-desc {
+    max-width: 300px;
+    font-size: 14px;
+    font-weight: 400;
+    flex-wrap: wrap;
 }

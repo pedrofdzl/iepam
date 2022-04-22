@@ -8,12 +8,67 @@
 {% endblock %}
 
 {% block body %}
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
 
 <div id="id-app" style="display: none;">admin</div>
 
 <div class="container-window">
-    <div class="index-title">Bienvenido de vuelta, {user}</div>
+    <div class="admin-title">Panel de administración</div>
+
+    <div class="admin-container">
+    
+        <div class="admin-list">
+            <div class="admin-list-title">Administrar Usuarios</div>
+
+            <hr class="hr-nice">
+            <div class="admin-list-header">
+                <form class="admin-list-search-container">
+                    <input class="admin-list-search" placeholder="Buscar..." id="usuario" name="usuario">
+                    <span class="material-icons admin-list-search-icon">search</span>
+                </form>
+                <a href="{% url 'miembros:user_create' %}" class="admin-btn-register tooltip">
+                    <span class="material-icons">add</span>
+                    <div class="tooltiptext">Registrar nuevo usuario</div>
+                </a>
+
+            </div>
+            {% for user in users %}
+            <a href="{% url 'users:user_detail' id=user.pk %}">
+                <div class="admin-list-item">
+                    <div class="admin-list-item-title">{{ user.get_full_name }}</div>
+                </div>
+            </a>
+            {% endfor %}
+
+        </div>
+    
+        <div class="admin-list">
+            <div class="admin-list-title">Administrar Capacitaciones</div>
+            <hr class="hr-nice">
+
+            <div class="admin-list-header">
+                <form class="admin-list-search-container">
+                    <input class="admin-list-search" placeholder="Buscar..." id="courses" name="courses">
+                    <span class="material-icons admin-list-search-icon">search</span>
+                </form>
+                <a href="{% url 'cursos:adcourse_create' %}" class="admin-btn-register tooltip">
+                    <span class="material-icons">add</span>
+                    <div class="tooltiptext">Registrar nueva capacitación</div>
+                </a>
+
+            </div>
+
+            {% for course in courses %}
+            <a href="{% url 'cursos:course_detail' id=course.pk %}">
+                <div class="admin-list-item">
+                    <div class="admin-list-item-title">{{ course.name }}</div>
+                </div>
+            </a>
+            {% endfor %}
+
+        </div>
+    </div>
+    
 </div>
 
 {% endblock %}

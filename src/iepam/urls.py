@@ -22,8 +22,10 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path('panel/', views.panel, name='panel'),
     path('cursos/', include(('cursos.urls'), namespace='cursos')),
     path('miembros/', include(('users.urls'), namespace='miembros')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_DIR)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_DIR)
