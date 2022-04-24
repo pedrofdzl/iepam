@@ -14,84 +14,99 @@
 
 <div class="container-window">
 
-    <div class="course-title">{{ course.name }}</div>
-    <!-- href="{% url 'users:user_detail' id=course.owner.pk %}" -->
-    <div class="course-author">Capacitación creada por <a>{{ course.owner.get_full_name }}</a></div>
+    <div class="course-container">
 
-    <a class="course-info" href=""><span class="material-icons">thumb_up</span><p>Me gusta:&nbsp;</p><p class="course-info-num">0</p></a>
-    <div class="course-info"><span class="material-icons">people</span><p>Integrantes actuales:&nbsp;</p><p class="course-info-num">{{ course.members.count }}</p></div>
+        <div>
+            <div class="course-title">{{ course.name }}</div>
+            <!-- href="{% url 'users:user_detail' id=course.owner.pk %}" -->
+            <div class="course-author">Capacitación creada por <a>{{ course.owner.get_full_name }}</a></div>
 
-    <div class="course-module-container">
-    
-        <!-- FOR EACH MODULE -->
-        {% for mod in modules %}
-        <div class="module">
+            <div class="course-module-container">
+            
+                <!-- FOR EACH MODULE -->
+                {% for mod in modules %}
+                <div class="module">
 
-            <div class="module-header">
-                <div class="module-title">Módulo: {{ mod.name }}</div>
-                <a href="{% url 'cursos:course_create_item' id=mod.pk action=1 %}" class="button-add tooltip">
-                    <span class="material-icons">add</span>
-                    <div class="tooltiptext">Agregar elemento</div>
+                    <div class="module-header">
+                        <div class="module-title">Módulo: {{ mod.name }}</div>
+                        <a href="{% url 'cursos:course_create_item' id=mod.pk action=1 %}" class="button-edit tooltip">
+                            <span class="material-icons">edit</span>
+                            <div class="tooltiptext">Editar módulo</div>
+                        </a>
+                        <a href="{% url 'cursos:course_create_item' id=mod.pk action=1 %}" class="button-add tooltip">
+                            <span class="material-icons">add</span>
+                            <div class="tooltiptext">Agregar elemento</div>
+                        </a>
+                    </div>
+
+                    <br>
+
+                    {% for lec in mod.lecturas.all %}
+                    <a href="{% url 'cursos:course_lecture' id=lec.pk %}" class="no-style-a">
+                        <div class="module-item">
+                            <span class="material-icons module-item-icon">book</span>
+                            <div>
+                                <div class="module-item-title">Lectura: {{ lec.name }}</div>
+                                <div class="module-item-grade">No leído</div>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+
+                    {% for act in mod.actividades.all %}
+                    <a href="{% url 'cursos:course_activity' id=act.pk %}" class="no-style-a">
+                        <div class="module-item">
+                            <span class="material-icons module-item-icon">description</span>
+                            <div>
+                                <div class="module-item-title">Actividad: {{ act.name }}</div>
+                                <div class="module-item-grade">No entregado</div>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+
+                    {% for vid in mod.videos.all %}
+                    <a href="{% url 'cursos:course_video' id=vid.pk %}" class="no-style-a">
+                        <div class="module-item">
+                            <span class="material-icons module-item-icon">smart_display</span>
+                            <div>
+                                <div class="module-item-title">Video: {{ vid.name }}</div>
+                                <div class="module-item-grade">No Visto</div>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+
+                    {% for quiz in mod.quizzes.all %}
+                    <div class="module-item">
+                        <span class="material-icons module-item-icon">quiz</span>
+                        <div>
+                            <div class="module-item-title">Quiz: {{ quiz.name }}</div>
+                            <div class="module-item-grade">No realizado</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+                {% endfor %}
+                <!-- END OF MODULES -->
+
+                <a class="module-add" href="{% url 'cursos:course_create_module' id=course.pk %}" style="text-decoration: none;">
+                    Agregar Módulo
                 </a>
+
             </div>
-
-            <br>
-
-            {% for lec in mod.lecturas.all %}
-            <a href="{% url 'cursos:course_lecture' id=lec.pk %}" class="no-style-a">
-                <div class="module-item">
-                    <span class="material-icons module-item-icon">book</span>
-                    <div>
-                        <div class="module-item-title">Lectura: {{ lec.name }}</div>
-                        <div class="module-item-grade">No leído</div>
-                    </div>
-                </div>
-            </a>
-            {% endfor %}
-
-            {% for act in mod.actividades.all %}
-            <a href="{% url 'cursos:course_activity' id=act.pk %}" class="no-style-a">
-                <div class="module-item">
-                    <span class="material-icons module-item-icon">description</span>
-                    <div>
-                        <div class="module-item-title">Actividad: {{ act.name }}</div>
-                        <div class="module-item-grade">No entregado</div>
-                    </div>
-                </div>
-            </a>
-            {% endfor %}
-
-            {% for vid in mod.videos.all %}
-            <a href="{% url 'cursos:course_video' id=vid.pk %}" class="no-style-a">
-                <div class="module-item">
-                    <span class="material-icons module-item-icon">smart_display</span>
-                    <div>
-                        <div class="module-item-title">Video: {{ vid.name }}</div>
-                        <div class="module-item-grade">No Visto</div>
-                    </div>
-                </div>
-            </a>
-            {% endfor %}
-
-            {% for quiz in mod.quizzes.all %}
-            <div class="module-item">
-                <span class="material-icons module-item-icon">quiz</span>
-                <div>
-                    <div class="module-item-title">Quiz: {{ quiz.name }}</div>
-                    <div class="module-item-grade">No realizado</div>
-                </div>
-            </div>
-            {% endfor %}
 
         </div>
-        {% endfor %}
-        <!-- END OF MODULES -->
 
-        <a href="{% url 'cursos:course_create_module' id=course.pk %}" style="text-decoration: none;">
-            <div class="module-add">Agregar Módulo</div>
-        </a>
+        <div>
+            <div class="side-panel">
+                {% include 'cursos/side_panel.html' %}
+            </div>
+        </div>
 
     </div>
+    
 
 </div>
 

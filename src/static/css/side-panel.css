@@ -1,0 +1,40 @@
+.panel-title {
+    text-align: center;
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.panel-subtitle {
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.1rem;
+    color: rgb(102, 102, 102);
+}
+
+.panel-info-container {
+    text-align: center;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    margin-top: 2rem;
+}
+
+.panel-info {
+    text-align: center;
+    text-decoration: none;
+    color: rgb(102, 102, 102);
+}
+.panel-info p {
+    margin: 0;
+}
+
+.panel-info-text {
+    display: inline-flex;
+    height: fit-content;
+}
+.panel-info-text p {
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 0.35rem;
+}

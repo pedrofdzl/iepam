@@ -54,7 +54,7 @@ def adcourse_create_view(request):
 
             course.save()
 
-            return redirect(reverse('cursos:adcourse_detail', kwargs={'id': course.pk}))
+            return redirect(reverse('cursos:course_detail', kwargs={'id': course.pk}))
         else:
             print(course_form.errors)
 
@@ -197,6 +197,8 @@ def course_create_item_view(request, id, action):
 
                 lecture.name = lecture_form.cleaned_data['name']
                 lecture.description = lecture_form.cleaned_data['description']
+                lecture.content = lecture_form.cleaned_data['content']
+                lecture.author = lecture_form.cleaned_data['author']
                 lecture.modulo = modulo
 
                 lecture.save()
@@ -256,8 +258,10 @@ def course_lecture_view(request, id):
     template_name = template_prefix + 'lecture.html'
 
     lecture = get_object_or_404(Lectura, pk=id)
+    course = lecture.modulo.curso
 
     context['lecture'] = lecture
+    context['course'] = course
 
     return render(request, template_name, context)
 
@@ -267,6 +271,7 @@ def course_activity_view(request, id):
     template_name = template_prefix + 'activity.html'
 
     activity = get_object_or_404(Actividad, pk=id)
+    course = activity.modulo.curso
 
     entrega_form = EntregaAddForm()
 
@@ -290,6 +295,7 @@ def course_activity_view(request, id):
 
     context['activity'] = activity
     context['entrega_form'] = entrega_form
+    context['course'] = course
 
     return render(request, template_name, context)
 
@@ -299,7 +305,9 @@ def course_video_view(request, id):
     template_name = template_prefix + 'video.html'
 
     video = get_object_or_404(Video, pk=id)
+    course = video.modulo.curso
 
     context['video'] = video
+    context['course'] = course
 
     return render(request, template_name, context)

@@ -14,19 +14,52 @@
 
 <div class="container-window">
 
-    <a href="{% url 'cursos:course_detail' id=lecture.modulo.curso.pk %}" class="no-style-a">
-        <div class="return">
-            <span class="material-icons">chevron_left</span>
-            Volver a la capacitación
+    <div class="course-container">
+
+        <div>
+            <div class="activity-header">
+                <a href="{% url 'cursos:course_detail' id=lecture.modulo.curso.pk %}" class="no-style-a">
+                    <div class="return">
+                        <span class="material-icons">chevron_left</span>
+                        Volver a la capacitación
+                    </div>
+                </a>
+
+                <a href="" class="button-edit no-style-a">
+                    <p>Editar lectura</p>
+                    <span class="material-icons">edit</span>
+                </a>
+                <a href="" class="button-delete no-style-a">
+                    <p>Eliminar</p>
+                    <span class="material-icons">delete</span>
+                </a>
+            </div>
+
+            <div class="description">{{ lecture.modulo.name }}</div>
+
+            <div class="title">{{ lecture.name }}</div>
+
+            <div class="description">Autor: {{ lecture.author }}</div>
+
+            <div class="lecture-container">
+                <div class="subtitle">Resumen</div>
+                {{ lecture.description }}
+
+                <div class="spaceing"></div>
+
+                <div class="subtitle">{{ lecture.name }}</div>
+
+                <p align="justify" style="margin-top: 0;">{{ lecture.content }}</p>
+                
+            </div>
         </div>
-    </a>
 
-    <div class="description">{{ lecture.modulo.name }}</div>
+        <div>
+            <div class="side-panel">
+                {% include 'cursos/side_panel.html' %}
+            </div>
+        </div>
 
-    <div class="title">{{ lecture.name }}</div>
-
-    <div class="lecture-container">
-        {{ lecture.description }}
     </div>
 
 </div>

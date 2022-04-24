@@ -12,11 +12,14 @@ class ModuleAddForm(forms.Form):
 
 class LectureAddForm(forms.Form):
     name = forms.CharField(max_length=255)
-    description = forms.CharField(widget=forms.Textarea(), validators=[MaxLengthValidator(2024)])
+    description = forms.CharField(max_length=255)
+    content = forms.CharField(widget=forms.Textarea(), validators=[MaxLengthValidator(2024)])
+    author = forms.CharField(max_length=255)
 
 class ActivityAddForm(forms.Form):
     name = forms.CharField(max_length=255)
     description = forms.CharField(widget=forms.Textarea(), validators=[MaxLengthValidator(500)])
+    instructions = forms.CharField(max_length=255)
 
 class EntregaAddForm(forms.Form):
     file = forms.FileField(validators=[FileExtensionValidator(allowed_extensions=['.pdf', '.docx', '.xlsx', '.pptx'])])

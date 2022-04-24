@@ -350,8 +350,11 @@
 .card-content {
     margin: 1rem;
     margin-top: 0.2rem;
+    margin-bottom: 0;
     font-size: 16px;
     height: 60px;
+    text-overflow: ellipsis;
+    overflow-y: hidden;
 }
 .card-members {
     display: inline-flex;

@@ -52,10 +52,22 @@
                             {{ lec_form.name }}
                         </div>
 
-                        <label>Contenido</label>
+                        <label>Descripción</label>
                         <div class="input-line">
                             {{ lec_form.description.errors }}
                             {{ lec_form.description }}
+                        </div>
+
+                        <label>Autor</label>
+                        <div class="input-line">
+                            {{ lec_form.author.errors }}
+                            {{ lec_form.author }}
+                        </div>
+
+                        <label>Contenido</label>
+                        <div class="input-line">
+                            {{ lec_form.content.errors }}
+                            {{ lec_form.content }}
                         </div>
                         
                         <div style="text-align: center;">
@@ -80,6 +92,12 @@
                         <div class="input-line">
                             {{ act_form.description.errors }}
                             {{ act_form.description }}
+                        </div>
+
+                        <label>Especificaciones de entrega</label>
+                        <div class="input-line">
+                            {{ act_form.instructions.errors }}
+                            {{ act_form.instructions }}
                         </div>
                         
                         <div style="text-align: center;">
