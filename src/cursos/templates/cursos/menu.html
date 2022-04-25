@@ -42,20 +42,22 @@
                 <div class="card-img-container">
                     <img src="{% static 'img/view.jpg' %}">
                 </div>
-                <div class="card-title">
-                    {{ curso.name }}
-                </div>
-                <div class="card-content">
-                    {{ curso.description }}
-                </div>
-                <div style="display: inline-flex">
-                    <div class="card-members">
-                        <span class="material-icons">people</span>
-                        <p>{{ curso.members.count }}</p>
+                <div class="card-body">
+                    <div class="card-title">
+                        {{ curso.name }}
                     </div>
-                    <div class="card-likes">
-                        <span class="material-icons">thumb_up</span>
-                        <p>{{ curso.likes.count }}</p>
+                    <div class="card-content">
+                        {{ curso.description }}
+                    </div>
+                    <div style="display: inline-flex">
+                        <div class="card-members">
+                            <span class="material-icons">people</span>
+                            <p>{{ curso.members.count }}</p>
+                        </div>
+                        <div class="card-likes">
+                            <span class="material-icons">thumb_up</span>
+                            <p>{{ curso.likes.count }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
