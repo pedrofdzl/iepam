@@ -157,6 +157,28 @@ def course_detail_view(request, id):
     course = get_object_or_404(Course, pk=id)
     modules = Modulo.objects.filter(curso=id)
 
+    # Calculo de actividades totales para el progreso
+    total_items = 0
+    completed_items = 0
+    completion_ratio = 0
+    completion_percentage = 0
+    
+    for module in modules:
+
+        total_items += module.lecturas.all().count()
+        for lecture in module.lecturas.all():
+            if lecture.reads.filter(pk=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.videos.all().count()
+        for video in module.videos.all():
+            if video.watches.filter(pk=user.pk).exists():
+                completed_items += 1
+
+    if total_items > 0:
+        completion_ratio = completed_items / total_items
+        completion_percentage = int(completion_ratio * 100)
+
     liked = False
 
     if user.is_authenticated:
@@ -166,6 +188,10 @@ def course_detail_view(request, id):
     context['liked'] = liked
     context['course'] = course
     context['modules'] = modules
+    context['total_items'] = total_items
+    context['completed_items'] = completed_items
+    context['completion_ratio'] = completion_ratio
+    context['completion_percentage'] = completion_percentage
 
     return render(request, template_name, context)
 
@@ -398,17 +424,40 @@ def youtube_url_to_embed(link):
     embed_template = "https://www.youtube.com/embed/"
     return embed_template + video_code
 
+
 def course_lecture_view(request, id):
+    user = request.user
     context = {}
     template_name = template_prefix + 'lecture.html'
 
     lecture = get_object_or_404(Lectura, pk=id)
     course = lecture.modulo.curso
 
+    viewed = False
+
+    if user.is_authenticated:
+        if user.read_lectures.filter(pk=id).exists():
+            viewed = True
+
+    context['viewed'] = viewed
     context['lecture'] = lecture
     context['course'] = course
 
     return render(request, template_name, context)
+
+
+def read_lecture(request, id):
+    lecture = get_object_or_404(Lectura, pk=id)
+    
+    liked = False
+    if lecture.reads.filter(id=request.user.id).exists():
+        lecture.reads.remove(request.user)
+        liked = False
+    else:
+        lecture.reads.add(request.user)
+        liked = True
+
+    return redirect(reverse('cursos:course_lecture', kwargs={'id': lecture.pk}))
 
 
 def course_activity_view(request, id):
@@ -446,13 +495,49 @@ def course_activity_view(request, id):
 
 
 def course_video_view(request, id):
+    user = request.user
     context = {}
     template_name = template_prefix + 'video.html'
 
     video = get_object_or_404(Video, pk=id)
     course = video.modulo.curso
 
+    viewed = False
+
+    if user.is_authenticated:
+        if user.watched_videos.filter(pk=id).exists():
+            viewed = True
+
+    context['viewed'] = viewed
     context['video'] = video
     context['course'] = course
 
     return render(request, template_name, context)
+
+
+def watch_video(request, id):
+    video = get_object_or_404(Video, pk=id)
+    
+    liked = False
+    if video.reads.filter(id=request.user.id).exists():
+        video.reads.remove(request.user)
+        liked = False
+    else:
+        video.reads.add(request.user)
+        liked = True
+
+    return redirect(reverse('cursos:course_video', kwargs={'id': video.pk}))
+
+
+def watch_video(request, id):
+    video = get_object_or_404(Video, pk=id)
+    
+    liked = False
+    if video.watches.filter(id=request.user.id).exists():
+        video.watches.remove(request.user)
+        liked = False
+    else:
+        video.watches.add(request.user)
+        liked = True
+
+    return redirect(reverse('cursos:course_video', kwargs={'id': video.pk}))

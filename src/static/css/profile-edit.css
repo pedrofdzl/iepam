@@ -253,3 +253,24 @@ input:focus {
     height: 100%;
     overflow-y: scroll;
 }
+
+.admin-return {
+    position: absolute;
+    width: 154px;
+    display: inline-flex;
+    font-weight: 500;
+    font-size: 18px;
+    background-color: #202022;
+    color: white;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    z-index: 1;
+    padding: 0.5rem;
+    padding-right: 0.8rem;
+}
+.admin-return span {
+    font-size: 24px;
+}
+.admin-return:hover {
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+}

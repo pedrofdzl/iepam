@@ -141,7 +141,7 @@
 
 .module-item {
     display: grid;
-    grid-template-columns: 0fr 1fr;
+    grid-template-columns: 0fr 1fr 0fr;
     background-color: whitesmoke;
     border: 1px solid lightgrey;
     padding: 0.5rem;
@@ -251,4 +251,24 @@
     height: 24px;
     margin-top: 12px;
     margin-left: 8px;
+}
+
+.checked {
+    background-color: rgb(221, 240, 223);
+    border: 1px solid rgb(195, 204, 196);
+}
+.checked:hover {
+    background-color: rgb(228, 250, 231);
+}
+
+.checkmark {
+    font-size: 30px !important;
+    margin: 0;
+    margin-top: 0.3rem;
+    margin-right: 0.6rem;
+    color:rgb(146, 167, 147);
+}
+
+.checked-text {
+    color:rgb(146, 167, 147);
 }

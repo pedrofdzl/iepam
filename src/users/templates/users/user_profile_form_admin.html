@@ -3,7 +3,7 @@
 {% block head %}
 
 {% load static %}
-<title>Mi Perfil</title>
+<title>Editar Perfil</title>
 
 {% endblock %}
 
@@ -18,13 +18,19 @@
     }
 </style>
 
-<div id="id-app" style="display: none;">profile</div>
+<div id="id-app" style="display: none;">admin</div>
 
 <div class="container-window">
 
     <div class="profile-rows">
 
         <div class="profile-rows-cell">
+            <a href="{% url 'panel' %}" class="no-style-a" style="position:absolute;">
+                <div class="admin-return">
+                    <span class="material-icons">chevron_left</span>
+                    Volver al panel
+                </div>
+            </a>
             <div class="profile-background"></div>
             <div class="profile-picture">
                 {% if user.extended_user.profile_pic %}

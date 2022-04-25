@@ -25,10 +25,14 @@
 
             <div class="profile-background"></div>
             <div class="profile-picture">
-                <img src="{% static 'img/view.jpg' %}">
+                {% if user.extended_user.profile_pic %}
+                    <img src="{{ user.extended_user.profile_pic.url }}">
+                {% else %}
+                    <img src="{% static 'img/view.jpg' %}">
+                {% endif %}
             </div>
             <div class="profile-name">
-                <p class="profile-main-name">{{ extended_user.user.get_full_name }}</p>
+                <p class="profile-main-name">{{ extended_user.get_full_name }}</p>
                 <p class="profile-secondary-name">
                     {% if extended_user.canTeach %}
                         Capacitador
@@ -37,6 +41,7 @@
                     {% endif %}
                 </p>
             </div>
+            <a href="{% url 'users:user_update' id=user.pk %}" class="user-edit-info-secondary">Editar Perfil</a>
         </div>
 
         
@@ -47,7 +52,7 @@
                     <hr class="hr-nice">
                     <div class="user-info-field-container">
                         <p class="user-info-prompt">Nombre Completo</p>
-                        <input class="user-info-field" readonly=true value="{{ extended_user.user.get_full_name }}">
+                        <input class="user-info-field" readonly=true value="{{ extended_user.get_full_name }}">
                     </div>
                     <div class="user-info-field-container">
                         <p class="user-info-prompt">Correo electrónico</p>

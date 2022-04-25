@@ -16,6 +16,8 @@ urlpatterns = [
 
     path('menu/', views.menu, name='menu'),
     path('like/<int:id>/', views.like_curso, name='course_like'),
+    path('read/<int:id>/', views.read_lecture, name='course_read_lecture'),
+    path('watch/<int:id>/', views.watch_video, name='course_watch_video'),
     path('curso/<int:id>/', views.course_detail_view, name='course_detail'),
     path('curso/agregar-modulo/<int:id>/', views.course_create_module_view, name='course_create_module'),
     path('curso/editar-modulo/<int:id>', views.course_edit_module_view, name='course_edit_module'),

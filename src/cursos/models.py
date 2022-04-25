@@ -55,6 +55,7 @@ class Lectura(models.Model):
     description = models.CharField('description', max_length=255)
     content = models.CharField('content', max_length=2024)
     author = models.CharField('author', max_length=255)
+    reads = models.ManyToManyField(User, related_name="read_lectures")
 
     def __str__(self):
         return self.name
@@ -81,6 +82,7 @@ class Video(models.Model):
     name = models.CharField("name", max_length=255)
     description = models.CharField("description", max_length=255)
     url = models.URLField("url", max_length=255)
+    watches = models.ManyToManyField(User, related_name="watched_videos")
 
     def __str__(self):
         return self.name

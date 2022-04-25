@@ -50,7 +50,21 @@
                 <div class="subtitle">{{ lecture.name }}</div>
 
                 <p align="justify" style="margin-top: 0;">{{ lecture.content }}</p>
-                
+
+                <br>
+
+                <div style="text-align: center;">
+                    <a href="{% url 'cursos:course_read_lecture' id=lecture.pk %}" class="no-style-a button-view">
+                        {% if viewed %}
+                            <span class="material-icons">visibility_off</span>
+                            Marcar como no leído
+                        {% else %}
+                            <span class="material-icons">visibility</span>
+                            Marcar como leído
+                        {% endif %}
+                    </a>
+                </div>
+
             </div>
         </div>
 

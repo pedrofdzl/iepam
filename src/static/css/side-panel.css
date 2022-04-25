@@ -12,6 +12,10 @@
     letter-spacing: 0.1rem;
     color: rgb(102, 102, 102);
 }
+.panel-subtitle span {
+    font-size: 20px;
+    vertical-align: middle;
+}
 
 .panel-info-container {
     text-align: center;
@@ -54,4 +58,31 @@
 
 .liked {
     color:#813cc7;
+}
+
+.progress-bar {
+    text-align: center;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.progress-bar-bar {
+    padding: 0;
+    margin: 0;
+    height: 10px;
+    background-color: lightgray;
+    border-radius: 1rem;
+    margin-top: 1rem;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #20CC82;
+    transform-origin: left;
+    transform: scaleX(0.5);
+    z-index: 1;
 }
