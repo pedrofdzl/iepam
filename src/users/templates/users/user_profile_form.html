@@ -21,6 +21,24 @@
 <div id="id-app" style="display: none;">profile</div>
 
 <div class="container-window">
+    <div class="profile-background"></div>
+    <div class="profile-picture">
+        <img src="{% static 'img/view.jpg' %}">
+    </div>
+    <div class="profile-name">
+        <p class="profile-main-name">{{ user.extended_user.get_full_name }}</p>
+        <p class="profile-secondary-name">
+            {% if user.canTeach == true %}
+                Capacitador
+            {% else %}
+                Usuario
+            {% endif %}
+        </p>
+    </div>
+    <div class="user-cards-container">
+        <div class="user-info-container">    
+            <p class="user-info-title">Información del usuario</p>
+            <hr class="hr-nice">
     <div class="profile-rows">
 
         <div class="profile-rows-cell">

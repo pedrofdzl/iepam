@@ -1,5 +1,8 @@
+from re import L
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import get_user_model, authenticate, login, logout
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required, permission_required  
 
 from django.http import Http404
 from django.urls import reverse
@@ -19,7 +22,8 @@ admin_template_pre = 'users/'
 ############################
 ######## Admin Views #######
 ############################
-
+@login_required
+@permission_required(['users.is_admin'], raise_exception=True)
 def aduser_member_register_View(request):
     context = {}
     template_name = admin_template_pre + 'user_register.html'
@@ -45,9 +49,11 @@ def aduser_member_register_View(request):
 
             academic_level = register_form.cleaned_data["academic_level"]
             password = register_form.cleaned_data["password"]
-            
+            user_type = register_form.cleaned_data['user_type']
+
             user = User()
             extendedUser = ExtendedUser()
+            group = get_object_or_404(Group, name=user_type)
 
             user.username = username
             user.first_name = first_name
@@ -58,8 +64,9 @@ def aduser_member_register_View(request):
 
             user.save()
 
+            user.groups.add(group)
             extendedUser.user = user
-            extendedUser.second_lastname = second_last_name
+            extendedUser.second_last_name = second_last_name
             extendedUser.birthdate = birthdate
             extendedUser.academic_level = academic_level
 
@@ -75,6 +82,8 @@ def aduser_member_register_View(request):
     return render(request, template_name, context)
 
 
+@login_required
+@permission_required(['users.is_admin'])
 def aduser_list_view(request):
     context = {}
     template_name = admin_template_pre + 'user_detail.html'
@@ -86,6 +95,8 @@ def aduser_list_view(request):
     return render(request, template_name, context)
 
 
+@login_required
+@permission_required(['users.is_admin'])
 def aduser_detail_view(request, id):
     context = {}
     template_name = admin_template_pre + 'user_detail.html'
@@ -93,11 +104,16 @@ def aduser_detail_view(request, id):
     user = get_object_or_404(User, pk=id)
     extended_user = user.extended_user
 
+    courses = extended_user.courses.filter(status='Incompleto')
+
     context["extended_user"] = extended_user
+    context['courses'] = courses
 
     return render(request, template_name, context)
 
 
+@login_required
+@permission_required(['users.is_admin'])
 def aduser_update_view(request, id):
     context = {}
     template_name = admin_template_pre + 'user_update_form.html'
@@ -151,10 +167,13 @@ def aduser_update_view(request, id):
     return render(request, template_name, context)
 
 
+@login_required
+@permission_required(['users.is_admin'])
 def aduser_deactivate_view(request, id):
     context = {}
     template_name = admin_template_pre + "user_deactivate.html"
     user = get_object_or_404(User, pk=id)
+    extended_user = user.extended_user
 
 
     if request.method == 'POST':
@@ -163,7 +182,23 @@ def aduser_deactivate_view(request, id):
 
         return redirect(reverse('users:user_detail', kwargs={'id': user.pk}))
 
+    context['extended_user'] = extended_user
+
     return render(request, template_name, context)
+
+
+@login_required
+@permission_required(['users.is_admin'])
+def aduser_activate_view(request, id):
+    context = {}
+
+    user = get_object_or_404(User, pk=id)
+    
+    user.is_active = True
+    user.save()
+
+    return redirect(reverse('users:user_detail', kwargs={'id':user.pk}))
+
 
 
 # def aduser_change_cv(request, id):
@@ -188,18 +223,25 @@ def aduser_deactivate_view(request, id):
 ############################
 ######## Member Views #######
 ############################
+#@login_required(login_url='users:login')
+@login_required
 def memuser_profile_view(request):
     context = {}
     template_name = template_prefix + "user_profile.html"
 
     user = request.user
+    extended_user = user.extended_user
+
+    courses = extended_user.courses.filter(status='Incompleto')
+
 
     context["user"] = user
+    context['courses'] = courses
 
     return render(request, template_name, context)
 
 
-
+@login_required
 def memuser_update_view(request):
     context = {}
     template_name = template_prefix + "user_profile_form.html"
@@ -256,6 +298,7 @@ def memuser_update_view(request):
     return render(request, template_name, context)
 
 
+@login_required
 def memuser_changeCV_view(request):
     template_name = template_prefix + 'user_changecv_form.html'
     context = {}
@@ -282,8 +325,12 @@ def memuser_changeCV_view(request):
     return render(request, template_name, context)
 
 
+
+
 def user_login_view(request):
+    context = {}
     template_name = template_prefix + 'user_login.html'
+    error_message = None
 
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -294,10 +341,16 @@ def user_login_view(request):
 
         if user:
             login(request, user)
-            return redirect(reverse('index'))
+            if request.GET.get('next'):
+                return redirect(request.GET.get('next'))
+            else:
+                return redirect(reverse('index'))
+        else:
+            error_message = 'Usuario o Contraseña Incorrecto!, Por favor vuelve a intentarlo'
 
+    context['error_message'] = error_message
 
-    return render(request, template_name)
+    return render(request, template_name, context)
 
 
 def user_logout_view(request):

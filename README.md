@@ -15,3 +15,6 @@ Pre
 * [ ] No hacer push a la DB
 * [ ] No hacer push a su .env
 * [ ] Solo hacer push a sus cambios hechos en .html .css .py o .js
+
+# Create Group Permissions
+python my_manager.py permissions creategroups

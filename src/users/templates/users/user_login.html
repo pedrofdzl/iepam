@@ -45,6 +45,10 @@
                 <div class="login-form">
                     <form method="post">
                         {% csrf_token %}
+
+                        {% if error_message %}
+                        <p>{{ error_message }}</p>
+                        {% endif %}
                         <input class="login-input" name="username" placeholder="Nombre de usuario">
                         <input type="password" class="login-input-psw" name="password" placeholder="Contraseña" style="-webkit-text-security: square;">
                         <button class="login-submit" type="submit"><p>Continuar</p></button>

@@ -22,10 +22,10 @@
 
             <hr class="hr-nice">
             <div class="admin-list-header">
-                <div class="admin-list-search-container">
-                    <input class="admin-list-search" placeholder="Buscar...">
+                <form class="admin-list-search-container">
+                    <input class="admin-list-search" placeholder="Buscar..." id="usuario" name="usuario">
                     <span class="material-icons admin-list-search-icon">search</span>
-                </div>
+                </form>
                 <a href="{% url 'miembros:user_create' %}" class="admin-btn-register tooltip">
                     <span class="material-icons">add</span>
                     <div class="tooltiptext">Registrar nuevo usuario</div>
@@ -47,10 +47,10 @@
             <hr class="hr-nice">
 
             <div class="admin-list-header">
-                <div class="admin-list-search-container">
-                    <input class="admin-list-search" placeholder="Buscar...">
+                <form class="admin-list-search-container">
+                    <input class="admin-list-search" placeholder="Buscar..." id="courses" name="courses">
                     <span class="material-icons admin-list-search-icon">search</span>
-                </div>
+                </form>
                 <a href="{% url 'cursos:adcourse_create' %}" class="admin-btn-register tooltip">
                     <span class="material-icons">add</span>
                     <div class="tooltiptext">Registrar nueva capacitación</div>

@@ -108,7 +108,7 @@ def adcourse_addmember_view(request, id):
 
     course = get_object_or_404(Course, pk=id)
 
-    users = ExtendedUser.objects.filter(~Q(courses__course=course))
+    users = ExtendedUser.objects.filter(~Q(courses__course=course)).exclude(Q(own_courses=course))
     context['users'] = users
 
     course = get_object_or_404(Course, pk=id)
@@ -168,6 +168,12 @@ def course_detail_view(request, id):
     context['modules'] = modules
 
     return render(request, template_name, context)
+
+
+############################
+######## Member Views #######
+############################
+
 
 
 def menu(request):
