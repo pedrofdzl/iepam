@@ -222,6 +222,7 @@ a {
 
 .admin-return {
     position: absolute;
+    width: 154px;
     display: inline-flex;
     font-weight: 500;
     font-size: 18px;

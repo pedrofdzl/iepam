@@ -44,3 +44,14 @@
     margin: 2rem;
     margin-top: 0.5rem;
 }
+
+.like {
+    transition: all 0.1s ease-in-out;
+}
+.like:hover {
+    color: #202022;
+}
+
+.liked {
+    color:#813cc7;
+}

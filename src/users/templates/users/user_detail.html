@@ -16,7 +16,7 @@
     <div class="profile-rows">
 
         <div class="profile-rows-cell">
-            <a href="{% url 'panel' %}" class="no-style-a">
+            <a href="{% url 'panel' %}" class="no-style-a" style="position:absolute;">
                 <div class="admin-return">
                     <span class="material-icons">chevron_left</span>
                     Volver al panel
@@ -37,8 +37,6 @@
                     {% endif %}
                 </p>
             </div>
-
-            {% comment %} <a href="{% url 'miembros:user_profile_update' %}" class="user-edit-info-secondary">Editar Perfil</a> {% endcomment %}
         </div>
 
         
