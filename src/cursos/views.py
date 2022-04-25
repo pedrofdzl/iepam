@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.http import HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
@@ -12,7 +13,6 @@ from users.models import ExtendedUser
 User = get_user_model()
 
 # Create your views here.
-
 
 template_prefix = 'cursos/'
 template_admin_pre = template_prefix + 'admin/'
@@ -150,12 +150,20 @@ def adcourse_delete_view(request, id):
 
 
 def course_detail_view(request, id):
+    user = request.user
     context = {}
     template_name = template_prefix + 'course.html'
 
     course = get_object_or_404(Course, pk=id)
     modules = Modulo.objects.filter(curso=id)
 
+    liked = False
+
+    if user.is_authenticated:
+        if user.likes.filter(pk=id).exists():
+            liked = True
+
+    context['liked'] = liked
     context['course'] = course
     context['modules'] = modules
 
@@ -171,6 +179,20 @@ def menu(request):
     context['cursos'] = cursos
 
     return render(request, template_name, context)
+
+
+def like_curso(request, id):
+    curso = get_object_or_404(Course, pk=id)
+    
+    liked = False
+    if curso.likes.filter(id=request.user.id).exists():
+        curso.likes.remove(request.user)
+        liked = False
+    else:
+        curso.likes.add(request.user)
+        liked = True
+
+    return redirect(reverse('cursos:course_detail', kwargs={'id': curso.pk}))
 
 
 def course_create_module_view(request, id):

@@ -2,10 +2,14 @@
 <div class="panel-title">{{ course.name }}</div>
 
 <div class="panel-info-container">
-    <a class="panel-info" href="">
+    <a class="panel-info" href="{% url 'cursos:course_like' id=course.pk %}">
         <div class="panel-info-text">
-            <span class="material-icons">thumb_up</span>
-            <p class="course-info-num">{{ course.members.count }}</p>
+            {% if liked %}
+                <span class="material-icons like liked">thumb_up</span>
+            {% else %}
+                <span class="material-icons like">thumb_up</span>
+            {% endif %}
+            <p class="course-info-num">{{ course.likes.count }}</p>
         </div>
         <br>
         <p>Me gusta</p>

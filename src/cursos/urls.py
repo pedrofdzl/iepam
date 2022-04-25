@@ -15,6 +15,7 @@ urlpatterns = [
     path('curso/<int:id>/add-members/', views.adcourse_addmember_view, name='adcourse_addmember'),
 
     path('menu/', views.menu, name='menu'),
+    path('like/<int:id>/', views.like_curso, name='course_like'),
     path('curso/<int:id>/', views.course_detail_view, name='course_detail'),
     path('curso/agregar-modulo/<int:id>/', views.course_create_module_view, name='course_create_module'),
     path('curso/editar-modulo/<int:id>', views.course_edit_module_view, name='course_edit_module'),

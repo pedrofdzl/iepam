@@ -17,6 +17,7 @@ class Course(models.Model):
     description = models.CharField("description", max_length=255)
     date_created = models.DateField(default=date.today)
     members = models.ManyToManyField(ExtendedUser, through='MemberOf')
+    likes = models.ManyToManyField(User, related_name="likes")
 
     def __str__(self):
         return self.name
