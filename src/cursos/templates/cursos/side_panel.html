@@ -30,3 +30,20 @@
     </a>
 </div>
 
+<br>
+
+<div class="panel-subtitle">Descripción</div>
+<div class="panel-description">
+    {{ course.description }}
+</div>
+
+<div style="text-align: center;">
+    <a href="{% url 'cursos:adcourse_edit' id=course.pk %}" class="button-edit-2 no-style-a">
+        <p>Editar capacitación</p>
+        <span class="material-icons">edit</span>
+    </a>
+    <a href="" class="button-delete no-style-a">
+        <p>Eliminar</p>
+        <span class="material-icons">delete</span>
+    </a>
+</div>

@@ -191,3 +191,64 @@
     width: 1px;
     height: 1px;
 }
+
+.button-edit-2 {
+    display: inline-flex;
+    width: fit-content;
+    min-width: 170px;
+    height: fit-content;
+    padding-left: 1rem;
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    margin: 1rem;
+    margin-bottom: 0;
+    margin-right: 0;
+    border: none;
+    background-color: #555555;
+    color: white;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+    transform: translateY(15px);
+}
+.button-edit-2:hover {
+    background-color: #424242;
+    box-shadow: 0 0 10px #6d6d6d;
+}
+
+.button-edit-2 span {
+    height: 24px;
+    margin-top: 12px;
+    margin-left: 8px;
+}
+
+.button-delete {
+    display: inline-flex;
+    width: fit-content;
+    min-width: 95px;
+    height: fit-content;
+    padding-left: 1rem;
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    margin: 1rem;
+    margin-bottom: 0;
+    border: none;
+    background-color: #b44d4d;
+    color: white;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+    transform: translateY(15px);
+}
+.button-delete:hover {
+    background-color: #c74848;
+    box-shadow: 0 0 10px #ff6363;
+}
+
+.button-delete span {
+    height: 24px;
+    margin-top: 12px;
+    margin-left: 8px;
+}

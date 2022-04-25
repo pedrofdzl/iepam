@@ -21,7 +21,7 @@
     <!-- CSS -->    
     <link rel="stylesheet" href="{% static 'css/register.css' %}">
 
-    <title>Agregar Módulo</title>
+    <title>Editar Módulo</title>
     <link rel="icon" type="svg" href="{% static 'svg/iepam-logo-white.svg' %}">
 </head>
 <body>
@@ -30,7 +30,7 @@
         <div class="container">
             <a class="title"><img src="{% static 'svg/iepam-logo-white.svg' %}"><p>IEPAM</p></a>
             <div class="register-container">
-                <div class="register-title">Nuevo Módulo</div>
+                <div class="register-title">Editar Módulo</div>
                 
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -43,7 +43,7 @@
                     </div>
                       
                     <a href="{% url 'cursos:course_detail' id=course.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
-                    <button class="btn-register" type="submit">Agregar</button>
+                    <button class="btn-register" type="submit">Guardar</button>
                 </form>
 
             </div>

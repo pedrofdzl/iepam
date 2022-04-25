@@ -62,6 +62,32 @@ def adcourse_create_view(request):
 
     return render(request, template_name, context)
 
+
+def adcourse_edit_view(request, id):
+    context = {}
+    template_name = template_admin_pre + 'course_edit_form.html'
+
+    course = get_object_or_404(Course, pk=id)
+
+    if request.method == 'GET':
+        course_form = CourseCreateForm(instance=course)
+
+    if request.method == 'POST':
+        course_form = CourseCreateForm(request.POST, instance=course)
+
+        if course_form.is_valid():
+
+            course.save()
+
+            return redirect(reverse('cursos:course_detail', kwargs={'id': course.pk}))
+        else:
+            print(course_form.errors)
+
+    context['form'] = course_form
+    context['course'] = course
+
+    return render(request, template_name, context)
+
 def adcourse_members_view(request, id):
     context = {}
     template_name = template_admin_pre + 'course_members.html'
@@ -176,6 +202,32 @@ def course_create_module_view(request, id):
 
     return render(request, template_name, context)
 
+def course_edit_module_view(request, id):
+    context = {}
+    template_name = template_prefix + 'course_edit_module.html'
+
+    module = get_object_or_404(Modulo, pk=id)
+    
+    if request.method == 'GET':
+        module_form = ModuleAddForm(instance=module)
+
+    if request.method == 'POST':
+        module_form = ModuleAddForm(request.POST, instance=module)
+
+        if module_form.is_valid():
+
+            module.save()
+
+            return redirect(reverse('cursos:course_detail', kwargs={'id': module.curso.pk}))
+        else:
+            print(module_form.errors)
+
+    context['module'] = module
+    context['course'] = module.curso
+    context['form'] = module_form
+
+    return render(request, template_name, context)
+
 
 def course_create_item_view(request, id, action):
     context = {}
@@ -215,6 +267,7 @@ def course_create_item_view(request, id, action):
 
                 activity.name = activity_form.cleaned_data['name']
                 activity.description = activity_form.cleaned_data['description']
+                activity.instructions = activity_form.cleaned_data['instructions']
                 activity.modulo = modulo
 
                 activity.save()
@@ -241,6 +294,70 @@ def course_create_item_view(request, id, action):
                 print(video_form.errors)
 
     context['modulo'] = modulo
+    context['lec_form'] = lecture_form
+    context['act_form'] = activity_form
+    context['vid_form'] = video_form
+    context['action'] = action
+
+    return render(request, template_name, context)
+
+def course_edit_item_view(request, id, action):
+    context = {}
+    template_name = template_prefix + 'course_edit_item.html'
+
+    if (action == 1):
+        stuff = get_object_or_404(Lectura, pk=id)
+    if (action == 2):
+        stuff = get_object_or_404(Actividad, pk=id)
+    if (action == 3):
+        stuff = get_object_or_404(Video, pk=id)
+
+    lecture_form = LectureAddForm()
+    activity_form = ActivityAddForm()
+    video_form = VideoAddForm()
+
+    if request.method == 'GET':
+        if (action == 1):
+            lecture_form = LectureAddForm(instance=stuff)
+        if (action == 2):
+            activity_form = ActivityAddForm(instance=stuff)
+        if (action == 3):
+            video_form = VideoAddForm(instance=stuff)
+
+    if request.method == 'POST':
+        if action == 1:
+            lecture_form = LectureAddForm(request.POST, instance=stuff)
+
+            if lecture_form.is_valid():
+
+                stuff.save()
+
+                return redirect(reverse('cursos:course_detail', kwargs={'id': stuff.modulo.curso.pk}))
+            else:
+                print(lecture_form.errors)
+        if action == 2:
+            activity_form = ActivityAddForm(request.POST, instance=stuff)
+
+            if activity_form.is_valid():
+
+                stuff.save()
+
+                return redirect(reverse('cursos:course_detail', kwargs={'id': stuff.modulo.curso.pk}))
+            else:
+                print(activity_form.errors)
+        if action == 3:
+            video_form = VideoAddForm(request.POST, instance=stuff)
+
+            if video_form.is_valid():
+
+                stuff.url = youtube_url_to_embed(video_form.cleaned_data['url'])
+                stuff.save()
+
+                return redirect(reverse('cursos:course_detail', kwargs={'id': stuff.modulo.curso.pk}))
+            else:
+                print(video_form.errors)
+
+    context['modulo'] = stuff.modulo
     context['lec_form'] = lecture_form
     context['act_form'] = activity_form
     context['vid_form'] = video_form

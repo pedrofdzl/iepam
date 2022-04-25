@@ -38,3 +38,9 @@
     font-weight: 600;
     margin-left: 0.35rem;
 }
+
+.panel-description {
+    text-align: center;
+    margin: 2rem;
+    margin-top: 0.5rem;
+}

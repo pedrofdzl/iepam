@@ -29,7 +29,7 @@
 
                     <div class="module-header">
                         <div class="module-title">Módulo: {{ mod.name }}</div>
-                        <a href="{% url 'cursos:course_create_item' id=mod.pk action=1 %}" class="button-edit tooltip">
+                        <a href="{% url 'cursos:course_edit_module' id=mod.pk %}" class="button-edit tooltip">
                             <span class="material-icons">edit</span>
                             <div class="tooltiptext">Editar módulo</div>
                         </a>
