@@ -40,6 +40,7 @@ body {
     padding-right: 1.6rem;
     padding-bottom: 1.8rem;
     border-radius: 1.4rem;
+    overflow-y: scroll;
 }
 
 .register-title {
@@ -149,6 +150,28 @@ input:focus {
     border-bottom: 3px solid #202022;
     box-shadow: 0 0 10px #acacac;
 }
+
+/* width */
+::-webkit-scrollbar {
+    width: 0px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 0.5rem;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(219, 219, 219);
+    border-radius: 0.5rem;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(138, 138, 138);
+  }
 
 .custom-file-input {
     width: 220px;

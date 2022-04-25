@@ -13,6 +13,7 @@
 <div id="id-app" style="display: none;">profile</div>
 
 <div class="container-window">
+<<<<<<< HEAD
     <div class="profile-background"></div>
     <div class="profile-picture">
         {% if user.extended_user.profile_pic %}
@@ -31,24 +32,24 @@
             {% endif %}
         </p>
     </div>
+=======
+    <div class="profile-rows">
+>>>>>>> 2009df1378f7760f1a25b986c9015b80ed3513e2
 
-    <a href="{% url 'miembros:user_profile_update' %}" class="user-edit-info-secondary">Editar Perfil</a>
-
-    <div class="user-cards-container">
-        <div class="user-info-container">
-            <p class="user-info-title">Información del usuario</p>
-            <hr class="hr-nice">
-            <div class="user-info-field-container">
-                <p class="user-info-prompt">Nombre Completo</p>
-                <input class="user-info-field" readonly=true value="{{ user.extended_user.get_full_name }}">
+        <div class="profile-rows-cell">
+            <div class="profile-background"></div>
+            <div class="profile-picture">
+                <img src="{% static 'img/view.jpg' %}">
             </div>
-            <div class="user-info-field-container">
-                <p class="user-info-prompt">Correo electrónico</p>
-                <input class="user-info-field" readonly=true value="{{ user.email }}">
-            </div>
-            <div class="user-info-field-container">
-                <p class="user-info-prompt">Fecha de Nacimiento</p>
-                <input class="user-info-field" readonly=true value="{{ user.extended_user.birthdate }}">
+            <div class="profile-name">
+                <p class="profile-main-name">{{ user.extended_user.get_full_name }}</p>
+                <p class="profile-secondary-name">
+                    {% if user.canTeach == true %}
+                        Capacitador
+                    {% else %}
+                        Usuario
+                    {% endif %}
+                </p>
             </div>
             <div class="user-info-field-container">
                 <p class="user-info-prompt">Nivel Académico</p>
@@ -76,29 +77,84 @@
             {% endfor %}
     
             <br>
+
+            <a href="{% url 'miembros:user_profile_update' %}" class="user-edit-info-secondary">Editar Perfil</a>
         </div>
-    
-        <div class="user-current-courses-container">
-            <p class="user-info-title">Capacitaciones Completadas</p>
-            <hr class="hr-nice">
-    
-            <div class="user-course-card">
-                <div class="user-course-card-title">Capacitacion en BlahBlah</div>
-                <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+
+        <div class="profile-rows-cell">
+            <div class="user-cards-container">
+                <div class="user-info-container">
+                    <p class="user-info-title">Información del usuario</p>
+                    <hr class="hr-nice">
+                    <div class="user-info-field-container">
+                        <p class="user-info-prompt">Nombre Completo</p>
+                        <input class="user-info-field" readonly=true value="{{ user.extended_user.get_full_name }}">
+                    </div>
+                    <div class="user-info-field-container">
+                        <p class="user-info-prompt">Correo electrónico</p>
+                        <input class="user-info-field" readonly=true value="{{ user.email }}">
+                    </div>
+                    <div class="user-info-field-container">
+                        <p class="user-info-prompt">Fecha de Nacimiento</p>
+                        <input class="user-info-field" readonly=true value="{{ user.extended_user.birthdate }}">
+                    </div>
+                    <div class="user-info-field-container">
+                        <p class="user-info-prompt">Nivel Académico</p>
+                        <input class="user-info-field" readonly=true value="{{ user.extended_user.academic_level }}">
+                    </div>
+                    <div class="user-info-field-container" style="text-align: center; margin-top: 2rem; margin-bottom: 0.6rem;">
+                        <a class="user-info-cv" href="">Descargar CV&nbsp;<span class="material-icons">file_download</span></a>
+                        <!-- <input type="file" class="user-info-field" readonly=true value="Preparatoria"> -->
+                    </div>
+                    <br>
+                </div>
+            
+                <div class="user-current-courses-container">
+                    <p class="user-info-title">Capacitaciones actuales</p>
+                    <hr class="hr-nice">
+            
+                    <div class="user-course-card">
+                        <div class="user-course-card-title">Capacitacion en Algo</div>
+                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                    </div>
+            
+                    <div class="user-course-card">
+                        <div class="user-course-card-title">Capacitacion en Otra</div>
+                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                    </div>
+            
+                    <div class="user-course-card">
+                        <div class="user-course-card-title">Capacitacion en Tris</div>
+                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                    </div>
+            
+                    <br>
+                </div>
+            
+                <div class="user-current-courses-container">
+                    <p class="user-info-title">Capacitaciones Completadas</p>
+                    <hr class="hr-nice">
+            
+                    <div class="user-course-card">
+                        <div class="user-course-card-title">Capacitacion en BlahBlah</div>
+                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                    </div>
+            
+                    <div class="user-course-card">
+                        <div class="user-course-card-title">Capacitacion en WeeHyy</div>
+                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                    </div>
+            
+                    <div class="user-course-card">
+                        <div class="user-course-card-title">Capacitacion en Word y Powerpoint</div>
+                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                    </div>
+            
+                    <br>
+                </div>
             </div>
-    
-            <div class="user-course-card">
-                <div class="user-course-card-title">Capacitacion en WeeHyy</div>
-                <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-            </div>
-    
-            <div class="user-course-card">
-                <div class="user-course-card-title">Capacitacion en Word y Powerpoint</div>
-                <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-            </div>
-    
-            <br>
         </div>
+
     </div>
     
 </div>

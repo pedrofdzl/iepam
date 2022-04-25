@@ -51,7 +51,9 @@ class Modulo(models.Model):
 class Lectura(models.Model):
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE, related_name='lecturas', verbose_name='modulo')
     name = models.CharField('name', max_length=255)
-    description = models.CharField('description', max_length=2024)
+    description = models.CharField('description', max_length=255)
+    content = models.CharField('content', max_length=2024)
+    author = models.CharField('author', max_length=255)
 
     def __str__(self):
         return self.name
@@ -60,6 +62,7 @@ class Actividad(models.Model):
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE, related_name='actividades', verbose_name='modulo')
     name = models.CharField('name', max_length=255)
     description = models.CharField('description', max_length=255)
+    instructions = models.CharField('instructions', max_length=255)
 
     def __str__(self):
         return self.name
@@ -68,8 +71,8 @@ class Actividad(models.Model):
 class Entrega(models.Model):
     actividad = models.ForeignKey(Actividad, on_delete=models.CASCADE, related_name='entregas', verbose_name='actividad')
     user = models.ForeignKey(ExtendedUser, on_delete=models.CASCADE, related_name='entregas', verbose_name='users')
-    file = models.FileField('file', upload_to='entregas', blank=True, null=True, validators=[FileExtensionValidator(allowed_extensions=['pdf', 'docx', 'xlsx', 'pptx'])])
-    grade = models.FloatField('grade', validators=[MinValueValidator(0), MaxValueValidator(100)])
+    file = models.FileField('file', upload_to='entregas', blank=True, null=True, validators=[FileExtensionValidator(allowed_extensions=['.pdf', '.docx', '.xlsx', '.pptx'])])
+    grade = models.FloatField('grade', validators=[MinValueValidator(-1), MaxValueValidator(100)])
 
 
 class Video(models.Model):

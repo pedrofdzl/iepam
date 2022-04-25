@@ -5,8 +5,8 @@ from django.db.models import Q
 
 from datetime import date
 
-from .models import Course, MemberOf, Modulo, Lectura, Actividad, Video, Quiz
-from .forms import CourseCreateForm, LectureAddForm, ModuleAddForm, ActivityAddForm, VideoAddForm
+from .models import Course, Entrega, MemberOf, Modulo, Lectura, Actividad, Video, Quiz
+from .forms import CourseCreateForm, EntregaAddForm, LectureAddForm, ModuleAddForm, ActivityAddForm, VideoAddForm
 from users.models import ExtendedUser
 
 User = get_user_model()
@@ -59,6 +59,32 @@ def adcourse_create_view(request):
             print(course_form.errors)
 
     context['form'] = course_form
+
+    return render(request, template_name, context)
+
+
+def adcourse_edit_view(request, id):
+    context = {}
+    template_name = template_admin_pre + 'course_edit_form.html'
+
+    course = get_object_or_404(Course, pk=id)
+
+    if request.method == 'GET':
+        course_form = CourseCreateForm(instance=course)
+
+    if request.method == 'POST':
+        course_form = CourseCreateForm(request.POST, instance=course)
+
+        if course_form.is_valid():
+
+            course.save()
+
+            return redirect(reverse('cursos:course_detail', kwargs={'id': course.pk}))
+        else:
+            print(course_form.errors)
+
+    context['form'] = course_form
+    context['course'] = course
 
     return render(request, template_name, context)
 
@@ -182,6 +208,32 @@ def course_create_module_view(request, id):
 
     return render(request, template_name, context)
 
+def course_edit_module_view(request, id):
+    context = {}
+    template_name = template_prefix + 'course_edit_module.html'
+
+    module = get_object_or_404(Modulo, pk=id)
+    
+    if request.method == 'GET':
+        module_form = ModuleAddForm(instance=module)
+
+    if request.method == 'POST':
+        module_form = ModuleAddForm(request.POST, instance=module)
+
+        if module_form.is_valid():
+
+            module.save()
+
+            return redirect(reverse('cursos:course_detail', kwargs={'id': module.curso.pk}))
+        else:
+            print(module_form.errors)
+
+    context['module'] = module
+    context['course'] = module.curso
+    context['form'] = module_form
+
+    return render(request, template_name, context)
+
 
 def course_create_item_view(request, id, action):
     context = {}
@@ -203,6 +255,8 @@ def course_create_item_view(request, id, action):
 
                 lecture.name = lecture_form.cleaned_data['name']
                 lecture.description = lecture_form.cleaned_data['description']
+                lecture.content = lecture_form.cleaned_data['content']
+                lecture.author = lecture_form.cleaned_data['author']
                 lecture.modulo = modulo
 
                 lecture.save()
@@ -219,6 +273,7 @@ def course_create_item_view(request, id, action):
 
                 activity.name = activity_form.cleaned_data['name']
                 activity.description = activity_form.cleaned_data['description']
+                activity.instructions = activity_form.cleaned_data['instructions']
                 activity.modulo = modulo
 
                 activity.save()
@@ -235,7 +290,7 @@ def course_create_item_view(request, id, action):
 
                 video.name = video_form.cleaned_data['name']
                 video.description = video_form.cleaned_data['description']
-                video.url = video_form.cleaned_data['url']
+                video.url = youtube_url_to_embed(video_form.cleaned_data['url'])
                 video.modulo = modulo
 
                 video.save()
@@ -252,4 +307,130 @@ def course_create_item_view(request, id, action):
 
     return render(request, template_name, context)
 
-    
+def course_edit_item_view(request, id, action):
+    context = {}
+    template_name = template_prefix + 'course_edit_item.html'
+
+    if (action == 1):
+        stuff = get_object_or_404(Lectura, pk=id)
+    if (action == 2):
+        stuff = get_object_or_404(Actividad, pk=id)
+    if (action == 3):
+        stuff = get_object_or_404(Video, pk=id)
+
+    lecture_form = LectureAddForm()
+    activity_form = ActivityAddForm()
+    video_form = VideoAddForm()
+
+    if request.method == 'GET':
+        if (action == 1):
+            lecture_form = LectureAddForm(instance=stuff)
+        if (action == 2):
+            activity_form = ActivityAddForm(instance=stuff)
+        if (action == 3):
+            video_form = VideoAddForm(instance=stuff)
+
+    if request.method == 'POST':
+        if action == 1:
+            lecture_form = LectureAddForm(request.POST, instance=stuff)
+
+            if lecture_form.is_valid():
+
+                stuff.save()
+
+                return redirect(reverse('cursos:course_detail', kwargs={'id': stuff.modulo.curso.pk}))
+            else:
+                print(lecture_form.errors)
+        if action == 2:
+            activity_form = ActivityAddForm(request.POST, instance=stuff)
+
+            if activity_form.is_valid():
+
+                stuff.save()
+
+                return redirect(reverse('cursos:course_detail', kwargs={'id': stuff.modulo.curso.pk}))
+            else:
+                print(activity_form.errors)
+        if action == 3:
+            video_form = VideoAddForm(request.POST, instance=stuff)
+
+            if video_form.is_valid():
+
+                stuff.url = youtube_url_to_embed(video_form.cleaned_data['url'])
+                stuff.save()
+
+                return redirect(reverse('cursos:course_detail', kwargs={'id': stuff.modulo.curso.pk}))
+            else:
+                print(video_form.errors)
+
+    context['modulo'] = stuff.modulo
+    context['lec_form'] = lecture_form
+    context['act_form'] = activity_form
+    context['vid_form'] = video_form
+    context['action'] = action
+
+    return render(request, template_name, context)
+
+def youtube_url_to_embed(link):
+    video_code = link[-11:]
+    embed_template = "https://www.youtube.com/embed/"
+    return embed_template + video_code
+
+def course_lecture_view(request, id):
+    context = {}
+    template_name = template_prefix + 'lecture.html'
+
+    lecture = get_object_or_404(Lectura, pk=id)
+    course = lecture.modulo.curso
+
+    context['lecture'] = lecture
+    context['course'] = course
+
+    return render(request, template_name, context)
+
+
+def course_activity_view(request, id):
+    context = {}
+    template_name = template_prefix + 'activity.html'
+
+    activity = get_object_or_404(Actividad, pk=id)
+    course = activity.modulo.curso
+
+    entrega_form = EntregaAddForm()
+
+    if request.method == 'POST':
+        entrega_form = EntregaAddForm(request.POST)
+
+        if entrega_form.is_valid():
+
+            entrega = Entrega()
+
+            entrega.file = entrega_form.cleaned_data['file']
+            entrega.actividad = activity
+            entrega.user = request.user.extended_user
+            entrega.grade = -1
+
+            entrega.save()
+
+            return redirect(reverse('cursos:course_detail', kwargs={'id': activity.modulo.curso.pk}))
+        else:
+            print(entrega_form.errors)
+
+    context['activity'] = activity
+    context['entrega_form'] = entrega_form
+    context['course'] = course
+
+    return render(request, template_name, context)
+
+
+def course_video_view(request, id):
+    context = {}
+    template_name = template_prefix + 'video.html'
+
+    video = get_object_or_404(Video, pk=id)
+    course = video.modulo.curso
+
+    context['video'] = video
+    context['course'] = course
+
+    return render(request, template_name, context)
