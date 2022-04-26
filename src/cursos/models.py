@@ -23,11 +23,15 @@ class Course(models.Model):
         return self.name
 
 
+# ? Approved Status:
+# ? 'No Tomado', 'Cursando', 'Completado'
+# ? Verify
+
 class MemberOf(models.Model):
     member = models.ForeignKey(ExtendedUser, on_delete=models.CASCADE, related_name='courses')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='course_members')
     dateJoined = models.DateField()
-    status = models.CharField('Status', default='Incompleto', max_length=255)
+    status = models.CharField('Status', default='Cursando', max_length=255)
 
     def __str__(self):
         return f'{self.member.user.username} member of {self.course.name}'
@@ -53,8 +57,8 @@ class Lectura(models.Model):
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE, related_name='lecturas', verbose_name='modulo')
     name = models.CharField('name', max_length=255)
     description = models.CharField('description', max_length=255)
-    content = models.CharField('content', max_length=2024)
-    author = models.CharField('author', max_length=255)
+    content = models.CharField('content', max_length=2024, null=True, blank=True)
+    author = models.CharField('author', max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -63,7 +67,7 @@ class Actividad(models.Model):
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE, related_name='actividades', verbose_name='modulo')
     name = models.CharField('name', max_length=255)
     description = models.CharField('description', max_length=255)
-    instructions = models.CharField('instructions', max_length=255)
+    instructions = models.CharField('instructions', max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.name

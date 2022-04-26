@@ -2,4 +2,41 @@
 
 {% block body %}
 
+
+    <h1>{{ course.name }}</h1>
+    <hr>
+
+    <!-- <a href="{% url 'cursos:adcourse_add_members' id=course.pk %}">Agregar miembro</a> -->
+
+
+    <!-- ! NOTE -->
+    <!-- ! MembersOf model use here -->
+    <h2>Miembros: </h2>
+    {% for member in members %}
+
+        <h3>{{ member.member.get_full_name }}</h3>
+
+    {% empty %}
+        <h3>No members</h3>
+    {% endfor %}
+
+
+    {% if perms.users.is_admin %}
+        <h1>Deseas agregar mas miembros</h1>
+
+        <form method="get">
+            <input type="text" name="nombre" id="nombre">
+            <button type="submit">Search</button>
+        </form>
+        <!-- ! ExtendedUser model use here -->
+        {% for member in not_members %}
+            <h3>{{ member.get_full_name }}</h3>
+            <a href="{% url 'cursos:adcourse_adding_member' id=course.pk user_id=member.user.pk %}">Agregar</a>
+        {% empty %}
+
+        <h3>No Se encontraron miembros</h3>
+        {% endfor %}
+
+    {% endif %}
+
 {% endblock %}

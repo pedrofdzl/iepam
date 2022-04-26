@@ -24,15 +24,17 @@
                         Volver a la capacitación
                     </div>
                 </a>
-
-                <a href="{% url 'cursos:course_edit_item' id=activity.pk action=2 %}" class="button-edit no-style-a">
-                    <p>Editar</p>
-                    <span class="material-icons">edit</span>
-                </a>
-                <a href="" class="button-delete no-style-a">
-                    <p>Eliminar</p>
-                    <span class="material-icons">delete</span>
-                </a>
+                
+                {% if is_owner%}
+                    <a href="{% url 'cursos:course_edit_item' id=activity.pk action=2 %}" class="button-edit no-style-a">
+                        <p>Editar</p>
+                        <span class="material-icons">edit</span>
+                    </a>
+                    <a href="" class="button-delete no-style-a">
+                        <p>Eliminar</p>
+                        <span class="material-icons">delete</span>
+                    </a>
+                {% endif %}
             </div>
 
             <div class="description">{{ activity.modulo.name }}</div>

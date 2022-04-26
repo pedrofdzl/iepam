@@ -104,10 +104,10 @@ def aduser_detail_view(request, id):
     user = get_object_or_404(User, pk=id)
     extended_user = user.extended_user
 
-    courses = extended_user.courses.filter(status='Incompleto')
+    incomplete_courses = extended_user.courses.filter(status='Incompleto')
 
     context["extended_user"] = extended_user
-    context['courses'] = courses
+    context['incomplete_courses'] = incomplete_courses
 
     return render(request, template_name, context)
 

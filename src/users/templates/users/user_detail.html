@@ -71,22 +71,9 @@
                 <div class="user-current-courses-container">
                     <p class="user-info-title">Capacitaciones actuales</p>
                     <hr class="hr-nice">
-            
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en Algo</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-            
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en Otra</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-            
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en Tris</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-            
+
+                {% include 'users/_user_courses_snippet.html' with courses=incomplete_courses %}
+
                     <br>
                 </div>
             
@@ -94,20 +81,7 @@
                     <p class="user-info-title">Capacitaciones Completadas</p>
                     <hr class="hr-nice">
             
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en BlahBlah</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-            
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en WeeHyy</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-            
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en Word y Powerpoint</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
+                    {% include 'users/_user_courses_snippet.html' %}
             
                     <br>
                 </div>

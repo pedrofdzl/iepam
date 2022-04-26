@@ -16,9 +16,12 @@ urlpatterns = [
 
     path('menu/', views.menu, name='menu'),
     path('like/<int:id>/', views.like_curso, name='course_like'),
+
+    # path('curso/<int:id>/miembros/', views.adcourse_members_view, name='course_members'),
+
     path('curso/<int:id>/', views.course_detail_view, name='course_detail'),
     path('curso/agregar-modulo/<int:id>/', views.course_create_module_view, name='course_create_module'),
-    path('curso/editar-modulo/<int:id>', views.course_edit_module_view, name='course_edit_module'),
+    path('curso/editar-modulo/<int:id>/', views.course_edit_module_view, name='course_edit_module'),
     path('curso/agregar-actividad/<int:id>/<int:action>/', views.course_create_item_view, name='course_create_item'),
     path('curso/editar-actividad/<int:id>/<int:action>/', views.course_edit_item_view, name='course_edit_item'),
     path('curso/lectura/<int:id>/', views.course_lecture_view, name='course_lecture'),

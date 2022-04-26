@@ -66,15 +66,9 @@
             <p class="user-info-title">Capacitaciones actuales</p>
             <hr class="hr-nice">
     
-            {% for course in courses %}
-                <div class="user-course-card">
-                    <div class="user-course-card-title">{{ course.course.name }}</div>
-                    <div class="user-course-card-desc">{{ course.course.description }}</div>
-                    <small>Iniciado: {{ course.dateJoined }}</small>
-                </div>
-            {% empty %}
-                <h5>Ningun curso actual</h5>
-            {% endfor %}
+
+
+            {% include 'users/_user_courses_snippet.html' with courses=courses %}
     
             <br>
 

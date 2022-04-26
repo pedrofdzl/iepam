@@ -29,14 +29,17 @@
 
                     <div class="module-header">
                         <div class="module-title">Módulo: {{ mod.name }}</div>
-                        <a href="{% url 'cursos:course_edit_module' id=mod.pk %}" class="button-edit tooltip">
-                            <span class="material-icons">edit</span>
-                            <div class="tooltiptext">Editar módulo</div>
-                        </a>
-                        <a href="{% url 'cursos:course_create_item' id=mod.pk action=1 %}" class="button-add tooltip">
-                            <span class="material-icons">add</span>
-                            <div class="tooltiptext">Agregar elemento</div>
-                        </a>
+
+                        {% if is_owner %}
+                            <a href="{% url 'cursos:course_edit_module' id=mod.pk %}" class="button-edit tooltip">
+                                <span class="material-icons">edit</span>
+                                <div class="tooltiptext">Editar módulo</div>
+                            </a>
+                            <a href="{% url 'cursos:course_create_item' id=mod.pk action=1 %}" class="button-add tooltip">
+                                <span class="material-icons">add</span>
+                                <div class="tooltiptext">Agregar elemento</div>
+                            </a>
+                        {% endif %}
                     </div>
 
                     <br>
@@ -90,10 +93,12 @@
                 </div>
                 {% endfor %}
                 <!-- END OF MODULES -->
-
-                <a class="module-add" href="{% url 'cursos:course_create_module' id=course.pk %}" style="text-decoration: none;">
-                    Agregar Módulo
-                </a>
+                
+                {% if is_owner %}
+                    <a class="module-add" href="{% url 'cursos:course_create_module' id=course.pk %}" style="text-decoration: none;">
+                        Agregar Módulo
+                    </a>
+                {% endif %}
 
             </div>
 

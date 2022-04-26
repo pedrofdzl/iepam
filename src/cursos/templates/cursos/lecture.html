@@ -24,7 +24,8 @@
                         Volver a la capacitación
                     </div>
                 </a>
-
+                
+                {% if is_owner %}
                 <a href="{% url 'cursos:course_edit_item' id=lecture.pk action=1 %}" class="button-edit no-style-a">
                     <p>Editar</p>
                     <span class="material-icons">edit</span>
@@ -33,6 +34,8 @@
                     <p>Eliminar</p>
                     <span class="material-icons">delete</span>
                 </a>
+
+                {% endif %}
             </div>
 
             <div class="description">{{ lecture.modulo.name }}</div>

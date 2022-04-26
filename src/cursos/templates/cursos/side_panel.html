@@ -17,7 +17,9 @@
 
     <a class="panel-info">
         <div class="panel-info-text">
-            <span class="material-icons">people</span>
+            <a href="{% url 'cursos:adcourse_members' id=course.pk %}">
+                <span class="material-icons">people</span>
+            </a>
             <p class="course-info-num">{{ course.members.count }}</p>
         </div>
         <br>
@@ -42,12 +44,28 @@
 </div>
 
 <div style="text-align: center;">
-    <a href="{% url 'cursos:adcourse_edit' id=course.pk %}" class="button-edit-2 no-style-a">
-        <p>Editar capacitación</p>
-        <span class="material-icons">edit</span>
+    {% if not is_member %}
+    <a href="{% url 'cursos:adcourse_adding_member' id=course.pk user_id=user.pk %}" class="button-edit-2 no-style-a">
+        <p>Unirse capacitación</p>
+        <span class="material-symbols-outlined">
+            person_add
+        </span>
     </a>
-    <a href="" class="button-delete no-style-a">
-        <p>Eliminar</p>
-        <span class="material-icons">delete</span>
-    </a>
+    {% else %}
+
+    <h3>Inscrito</h3>
+
+    {% endif %}
+
+
+    {% if is_owner %}
+        <a href="{% url 'cursos:adcourse_edit' id=course.pk %}" class="button-edit-2 no-style-a">
+            <p>Editar capacitación</p>
+            <span class="material-icons">edit</span>
+        </a>
+        <a href="" class="button-delete no-style-a">
+            <p>Eliminar</p>
+            <span class="material-icons">delete</span>
+        </a>
+    {% endif %}
 </div>

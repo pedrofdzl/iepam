@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import Http404
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+
+from django.contrib.auth.decorators import login_required, permission_required
 
 from datetime import date
 
@@ -30,7 +32,8 @@ def adcourse_list_view(request):
 
     return render(request, template_name, context)
 
-
+@login_required
+@permission_required(['users.is_teacher'], raise_exception=True)
 def adcourse_create_view(request):
     context = {}
     template_name = template_admin_pre + 'course_create_form.html'
@@ -62,7 +65,7 @@ def adcourse_create_view(request):
 
     return render(request, template_name, context)
 
-
+@login_required
 def adcourse_edit_view(request, id):
     context = {}
     template_name = template_admin_pre + 'course_edit_form.html'
@@ -88,42 +91,67 @@ def adcourse_edit_view(request, id):
 
     return render(request, template_name, context)
 
+
+@login_required
 def adcourse_members_view(request, id):
     context = {}
     template_name = template_admin_pre + 'course_members.html'
 
     course = get_object_or_404(Course, pk=id)
 
+    # Get course members and non-members users
     members = MemberOf.objects.filter(course=course)
+    not_members = ExtendedUser.objects.filter(~Q(courses__course=course)).exclude(Q(own_courses=course))
+
+
+    if request.user.has_perm('users.is_admin'):
+        if request.method == 'GET':
+            username = request.GET.get('nombre')
+
+            if username:
+                not_members = not_members.filter(
+                    Q(user__first_name__contains=username) |
+                    Q(user__last_name__contains=username) |
+                    Q(second_last_name__contains=username) 
+                    # Q(user__username__contains=username)
+                )
 
     context['course'] = course
     context['members'] = members
+    context['not_members'] = not_members
 
     return render(request, template_name, context)
 
 
+@login_required
 def adcourse_addmember_view(request, id):
     context = {}
     template_name = template_admin_pre + 'course_add_member.html'
 
     course = get_object_or_404(Course, pk=id)
 
-    users = ExtendedUser.objects.filter(~Q(courses__course=course)).exclude(Q(own_courses=course))
-    context['users'] = users
-
-    course = get_object_or_404(Course, pk=id)
-
-    return render(request, template_name)
+    members = ExtendedUser.objects.filter(~Q(courses__course=course)).exclude(Q(own_courses=course))
+    # print(members)
+    context['members'] = members
+    context['course'] = course
 
 
+    return render(request, template_name, context)
+
+
+@login_required
 def adcourse_addingmember_view(request, id, user_id):
 
     course = get_object_or_404(Course, pk=id)
     user = get_object_or_404(User, pk=user_id)
+    extended_user = user.extended_user
+
+    if course.owner == extended_user:
+        return redirect(reverse('cursos:adcourse_add_members', kwargs={'id':course.pk}))
 
     try:
         membership = MemberOf(
-                member=user,
+                member=extended_user,
                 course=course,
                 dateJoined=date.today()
             )
@@ -131,9 +159,26 @@ def adcourse_addingmember_view(request, id, user_id):
     except:
         print('No se pudo')
     
-    return redirect(reverse('cursos:adcourse_add_members', kwargs={'id':course.pk}))
+    # return redirect(reverse('cursos:adcourse_add_members', kwargs={'id':course.pk}))
+
+    if request.META['HTTP_REFERER']:
+        return redirect(request.META['HTTP_REFERER'])
+    return redirect(reverse('cursos:adcourse_members', kwargs={'id':course.pk}))
 
 
+@login_required
+def adcourse_removemember_view(request, id, user_id):
+    template_name = ''
+    context = {}
+
+    course = get_object_or_404(Course, pk=id)
+    user = get_object_or_404(User, pk=user_id)
+    extended_user = user.extended_user
+
+    membership = get_object_or_404(MemberOf, member=extended_user, course=course)
+
+
+@login_required
 def adcourse_delete_view(request, id):
     context = {}
     template_name = template_admin_pre + 'course_delete.html'
@@ -149,21 +194,35 @@ def adcourse_delete_view(request, id):
     return render(request, template_name, context)
 
 
+@login_required
 def course_detail_view(request, id):
     user = request.user
+    extended_user = user.extended_user
     context = {}
     template_name = template_prefix + 'course.html'
 
     course = get_object_or_404(Course, pk=id)
     modules = Modulo.objects.filter(curso=id)
 
+    # Side Panel Variables
     liked = False
+    is_member = False
+    is_owner = False
 
-    if user.is_authenticated:
-        if user.likes.filter(pk=id).exists():
-            liked = True
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
 
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
     context['liked'] = liked
+
+
     context['course'] = course
     context['modules'] = modules
 
@@ -174,19 +233,40 @@ def course_detail_view(request, id):
 ######## Member Views #######
 ############################
 
-
-
+@login_required
 def menu(request):
     context = {}
     template_name = template_prefix + 'menu.html'
+    user = request.user
+    extended_user = user.extended_user
+
 
     cursos = Course.objects.all()
 
+    if request.method == 'GET':
+        courses_type = request.GET.get('cursos')
+        course_name = request.GET.get('curso')
+
+
+        if courses_type:
+            if courses_type == 'No Tomado':
+                cursos = Course.objects.filter(~Q(course_members__member=extended_user))
+            elif courses_type == 'Cursando':
+                cursos = Course.objects.filter(Q(course_members__status=courses_type) & Q(course_members__member=extended_user))
+            elif courses_type == 'Completado':
+                cursos = Course.objects.filter(Q(course_members__status=courses_type) & Q(course_members__member=extended_user))
+        
+        if course_name:
+            cursos = Course.objects.filter(name__contains=course_name)
+
+
     context['cursos'] = cursos
+
 
     return render(request, template_name, context)
 
 
+@login_required
 def like_curso(request, id):
     curso = get_object_or_404(Course, pk=id)
     
@@ -198,14 +278,21 @@ def like_curso(request, id):
         curso.likes.add(request.user)
         liked = True
 
+
+    if request.META['HTTP_REFERER']:
+        return redirect(request.META['HTTP_REFERER'])
     return redirect(reverse('cursos:course_detail', kwargs={'id': curso.pk}))
 
 
+@login_required
 def course_create_module_view(request, id):
     context = {}
     template_name = template_prefix + 'course_create_module.html'
 
     course = get_object_or_404(Course, pk=id)
+    
+    if course.owner != request.user.extended_user:
+        raise Http404()
 
     module_form = ModuleAddForm()
 
@@ -230,11 +317,15 @@ def course_create_module_view(request, id):
 
     return render(request, template_name, context)
 
+
+@login_required
 def course_edit_module_view(request, id):
     context = {}
     template_name = template_prefix + 'course_edit_module.html'
 
     module = get_object_or_404(Modulo, pk=id)
+    if module.curso.owner != request.user.extended_user:
+        raise Http404()
     
     if request.method == 'GET':
         module_form = ModuleAddForm(instance=module)
@@ -257,11 +348,14 @@ def course_edit_module_view(request, id):
     return render(request, template_name, context)
 
 
+@login_required
 def course_create_item_view(request, id, action):
     context = {}
     template_name = template_prefix + 'course_create_item.html'
 
     modulo = get_object_or_404(Modulo, pk=id)
+    if modulo.curso.owner != request.user.extended_user:
+        raise Http404()
 
     lecture_form = LectureAddForm()
     activity_form = ActivityAddForm()
@@ -329,9 +423,15 @@ def course_create_item_view(request, id, action):
 
     return render(request, template_name, context)
 
+
+@login_required
 def course_edit_item_view(request, id, action):
     context = {}
     template_name = template_prefix + 'course_edit_item.html'
+
+    module = get_object_or_404(Modulo, pk=id)
+    if module.curso.owner != request.user.extended_user:
+        raise Http404()
 
     if (action == 1):
         stuff = get_object_or_404(Lectura, pk=id)
@@ -393,17 +493,41 @@ def course_edit_item_view(request, id, action):
 
     return render(request, template_name, context)
 
+
 def youtube_url_to_embed(link):
     video_code = link[-11:]
     embed_template = "https://www.youtube.com/embed/"
     return embed_template + video_code
 
+@login_required
 def course_lecture_view(request, id):
     context = {}
     template_name = template_prefix + 'lecture.html'
 
+    user = request.user
+    extended_user = user.extended_user
+
     lecture = get_object_or_404(Lectura, pk=id)
     course = lecture.modulo.curso
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
 
     context['lecture'] = lecture
     context['course'] = course
@@ -411,9 +535,12 @@ def course_lecture_view(request, id):
     return render(request, template_name, context)
 
 
+@login_required
 def course_activity_view(request, id):
     context = {}
     template_name = template_prefix + 'activity.html'
+    user = request.user
+    extended_user = user.extended_user
 
     activity = get_object_or_404(Actividad, pk=id)
     course = activity.modulo.curso
@@ -442,17 +569,59 @@ def course_activity_view(request, id):
     context['entrega_form'] = entrega_form
     context['course'] = course
 
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+
+
     return render(request, template_name, context)
 
-
+@login_required
 def course_video_view(request, id):
     context = {}
     template_name = template_prefix + 'video.html'
+    user = request.user
+    extended_user = user.extended_user
 
     video = get_object_or_404(Video, pk=id)
     course = video.modulo.curso
 
     context['video'] = video
     context['course'] = course
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
 
     return render(request, template_name, context)

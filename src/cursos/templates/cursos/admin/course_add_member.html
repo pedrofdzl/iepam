@@ -2,4 +2,21 @@
 
 {% block body %}
 
+
+
+<h1>{{ course.name }}</h1>
+<hr>
+
+
+{% for member in members %}
+
+
+    <h3><a href="{% url 'users:user_detail' id=member.user.pk %}">{{ member.get_full_name }}</a></h3>
+    <a href="{% url 'cursos:adcourse_adding_member' id=course.pk user_id=member.user.pk %}">Add</a>
+
+
+{% empty %}
+    <h3>No Users found</h3>
+
+{% endfor %}
 {% endblock %}

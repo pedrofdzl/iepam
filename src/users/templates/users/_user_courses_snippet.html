@@ -1,0 +1,9 @@
+{% for course in courses %}
+<div class="user-course-card">
+    <div class="user-course-card-title">{{ course.course.name }}</div>
+    <div class="user-course-card-desc">{{ course.course.description }}</div>
+    <small>Iniciado: {{ course.dateJoined }}</small>
+</div>
+{% empty %}
+<h5>Ningun curso actual</h5>
+{% endfor %}

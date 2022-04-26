@@ -56,12 +56,13 @@ class ExtendedUser(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         
-        img = Image.open(self.profile_pic.path)
 
-        if img.height > 170 or img.width > 170:
-            dimensions = (170, 170)
-            img.thumbnail(dimensions)
-            img.save(self.profile_pic.path)
+        if self.profile_pic:
+            img = Image.open(self.profile_pic.path)
+            if img.height > 170 or img.width > 170:
+                dimensions = (170, 170)
+                img.thumbnail(dimensions)
+                img.save(self.profile_pic.path)
 
     
     def __str__(self):
