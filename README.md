@@ -7,7 +7,7 @@ Antes de empezar a usar la aplicación por favor cerciorate de tener todos los p
 
 Pre
 
-* [ ] Tener dependencias y ambiente virual instalado y actualizado
+* [ ] Tener dependencias y ambiente virtual instalado y actualizado
 * [ ] Tener archivo .env con todos los valores del ejemplo actualizados
 * [ ] Haber hecho todas las migraciones en mi base de datos
 
