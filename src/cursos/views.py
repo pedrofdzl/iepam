@@ -147,7 +147,9 @@ def adcourse_addingmember_view(request, id, user_id):
     extended_user = user.extended_user
 
     if course.owner == extended_user:
-        return redirect(reverse('cursos:adcourse_add_members', kwargs={'id':course.pk}))
+        if request.META['HTTP_REFERER']:
+            return redirect(request.META['HTTP_REFERER'])
+        return redirect(reverse('cursos:adcourse_members', kwargs={'id':course.pk}))
 
     try:
         membership = MemberOf(
