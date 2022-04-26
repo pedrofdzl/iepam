@@ -27,35 +27,13 @@
             <div class="profile-name">
                 <p class="profile-main-name">{{ user.extended_user.get_full_name }}</p>
                 <p class="profile-secondary-name">
-                    {% if user.canTeach == true %}
+                    {% if user.canTeach %}
                         Capacitador
                     {% else %}
                         Usuario
                     {% endif %}
                 </p>
             </div>
-            <div class="user-info-field-container">
-                <p class="user-info-prompt">Nivel Académico</p>
-                <input class="user-info-field" readonly=true value="{{ user.extended_user.academic_level }}">
-            </div>
-            <div class="user-info-field-container" style="text-align: center; margin-top: 2rem; margin-bottom: 0.6rem;">
-                <a class="user-info-cv" href="">Descargar CV&nbsp;<span class="material-icons">file_download</span></a>
-                <!-- <input type="file" class="user-info-field" readonly=true value="Preparatoria"> -->
-            </div>
-            <br>
-        </div>
-    
-        <div class="user-current-courses-container">
-            <p class="user-info-title">Capacitaciones actuales</p>
-            <hr class="hr-nice">
-    
-
-
-            {% include 'users/_user_courses_snippet.html' with courses=courses %}
-    
-            <br>
-
-            <a href="{% url 'miembros:user_profile_update' %}" class="user-edit-info-secondary">Editar Perfil</a>
         </div>
 
         <div class="profile-rows-cell">

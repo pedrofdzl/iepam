@@ -33,7 +33,6 @@
                 <div class="register-title">Registrar nuevo usuario</div>
                     <form class="register-form" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {{ form.non_field_errors}}
                 
                         <div class="form-col">
                             <label>Usuario</label>
@@ -128,6 +127,7 @@
                         </div>
                         <a href="{% url 'panel' %}" class="btn-cancel">Cancelar operación</a>
                         <button class="btn-register" type="submit">Registrar</button>
+                        {{ form.non_field_errors}}
                     </form>
             </div>
         </div>

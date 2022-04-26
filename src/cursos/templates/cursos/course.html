@@ -45,61 +45,94 @@
                     <br>
 
                     {% for lec in mod.lecturas.all %}
-                    <a href="{% url 'cursos:course_lecture' id=lec.pk %}" class="no-style-a">
-                        {% if lec in user.read_lectures.all %}
-                            <div class="module-item checked">
-                                <span class="material-icons module-item-icon checked-text">book</span>
-                                <div>
-                                    <div class="module-item-title checked-text">Lectura: {{ lec.name }}</div>
-                                        <div class="module-item-grade checked-text">Leído</div>
-                                </div>
-                                <span class="material-icons checkmark">done</span>
-                            </div>
+                        {% if is_member %}
+                            <a href="{% url 'cursos:course_lecture' id=lec.pk %}" class="no-style-a">
+                                {% if lec in user.read_lectures.all %}
+                                    <div class="module-item checked">
+                                        <span class="material-icons module-item-icon checked-text">book</span>
+                                        <div>
+                                            <div class="module-item-title checked-text">Lectura: {{ lec.name }}</div>
+                                                <div class="module-item-grade checked-text">Leído</div>
+                                        </div>
+                                        <span class="material-icons checkmark">done</span>
+                                    </div>
+                                {% else %}
+                                    <div class="module-item">
+                                        <span class="material-icons module-item-icon">book</span>
+                                        <div>
+                                            <div class="module-item-title">Lectura: {{ lec.name }}</div>
+                                                <div class="module-item-grade">No leído</div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </a>
                         {% else %}
-                            <div class="module-item">
-                                <span class="material-icons module-item-icon">book</span>
+                            <div class="module-item locked">
+                                <span class="material-icons module-item-icon locked-text">book</span>
                                 <div>
-                                    <div class="module-item-title">Lectura: {{ lec.name }}</div>
-                                        <div class="module-item-grade">No leído</div>
+                                    <div class="module-item-title locked-text">Lectura: {{ lec.name }}</div>
+                                        <div class="module-item-grade locked-text">No leído</div>
                                 </div>
+                                <span class="material-icons lock">lock</span>
                             </div>
                         {% endif %}
-                    </a>
                     {% endfor %}
 
                     {% for act in mod.actividades.all %}
-                    <a href="{% url 'cursos:course_activity' id=act.pk %}" class="no-style-a">
-                        <div class="module-item">
-                            <span class="material-icons module-item-icon">description</span>
-                            <div>
-                                <div class="module-item-title">Actividad: {{ act.name }}</div>
-                                <div class="module-item-grade">No entregado</div>
+                        {% if is_member %}
+                            <a href="{% url 'cursos:course_activity' id=act.pk %}" class="no-style-a">
+                                <div class="module-item">
+                                    <span class="material-icons module-item-icon">description</span>
+                                    <div>
+                                        <div class="module-item-title">Actividad: {{ act.name }}</div>
+                                        <div class="module-item-grade">No entregado</div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% else %}
+                            <div class="module-item locked">
+                                <span class="material-icons module-item-icon locked-text">description</span>
+                                <div>
+                                    <div class="module-item-title locked-text">Actividad: {{ act.name }}</div>
+                                    <div class="module-item-grade locked-text">No entregado</div>
+                                </div>
+                                <span class="material-icons lock">lock</span>
                             </div>
-                        </div>
-                    </a>
+                        {% endif %}
                     {% endfor %}
 
                     {% for vid in mod.videos.all %}
-                    <a href="{% url 'cursos:course_video' id=vid.pk %}" class="no-style-a">
-                        {% if vid in user.watched_videos.all %}
-                            <div class="module-item checked">
-                                <span class="material-icons module-item-icon checked-text">smart_display</span>
-                                <div>
-                                    <div class="module-item-title checked-text">Video: {{ vid.name }}</div>
-                                    <div class="module-item-grade checked-text">Visto</div>
-                                </div>
-                                <span class="material-icons checkmark">done</span>
-                            </div>
+                        {% if is_member %}
+                            <a href="{% url 'cursos:course_video' id=vid.pk %}" class="no-style-a">
+                                {% if vid in user.watched_videos.all %}
+                                    <div class="module-item checked">
+                                        <span class="material-icons module-item-icon checked-text">smart_display</span>
+                                        <div>
+                                            <div class="module-item-title checked-text">Video: {{ vid.name }}</div>
+                                            <div class="module-item-grade checked-text">Visto</div>
+                                        </div>
+                                        <span class="material-icons checkmark">done</span>
+                                    </div>
+                                {% else %}
+                                    <div class="module-item">
+                                        <span class="material-icons module-item-icon">smart_display</span>
+                                        <div>
+                                            <div class="module-item-title">Video: {{ vid.name }}</div>
+                                            <div class="module-item-grade">No Visto</div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </a>
                         {% else %}
-                            <div class="module-item">
-                                <span class="material-icons module-item-icon">smart_display</span>
+                            <div class="module-item locked">
+                                <span class="material-icons module-item-icon locked-text">smart_display</span>
                                 <div>
-                                    <div class="module-item-title">Video: {{ vid.name }}</div>
-                                    <div class="module-item-grade">No Visto</div>
+                                    <div class="module-item-title locked-text">Video: {{ vid.name }}</div>
+                                    <div class="module-item-grade locked-text">No Visto</div>
                                 </div>
+                                <span class="material-icons lock">lock</span>
                             </div>
                         {% endif %}
-                    </a>
                     {% endfor %}
 
                     {% for quiz in mod.quizzes.all %}

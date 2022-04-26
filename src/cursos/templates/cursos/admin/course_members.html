@@ -1,42 +1,85 @@
 {% extends 'base.html' %}
 
+{% block head %}
+
+{% load static %}
+<title>Miembros</title>
+
+{% endblock %}
+
 {% block body %}
+<link rel="stylesheet" href="{% static 'css/course.css' %}">
 
+<div id="id-app" style="display: none;">cap</div>
 
-    <h1>{{ course.name }}</h1>
-    <hr>
+<div class="container-window">
+    <a href="{% url 'cursos:course_detail' id=course.pk %}" class="no-style-a">
+        <div class="return">
+            <span class="material-icons">chevron_left</span>
+            Volver a la capacitación
+        </div>
+    </a>
+    <div class="course-title">Miembros</div>
+    <div class="course-author">{{ course.name }}</div>
+    <div class="members-container">
+        <div class="member-cell">
+            <!-- <a href="{% url 'cursos:adcourse_add_members' id=course.pk %}">Agregar miembro</a> -->
+            <!-- ! NOTE -->
+            <!-- ! MembersOf model use here -->
+            <h2>Miembros actuales</h2>
+            {% for member in members %}
 
-    <!-- <a href="{% url 'cursos:adcourse_add_members' id=course.pk %}">Agregar miembro</a> -->
+            <div class="member">
+                {% if is_owner %}
+                    <a class="member-name" href="{% url 'users:user_detail' id=member.member.user.pk %}">{{ member.member.get_full_name }}</a>
+                    <a class="delete-member tooltip" href="">
+                        <span class="material-icons">close</span>
+                        <div class="tooltiptext">Desinscribir</div>
+                    </a>
+                {% else %}
+                    <a class="member-name" href="">{{ member.member.get_full_name }}</a>
+                {% endif %}
+            </div>   
 
+            {% empty %}
 
-    <!-- ! NOTE -->
-    <!-- ! MembersOf model use here -->
-    <h2>Miembros: </h2>
-    {% for member in members %}
+                <h3>No members</h3>
 
-        <h3>{{ member.member.get_full_name }}</h3>
+            {% endfor %}
+        </div>
+    
+        {% if perms.users.is_admin %}
+            <div class="member-cell">
 
-    {% empty %}
-        <h3>No members</h3>
-    {% endfor %}
+                <h2>Agregar miembros</h2>
+        
+                <form method="get">
+                    <div class="search-container">
+                        <div>
+                            <input type="text" class="searchbar" placeholder="Buscar..." name="nombre" id="nombre">
+                            <span class="material-icons searchbar-icon">search</span>
+                        </div>
+                        <button class="search-button" type="submit">
+                            Buscar
+                        </button>
+                    </div>
+                </form>
+                <!-- ! ExtendedUser model use here -->
+                {% for member in not_members %}
+                <div class="member">
+                    <a class="member-name" href="{% url 'users:user_detail' id=member.user.pk %}">{{ member.get_full_name }}</a>
+                    <a class="add-member tooltip" href="{% url 'cursos:adcourse_adding_member' id=course.pk user_id=member.user.pk %}">
+                        <span class="material-icons">add</span>
+                        <div class="tooltiptext">Inscribir</div>
+                    </a>
+                </div>
+                {% empty %}
 
-
-    {% if perms.users.is_admin %}
-        <h1>Deseas agregar mas miembros</h1>
-
-        <form method="get">
-            <input type="text" name="nombre" id="nombre">
-            <button type="submit">Search</button>
-        </form>
-        <!-- ! ExtendedUser model use here -->
-        {% for member in not_members %}
-            <h3>{{ member.get_full_name }}</h3>
-            <a href="{% url 'cursos:adcourse_adding_member' id=course.pk user_id=member.user.pk %}">Agregar</a>
-        {% empty %}
-
-        <h3>No Se encontraron miembros</h3>
-        {% endfor %}
-
-    {% endif %}
+                {% endfor %}
+    
+            </div>
+        {% endif %}
+    </div>
+</div>
 
 {% endblock %}

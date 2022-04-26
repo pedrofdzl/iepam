@@ -14,8 +14,8 @@
 <div class="container-window">
     <form method="get">
         <input class="searchbar" placeholder="Buscar..." name="curso" id="curso">
-        <button>
-            <span class="material-icons searchbar-icon">search</span>
+        <button class="searchbar-icon">
+            <span class="material-icons">search</span>
         </button>
 
     </form>
@@ -23,18 +23,26 @@
     <div class="tag-container">
         <div class="tags">
             <ul>
-                <il class="active">
-                    <a href="{% url 'cursos:menu' %}?cursos=Todos">Todas</a>
-                </il>
-                <il>
-                    <a href="{% url 'cursos:menu' %}?cursos=No Tomado">No tomadas</a>
-                </il>
-                <il>
-                    <a href="{% url 'cursos:menu' %}?cursos=Cursando">En curso</a>
-                </il>
-                <il>
-                    <a href="{% url 'cursos:menu' %}?cursos=Completado">Completadas</a>
-                </il>
+                <a href="{% url 'cursos:menu' %}?cursos=Todos">
+                    <il id="todas">
+                        Todas
+                    </il>
+                </a>
+                <a href="{% url 'cursos:menu' %}?cursos=No Tomado">
+                    <il id="no_tomadas">
+                        No tomadas
+                    </il>
+                </a>
+                <a href="{% url 'cursos:menu' %}?cursos=Cursando">
+                    <il id="en_curso">
+                        En curso
+                    </il>
+                </a>
+                <a href="{% url 'cursos:menu' %}?cursos=Completado">
+                    <il id="completadas">
+                        Completadas
+                    </il>
+                </a>
             </ul>
         </div>
     </div>
@@ -70,5 +78,7 @@
         {% endfor %}
     </div>
 </div>
+
+<script src="{% static 'js/search-tags.js' %}"></script>
 
 {% endblock %}

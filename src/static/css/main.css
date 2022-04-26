@@ -227,6 +227,7 @@
   box-shadow: 0 0 10px rgb(211, 211, 211);
   z-index: 1;
   transition: all 0.2s ease-in-out;
+  pointer-events: none;
 }
 .tooltip .tooltiptext::after {
     content: "";
@@ -237,6 +238,7 @@
     border-width: 5px;
     border-style: solid;
     border-color:  white transparent transparent transparent;
+    pointer-events: none;
   }
 .tooltip:hover .tooltiptext {
   visibility: visible;
@@ -266,7 +268,13 @@
     margin: 0;
     padding: 0;
     transform: translate(-60px, 5px);
-    pointer-events: none;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+.searchbar-icon:hover {
+    color: #202022;
+    transform: translate(-60px, 5px) scale(1.1);
 }
 
 .tag-container {
@@ -288,7 +296,6 @@
     padding-right: 0.6rem;
     border-radius: 0.5rem;
     box-shadow: 0 0 10px rgb(211, 211, 211);
-    transition: all 0.2s ease-in-out;
     background-color: white;
 }
 .tags ul il.active {
@@ -302,9 +309,14 @@
     box-shadow: 0 0 10px rgb(185, 185, 185);
     background-color: whitesmoke;
 }
-.tags ul il a {
+.tags ul a {
     font-weight: 500;
+    color: #202022;
+    text-decoration: none;
     /* #4e039b */
+}
+.active a {
+    color: white !important;
 }
 
 .card-container {

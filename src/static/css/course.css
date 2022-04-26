@@ -70,7 +70,7 @@
     margin: 0.5rem;
     max-height: 70vh;
     padding: 0.5rem;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
@@ -261,6 +261,18 @@
     background-color: rgb(228, 250, 231);
 }
 
+.locked {
+    background-color: rgb(223, 223, 223);
+    border: 1px solid lightgray;
+}
+.locked:hover {
+    background-color: rgb(223, 223, 223);
+}
+
+.locked-text {
+    color: gray;
+}
+
 .checkmark {
     font-size: 30px !important;
     margin: 0;
@@ -269,6 +281,149 @@
     color:rgb(146, 167, 147);
 }
 
+.lock {
+    font-size: 30px !important;
+    margin: 0;
+    margin-top: 0.3rem;
+    margin-right: 0.6rem;
+    color:gray;
+}
+
 .checked-text {
     color:rgb(146, 167, 147);
+}
+
+.members-container {
+    margin: 1rem;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 30px;
+    height: 80%;
+}
+
+.member-cell {
+    padding: 0.5rem 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+    overflow-y: auto;
+}
+
+.search-container {
+    display: grid;
+    grid-template-columns: 70% 30%;
+}
+
+.searchbar {
+    width: 100%;
+    height: 36px;
+    margin: 1rem;
+    margin-left: 0;
+    margin-top: 0;
+    padding: 0.2rem;
+    padding-left: 1rem;
+    font-size: 18px;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+    transition: all 0.2s ease-in-out;
+}
+.searchbar:focus {
+    outline: none !important;
+    background-color: whitesmoke;
+    box-shadow: 0 0 10px rgb(185, 185, 185);
+}
+.searchbar-icon {
+    color: gray;
+    font-size: 24px;
+    margin: 0;
+    padding: 0;
+    transform: translate(-60px, 5px);
+    pointer-events: none;
+}
+
+.search-button {
+    height: 42px;
+    margin-left: 2rem;
+    border-radius: 0.5rem;
+    padding: 0.6rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border: none;
+    outline: none;
+    background-color: #20CC82;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+}
+.search-button:hover {
+    background-color: #20CC82;
+    box-shadow: 0 0 10px #20CC82;
+}
+
+.member {
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+    border-radius: 0.5rem;
+    margin-bottom: 0.3rem;
+}
+.member:hover {
+    background-color: whitesmoke;
+}
+.member-name {
+    padding-left: 1rem;
+    padding-top: 0.6rem;
+    font-size: 16px;
+    font-weight: 500;
+    color: #202022;
+    text-decoration: none;
+}
+
+.delete-member {
+    background-color: #b44d4d;
+    color: white !important;
+    padding: 0.4rem;
+    padding-left: 0.6rem !important;
+    padding-right: 0.6rem !important;
+    padding-top: 0.6rem !important;
+    border-radius: 0.5rem;
+    font-size: 16px;
+}
+.delete-member:hover {
+    background-color: #c74848;
+    box-shadow: 0 0 10px #ff6363;
+}
+
+.add-member {
+    background-color: #20CC82;
+    color: white !important;
+    padding: 0.6rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.3rem !important; 
+    padding-left: 0.5rem !important;
+    border-radius: 0.5rem;
+    font-size: 16px;
+}
+.add-member:hover {
+    background-color: #20CC82;
+    box-shadow: 0 0 10px #20CC82;
+}
+
+.return {
+    margin: 1rem;
+    margin-bottom: 0.5rem;
+    display: inline-flex;
+    font-weight: 500;
+    font-size: 18px;
+    background-color: white;
+    padding: 0.5rem;
+    padding-right: 0.8rem;
+    border-radius: 0.5rem;
+}
+.return span {
+    font-size: 24px;
+}
+.return:hover {
+    box-shadow: 0 0 10px rgb(211, 211, 211);
 }

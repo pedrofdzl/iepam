@@ -33,6 +33,10 @@
     margin: 0;
 }
 
+.panel-info:hover {
+    color: #202022;
+}
+
 .panel-info-text {
     display: inline-flex;
     height: fit-content;

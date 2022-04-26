@@ -342,3 +342,20 @@ a {
     background-color: #202022;
     color: whitesmoke;
 }
+
+.error-container {
+    margin-left: 20vw;
+    margin-right: 20vw;
+    margin-top: 10vh;
+}
+.error-number {
+    color: whitesmoke;
+    font-size: 102px;
+    font-weight: 700;
+    float: end;
+}
+.error-title {
+    color: whitesmoke;
+    font-size: 52px;
+    font-weight: 600;
+}
