@@ -13,33 +13,16 @@
 <div id="id-app" style="display: none;">profile</div>
 
 <div class="container-window">
-<<<<<<< HEAD
-    <div class="profile-background"></div>
-    <div class="profile-picture">
-        {% if user.extended_user.profile_pic %}
-            <img src="{{ user.extended_user.profile_pic.url }}">
-        {% else %}
-        <img src="{% static 'img/view.jpg' %}">
-        {% endif %}
-    </div>
-    <div class="profile-name">
-        <p class="profile-main-name">{{ user.extended_user.get_full_name }}</p>
-        <p class="profile-secondary-name">
-            {% if user.canTeach == true %}
-                Capacitador
-            {% else %}
-                Usuario
-            {% endif %}
-        </p>
-    </div>
-=======
     <div class="profile-rows">
->>>>>>> 2009df1378f7760f1a25b986c9015b80ed3513e2
 
         <div class="profile-rows-cell">
             <div class="profile-background"></div>
             <div class="profile-picture">
-                <img src="{% static 'img/view.jpg' %}">
+                {% if user.extended_user.profile_pic %}
+                    <img src="{{ user.extended_user.profile_pic.url }}">
+                {% else %}
+                    <img src="{% static 'img/view.jpg' %}">
+                {% endif %}
             </div>
             <div class="profile-name">
                 <p class="profile-main-name">{{ user.extended_user.get_full_name }}</p>
@@ -107,20 +90,15 @@
                     <p class="user-info-title">Capacitaciones actuales</p>
                     <hr class="hr-nice">
             
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en Algo</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-            
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en Otra</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-            
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en Tris</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
+                    {% for course in courses %}
+                        <div class="user-course-card">
+                            <div class="user-course-card-title">{{ course.course.name }}</div>
+                            <div class="user-course-card-desc">{{ course.course.description }}</div>
+                            <small>Iniciado: {{ course.dateJoined }}</small>
+                        </div>
+                    {% empty %}
+                        <h5>Ningun curso actual</h5>
+                    {% endfor %}
             
                     <br>
                 </div>

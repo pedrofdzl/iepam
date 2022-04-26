@@ -32,7 +32,7 @@
             <p class="course-info-num">{{ course.members.count }}</p>
         </div>
         <br>
-        <p>Miembros</p>
+        <p>Han cursado</p>
     </a>
 </div>
 
@@ -42,6 +42,18 @@
 <div class="panel-description">
     {{ course.description }}
 </div>
+
+<div class="panel-subtitle">Mi progreso <span class="material-icons">east</span> {{ completion_percentage }}%</div>
+<div class="progress-bar">
+    <div class="progress-bar-bar">
+        <div id="bar" class="progress-bar-fill">
+        </div>
+    </div>
+</div>
+<script>
+    const ratio = '{{completion_ratio}}';
+    document.getElementById('bar').style.transform = 'scaleX('+ ratio +')'
+</script>
 
 <div style="text-align: center;">
     {% if not is_member %}

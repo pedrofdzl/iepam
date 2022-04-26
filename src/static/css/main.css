@@ -341,6 +341,12 @@
 .card-img-container img {
     width: 240px;
 }
+
+.card-body {
+    display: grid;
+    grid-template-rows: 32% 36% 1fr;
+}
+
 .card-title {
     margin: 1rem;
     margin-bottom: 0rem;
@@ -354,8 +360,8 @@
     margin-bottom: 0;
     font-size: 16px;
     height: 60px;
-    text-overflow: ellipsis;
     overflow-y: hidden;
+    text-overflow: ellipsis;
 }
 .card-members {
     display: inline-flex;

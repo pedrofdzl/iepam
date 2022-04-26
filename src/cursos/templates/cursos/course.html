@@ -46,13 +46,24 @@
 
                     {% for lec in mod.lecturas.all %}
                     <a href="{% url 'cursos:course_lecture' id=lec.pk %}" class="no-style-a">
-                        <div class="module-item">
-                            <span class="material-icons module-item-icon">book</span>
-                            <div>
-                                <div class="module-item-title">Lectura: {{ lec.name }}</div>
-                                <div class="module-item-grade">No leído</div>
+                        {% if lec in user.read_lectures.all %}
+                            <div class="module-item checked">
+                                <span class="material-icons module-item-icon checked-text">book</span>
+                                <div>
+                                    <div class="module-item-title checked-text">Lectura: {{ lec.name }}</div>
+                                        <div class="module-item-grade checked-text">Leído</div>
+                                </div>
+                                <span class="material-icons checkmark">done</span>
                             </div>
-                        </div>
+                        {% else %}
+                            <div class="module-item">
+                                <span class="material-icons module-item-icon">book</span>
+                                <div>
+                                    <div class="module-item-title">Lectura: {{ lec.name }}</div>
+                                        <div class="module-item-grade">No leído</div>
+                                </div>
+                            </div>
+                        {% endif %}
                     </a>
                     {% endfor %}
 
@@ -70,13 +81,24 @@
 
                     {% for vid in mod.videos.all %}
                     <a href="{% url 'cursos:course_video' id=vid.pk %}" class="no-style-a">
-                        <div class="module-item">
-                            <span class="material-icons module-item-icon">smart_display</span>
-                            <div>
-                                <div class="module-item-title">Video: {{ vid.name }}</div>
-                                <div class="module-item-grade">No Visto</div>
+                        {% if vid in user.watched_videos.all %}
+                            <div class="module-item checked">
+                                <span class="material-icons module-item-icon checked-text">smart_display</span>
+                                <div>
+                                    <div class="module-item-title checked-text">Video: {{ vid.name }}</div>
+                                    <div class="module-item-grade checked-text">Visto</div>
+                                </div>
+                                <span class="material-icons checkmark">done</span>
                             </div>
-                        </div>
+                        {% else %}
+                            <div class="module-item">
+                                <span class="material-icons module-item-icon">smart_display</span>
+                                <div>
+                                    <div class="module-item-title">Video: {{ vid.name }}</div>
+                                    <div class="module-item-grade">No Visto</div>
+                                </div>
+                            </div>
+                        {% endif %}
                     </a>
                     {% endfor %}
 

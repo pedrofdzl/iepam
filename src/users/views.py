@@ -116,7 +116,7 @@ def aduser_detail_view(request, id):
 @permission_required(['users.is_admin'])
 def aduser_update_view(request, id):
     context = {}
-    template_name = admin_template_pre + 'user_update_form.html'
+    template_name = admin_template_pre + 'user_profile_form_admin.html'
 
     user = get_object_or_404(User, pk=id)
 
@@ -156,6 +156,7 @@ def aduser_update_view(request, id):
             user.extended_user.academic_level = academic_level
             user.extended_user.birthdate = birthdate
 
+            user.extended_user.save()
             user.save()
 
             return redirect(reverse('users:user_detail', kwargs={'id': user.pk}))

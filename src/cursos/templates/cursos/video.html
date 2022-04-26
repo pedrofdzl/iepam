@@ -53,6 +53,20 @@
                             allowfullscreen>
                     </iframe>
                 </div>
+
+                <br>
+
+                <div style="text-align: center;">
+                    <a href="{% url 'cursos:course_watch_video' id=video.pk %}" class="no-style-a button-view">
+                        {% if viewed %}
+                            <span class="material-icons">visibility_off</span>
+                            Marcar como no visto
+                        {% else %}
+                            <span class="material-icons">visibility</span>
+                            Marcar como visto
+                        {% endif %}
+                    </a>
+                </div>
             </div>
             
         </div>
