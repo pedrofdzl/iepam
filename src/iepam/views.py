@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.shortcuts import render
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required, permission_required
 
 from users.models import ExtendedUser
 from cursos.models import Course
-from django.urls import reverse
+
+from django.http import Http404, HttpResponseServerError
+from django.core.exceptions import PermissionDenied
 
 # Create your views here.
 @login_required
@@ -45,5 +46,19 @@ def panel(request):
 
             context['courses'] = found_courses
 
-
     return render(request, 'admin.html', context)
+
+
+# Test views
+
+# 404 VIEW
+def my404_view(request):
+    raise Http404()
+
+# 403 View
+def my403_view(request):
+    raise PermissionDenied()
+
+# 500 View
+def my500_view(request):
+    raise HttpResponseServerError()

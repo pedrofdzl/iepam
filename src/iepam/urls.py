@@ -25,6 +25,10 @@ urlpatterns = [
     path('panel/', views.panel, name='panel'),
     path('cursos/', include(('cursos.urls'), namespace='cursos')),
     path('miembros/', include(('users.urls'), namespace='miembros')),
+
+    path('my-404/',views.my404_view, name='404'),
+    path('my-403/',views.my403_view, name='403'),
+    path('my-500/',views.my500_view, name='500')
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_DIR)
