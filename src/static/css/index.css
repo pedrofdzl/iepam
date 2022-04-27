@@ -1,8 +1,112 @@
+.index-main-container {
+    display: grid;
+    grid-template-rows: 100px 1fr;
+}
+
+.index-secondary-container {
+    display: grid;
+    grid-template-columns: 70% 1fr;
+}
+
+.index-section-container {
+    margin: 1rem;
+    width: fit-content;
+    display: grid;
+    grid-template-rows: 0fr 1fr;
+}
+
+.index-section-body {
+    display: flex;
+}
+
+.index-section-title {
+    font-size: 18px;
+    font-weight: 500;
+    width: fit-content;
+}
+
 .index-title {
     margin: 1rem;
     margin-top: 0.4rem;
     margin-bottom: 0;
-    font-size: 52px;
+    font-size: 42px;
     font-weight: 700;
     color: #202022;
+}
+.index-subtitle {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 18px;
+    font-weight: 400;
+    color: rgb(102, 102, 102);
+}
+
+.statistics-card {
+    margin-top: 1rem;
+    margin-right: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+    width: 110px;
+}
+.statistics-card-number {
+    font-size: 32px;
+    font-weight: 500;
+}
+.statistics-card-text {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.progress-container {
+    width: 100%;
+    margin-top: 1rem;
+    margin-right: 1rem;
+    padding: 1rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+}
+.progress-separator {
+    border: 1px solid lightgrey;
+    background-color: lightgrey;
+    border-radius: 1rem;
+}
+.progress-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.progress-bar {
+    display: grid;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    grid-template-columns: 85% 1fr;
+}
+.progress-bar p {
+    margin: 0;
+    margin-left: 1rem;
+}
+.progress-bar-bar {
+    padding: 0;
+    margin: 0;
+    height: 10px;
+    background-color: lightgray;
+    border-radius: 1rem;
+    margin-top: 0.3rem;
+    overflow: hidden;
+}
+.progress-bar-fill {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #20CC82;
+    transform-origin: left;
+    transform: scaleX(0.5);
+    z-index: 1;
 }

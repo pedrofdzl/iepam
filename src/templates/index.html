@@ -13,7 +13,88 @@
 <div id="id-app" style="display: none;">main</div>
 
 <div class="container-window">
-    <div class="index-title">Bienvenido de vuelta, {{ user.first_name }}.</div>
+    <div class="index-main-container">
+
+        <div class="index-title">Bienvenido de vuelta, {{ user.first_name }}.
+            <div class="index-subtitle">¡Vas bien, sigue asi!</div>
+        </div>
+
+        <div class="index-secondary-container">
+            
+            <div>
+                <!-- Estadisiticas -->
+                <div class="index-section-container">
+
+                    <div class="index-section-title">Estadísticas</div>
+                    <div class="index-section-body">
+                        <div class="statistics-card">
+                            <div class="statistics-card-number">5</div>
+                            <div class="statistics-card-text">Capacitaciones en curso</div>
+                        </div>
+                        <div class="statistics-card">
+                            <div class="statistics-card-number">2</div>
+                            <div class="statistics-card-text">Capacitaciones completadas</div>
+                        </div>
+                        <div class="statistics-card">
+                            <div class="statistics-card-number">34</div>
+                            <div class="statistics-card-text">Actividades realizadas</div>
+                        </div>
+                        <div class="statistics-card">
+                            <div class="statistics-card-number">1</div>
+                            <div class="statistics-card-text">Capacitaciones creadas</div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Estadisiticas end -->
+                <br>
+                <!-- Progreso -->
+                <div class="index-section-container">
+
+                    <div class="index-section-title">Tu progreso</div>
+                    <div class="index-section-body">
+                        <div class="progress-container">
+
+                            <div class="progress-item">
+                                <div class="progress-name">
+                                    Capacitacion en Microsoft Office
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-bar-bar">
+                                        <div class="progress-bar-fill"></div>
+                                    </div>
+                                    <p>50%</p>
+                                </div>
+                            </div>
+
+                            <div class="progress-separator"></div>
+
+                            <div class="progress-item">
+                                <div class="progress-name">
+                                    Capacitacion en Computadoras
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-bar-bar">
+                                        <div class="progress-bar-fill"></div>
+                                    </div>
+                                    <p>50%</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Progreso end -->
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 {% endblock %}

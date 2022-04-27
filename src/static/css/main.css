@@ -320,9 +320,10 @@
 }
 
 .card-container {
-    width: 240px;
+    width: 100%;
     padding: 16px;
     display: inline-flex;
+    flex-wrap: wrap;
 }
 .card-container a {
     width: fit-content;
@@ -334,6 +335,7 @@
     height: 280px;
     overflow: hidden;
     margin: 0;
+    margin-bottom: 1.5rem;
     margin-right: 1.5rem;
     border-radius: 0.5rem;
     box-shadow: 0 0 10px rgb(211, 211, 211);

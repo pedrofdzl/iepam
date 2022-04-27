@@ -235,7 +235,6 @@ def memuser_profile_view(request):
 
     courses = extended_user.courses.filter(status='Incompleto')
 
-
     context["user"] = user
     context['courses'] = courses
 

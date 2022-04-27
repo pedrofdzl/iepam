@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% load static %}
+<title>Mi Perfil</title>
+
+{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{% static 'css/profile-new.css' %}">
+
+<div id="id-app" style="display: none;">profile</div>
+
+<div class="container-window">
+
+    <div class="profile-main-layout">
+        <div class="profile-background"></div>
+        <div class="profile-personal-container">
+
+            <div class="profile-personal-header">
+
+                <div class="profile-picture">
+                    {% if user.extended_user.profile_pic %}
+                        <img src="{{ user.extended_user.profile_pic.url }}">
+                    {% else %}
+                        <img src="{% static 'img/view.jpg' %}">
+                    {% endif %}
+                </div>
+
+                <div class="profile-name">
+                    <p class="profile-main-name">{{ user.extended_user.get_full_name }}</p>
+                    <p class="profile-secondary-name">
+                        {% if user.canTeach %}
+                            Capacitador
+                        {% else %}
+                            Usuario
+                        {% endif %}
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="profile-personal-info">
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

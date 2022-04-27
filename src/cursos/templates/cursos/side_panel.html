@@ -1,85 +1,91 @@
-<div class="panel-subtitle">Información sobre</div>
-<div class="panel-title">{{ course.name }}</div>
+<div class="grid-container">
 
-<div class="panel-info-container">
-    <a class="panel-info" href="{% url 'cursos:course_like' id=course.pk %}">
-        <div class="panel-info-text">
-            {% if liked %}
-                <span class="material-icons like liked">thumb_up</span>
-            {% else %}
-                <span class="material-icons like">thumb_up</span>
-            {% endif %}
-            <p class="course-info-num">{{ course.likes.count }}</p>
+    <div>
+        <div class="panel-subtitle">Información sobre</div>
+        <div class="panel-title">{{ course.name }}</div>
+
+        <div class="panel-info-container">
+            <a class="panel-info" href="{% url 'cursos:course_like' id=course.pk %}">
+                <div class="panel-info-text">
+                    {% if liked %}
+                        <span class="material-icons like liked">thumb_up</span>
+                    {% else %}
+                        <span class="material-icons like">thumb_up</span>
+                    {% endif %}
+                    <p class="course-info-num">{{ course.likes.count }}</p>
+                </div>
+                <br>
+                <p>Me gusta</p>
+            </a>
+
+            <a class="panel-info"  href="{% url 'cursos:adcourse_members' id=course.pk %}">
+                <div class="panel-info-text">
+                    <span class="material-icons">people</span>
+                    <p class="course-info-num">{{ course.members.count }}</p>
+                </div>
+                <br>
+                <p>Miembros</p>
+            </a>
+
+            <a class="panel-info">
+                <div class="panel-info-text">
+                    <span class="material-icons">people</span>
+                    <p class="course-info-num">{{ course.members.count }}</p>
+                </div>
+                <br>
+                <p>Han cursado</p>
+            </a>
         </div>
-        <br>
-        <p>Me gusta</p>
-    </a>
 
-    <a class="panel-info"  href="{% url 'cursos:adcourse_members' id=course.pk %}">
-        <div class="panel-info-text">
-            <span class="material-icons">people</span>
-            <p class="course-info-num">{{ course.members.count }}</p>
+        <br>
+
+        <div class="panel-subtitle">Descripción</div>
+        <div class="panel-description">
+            {{ course.description }}
         </div>
-        <br>
-        <p>Miembros</p>
-    </a>
 
-    <a class="panel-info">
-        <div class="panel-info-text">
-            <span class="material-icons">people</span>
-            <p class="course-info-num">{{ course.members.count }}</p>
-        </div>
-        <br>
-        <p>Han cursado</p>
-    </a>
-</div>
-
-<br>
-
-<div class="panel-subtitle">Descripción</div>
-<div class="panel-description">
-    {{ course.description }}
-</div>
-
-{% if is_member or is_owner %}
-    <div class="panel-subtitle">Mi progreso <span class="material-icons">east</span> {{ completion_percentage }}%</div>
-    <div class="progress-bar">
-        <div class="progress-bar-bar">
-            <div id="bar" class="progress-bar-fill">
+        {% if is_member %}
+            <div class="panel-subtitle">Mi progreso <span class="material-icons">east</span> {{ completion_percentage }}%</div>
+            <div class="progress-bar">
+                <div class="progress-bar-bar">
+                    <div id="bar" class="progress-bar-fill">
+                    </div>
+                </div>
             </div>
-        </div>
+            <script>
+                const ratio = '{{completion_ratio}}';
+                document.getElementById('bar').style.transform = 'scaleX('+ ratio +')'
+            </script>
+        {% endif %}
     </div>
-    <script>
-        const ratio = '{{completion_ratio}}';
-        document.getElementById('bar').style.transform = 'scaleX('+ ratio +')'
-    </script>
-{% endif %}
 
-<div style="text-align: center;">
-    {% if is_member %}
-
-    {% elif is_owner %}
-
-    {% else %}
-
-    <a href="{% url 'cursos:adcourse_adding_member' id=course.pk user_id=user.pk %}" class="button-edit-2 no-style-a">
-        <p>Unirse capacitación</p>
-        <span class="material-symbols-outlined">
-            person_add
-        </span>
-    </a>
-
-    {% endif %}
-
-
-    {% if is_owner %}
-        <a href="{% url 'cursos:adcourse_edit' id=course.pk %}" class="button-edit-2 no-style-a">
-            <p>Editar capacitación</p>
-            <span class="material-icons">edit</span>
+    <div class="owner-buttons">
+        {% if is_member %}
+    
+        {% elif is_owner %}
+    
+        {% else %}
+    
+        <a href="{% url 'cursos:adcourse_adding_member' id=course.pk user_id=user.pk %}" class="button-edit-2 no-style-a">
+            <p>Unirse capacitación</p>
+            <span class="material-symbols-outlined">
+                person_add
+            </span>
         </a>
-        <a href="" class="button-delete no-style-a">
-            <p>Eliminar</p>
-            <span class="material-icons">delete</span>
-        </a>
-    {% endif %}
+    
+        {% endif %}
+    
+    
+        {% if is_owner %}
+            <a href="{% url 'cursos:adcourse_edit' id=course.pk %}" class="button-edit-2 no-style-a">
+                <p>Editar capacitación</p>
+                <span class="material-icons">edit</span>
+            </a>
+            <a href="" class="button-delete no-style-a">
+                <p>Eliminar</p>
+                <span class="material-icons">delete</span>
+            </a>
+        {% endif %}
+    </div>
+
 </div>

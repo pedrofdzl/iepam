@@ -26,11 +26,11 @@
             <!-- <a href="{% url 'cursos:adcourse_add_members' id=course.pk %}">Agregar miembro</a> -->
             <!-- ! NOTE -->
             <!-- ! MembersOf model use here -->
-            <h2>Miembros actuales</h2>
+            <h2>Miembros actuales ({{ members.count }})</h2>
             {% for member in members %}
 
             <div class="member">
-                {% if is_owner %}
+                {% if perms.users.is_admin %}
                     <a class="member-name" href="{% url 'users:user_detail' id=member.member.user.pk %}">{{ member.member.get_full_name }}</a>
                     <a class="delete-member tooltip" href="">
                         <span class="material-icons">close</span>

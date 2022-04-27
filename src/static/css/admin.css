@@ -62,6 +62,7 @@ a {
     height: fit-content;
     border-radius: 1rem;
     box-shadow: 0 0 10px rgb(211, 211, 211);
+    overflow-y: auto;
 }
 .admin-list-header {
     margin: 0;
