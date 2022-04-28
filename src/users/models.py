@@ -40,7 +40,8 @@ class ExtendedUser(models.Model):
     academic_level = models.CharField('academic Level', max_length=255)
     profile_pic = models.ImageField('profile_pic', upload_to=profile_pic_upload_handler, blank=True, null=True)
     cv = models.FileField('CV', upload_to=cv_upload_handler, blank=True, null=True, validators=[file_extension_validator,])
-    canTeach = models.BooleanField(default=False)
+    can_teach = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Extended User'

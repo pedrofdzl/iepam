@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+    <h1>{{ quiz.name }}</h1>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <label for="">Opcion</label>
+        <div>
+            {{ form.prompt.errors }}
+            {{ form.prompt }}
+        </div>
+        <label for="">¿Es correcta?</label>
+        <div>
+            {{ form.correct.errors }}
+            {{ form.correct }}
+        </div>
+        <a href="{% url 'cursos:course_quiz_edit_question' id=question.pk %}">Cancel</a>
+        <button>Agregar</button>
+    </form>
+
+
+{% endblock %}

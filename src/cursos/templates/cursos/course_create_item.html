@@ -138,7 +138,42 @@
                 </div>
 
                 <div id="div-quiz" class="">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ quiz_form.non_field_erros }}
 
+                        <label>Título</label>
+                        <div class="input-line">
+                            {{ quiz_form.name.errors }}
+                            {{ quiz_form.name }}
+                        </div>
+
+                        <label>Descripción</label>
+                        <div class="input-line">
+                            {{ quiz_form.description.errors }}
+                            {{ quiz_form.description }}
+                        </div>
+                        
+                {% comment %} 
+                        <h3>Preguntas:</h3>
+                        {{ question_formset.management_form }}
+
+                        <div id="questions-list">
+                            {% for form in question_formset %}
+                            <div class="question-form">
+                                {{ form.as_p }}
+                                <hr>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div style="display: none;" id="empty-form">{{ question_formset.empty_form.as_p }}
+                            <hr>
+                        </div>
+                        <button type="button" id="add-question">Agregar pregunta</button> {% endcomment %}
+
+                        <button type="submit">Crear</button>
+                    </form>
                 </div>
 
 
@@ -149,6 +184,33 @@
         <div id="action" style="visibility: hidden;">{{ action }}</div>
 
         <script src="{% static 'js/create-item.js' %}"></script>
-    </main>    
+    </main>
+
+    {% comment %} <script>
+        const addMorebtn = document.getElementById('add-question');
+        const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+        
+        addMorebtn.addEventListener('click', event=>{
+            if (event){
+                event.preventDefault();
+            }
+            const current_IngredientForms = document.getElementsByClassName('question-form');
+
+            let currentFormCount = current_IngredientForms.length;//+ 1;
+
+            const questionTarget = document.getElementById('questions-list');
+            const newemptyForm = document.getElementById('empty-form').cloneNode(true);
+            newemptyForm.setAttribute('class', 'question-form');
+            newemptyForm.setAttribute('id', `form-${currentFormCount}`);
+            const regex = new RegExp('__prefix__', 'g')
+            newemptyForm.innerHTML = newemptyForm.innerHTML.replace(regex, currentFormCount)
+            newemptyForm.style.display = 'block';
+            questionTarget.append(newemptyForm);
+
+            totalForms.setAttribute('value', currentFormCount+1);
+            
+        });
+
+    </script> {% endcomment %}
 </body>
 </html>

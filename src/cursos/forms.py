@@ -1,8 +1,7 @@
-from email.policy import default
 from django import forms
 
-from .models import Course, Modulo, Lectura, Actividad, Quiz, Video
-from django.core.validators import MaxLengthValidator, FileExtensionValidator
+from .models import Course, Modulo, Lectura, Actividad, Question, Quiz, Video, QuestionOption
+from django.core.validators import MaxLengthValidator, FileExtensionValidator, MinLengthValidator
 
 class CourseCreateForm(forms.ModelForm):
     class Meta:
@@ -54,4 +53,37 @@ class VideoAddForm(forms.ModelForm):
         }
         validators = {
             'description': MaxLengthValidator(500)
+        }
+
+class QuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['name', 'description']
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 5})
+        }
+        validators = {
+            'description': MaxLengthValidator(500)
+        }
+
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['prompt',]
+
+        widgets = {
+            'prompt': forms.Textarea(attrs={'rows': 5})
+        }
+
+
+
+class QuestionOptionsForm(forms.ModelForm):
+    correct = forms.BooleanField(required=False)
+    class Meta:
+        model = QuestionOption
+        fields = ['prompt', 'correct']
+
+        widgets = {
+            'prompt': forms.Textarea(attrs={'rows': 5})
         }

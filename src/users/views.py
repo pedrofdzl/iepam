@@ -55,6 +55,8 @@ def aduser_member_register_View(request):
             extendedUser = ExtendedUser()
             group = get_object_or_404(Group, name=user_type)
 
+                
+
             user.username = username
             user.first_name = first_name
             user.last_name = first_last_name
@@ -69,6 +71,13 @@ def aduser_member_register_View(request):
             extendedUser.second_last_name = second_last_name
             extendedUser.birthdate = birthdate
             extendedUser.academic_level = academic_level
+
+            if user_type == 'Administradores':
+                extendedUser.is_admin = True
+                extendedUser.can_teach = True
+            elif user_type == 'Capacitadores':
+                extendedUser.can_teach = True
+
 
             if "cv" in request.FILES:
                 extendedUser.cv = request.FILES["cv"]
@@ -107,7 +116,7 @@ def aduser_detail_view(request, id):
     user = get_object_or_404(User, pk=id)
     extended_user = user.extended_user
 
-    incomplete_courses = extended_user.courses.filter(status='Incompleto')
+    incomplete_courses = extended_user.courses.filter(status='Cursando')
 
     context["extended_user"] = extended_user
     context['incomplete_courses'] = incomplete_courses
@@ -133,6 +142,12 @@ def aduser_update_view(request, id):
         'year': user.extended_user.birthdate.year,
         'academic_level': user.extended_user.academic_level
     }
+
+    incomplete_courses = extended_user.courses.filter(status='Cursando')
+    print(incomplete_courses)
+
+    context['incomplete_courses'] = incomplete_courses
+    context['extended_user'] = extended_user
 
     update_form = UserUpdateForm(initial=initial_data)
 
@@ -238,10 +253,10 @@ def memuser_profile_view(request):
     user = request.user
     extended_user = user.extended_user
 
-    courses = extended_user.courses.filter(status='Incompleto')
+    incomplete_courses = extended_user.courses.filter(status='Cursando')
 
     context["user"] = user
-    context['courses'] = courses
+    context['incomplete_courses'] = incomplete_courses
 
     return render(request, template_name, context)
 
@@ -359,8 +374,6 @@ def user_login_view(request):
 
 
 def user_logout_view(request):
-
     logout(request)
-
     return redirect(reverse('index'))
 

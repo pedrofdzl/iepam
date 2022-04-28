@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{%  block body %}
+    <h1>Quiz: {{ quiz.name }}</h1>
+    <hr>
+
+   <form method="post" id="main-form">
+       {% csrf_token %}
+       {{ form.non_field_errors }}
+       
+        <label for="">Pregunta</label>
+        <div>
+            {{ form.prompt.errors }}
+            {{ form.prompt }}
+        </div>
+
+        <a href="{% url 'cursos:course_quiz' id=quiz.pk %}">Cancelar</a>
+        <button id="start-delete-btn">Eliminar</button>
+        {% if editing %}
+        
+            <button type="submit">Actualizar</button>
+
+        {% else %}
+            <button type="submit">Agregar</button>
+        {% endif %}
+   </form>
+
+   <div id="delete-actions" style="display: none;">
+        <h5>Deseas eliminar la pregunta {{question.prompt}}</h5>
+       <button id="cancel-delete-btn">cancel</button>
+       <a href="{% url 'cursos:course_quiz_delete_question' id=question.pk %}">Delete</a>
+
+   </div>
+
+   {% if editing %}
+
+        <h3>Opciones</h3>
+        <a href="{% url 'cursos:curso_question_add_option' id=question.pk %}">Agregar opciones</a>
+        {% for option in question.options.all %}
+
+            <p>{{option.prompt}}</p>
+            <p>correcta? {% if option.correct %}Si{% else %}No{% endif %}</p>
+            <a href="{% url 'cursos:curso_question_edit_option' id=option.pk %}">Editar</a>
+            <a href="{% url 'cursos:curso_question_delete_option' id=option.pk %}">delete</a>
+
+
+        {% empty %}
+
+        <h4>sin opciones</h4>
+        {% endfor %}
+
+   {% endif %}
+
+
+   <script>
+        const mainForm = document.getElementById('main-form');
+        const deleteActions = document.getElementById('delete-actions');
+        const startdeleteBtn = document.getElementById('start-delete-btn');
+        const cancelBtn = document.getElementById('cancel-delete-btn');
+
+        startdeleteBtn.addEventListener('click', (event)=>{
+        event.preventDefault();
+        mainForm.style.display = 'none';
+        deleteActions.style.display = 'block';
+       });
+
+       cancelBtn.addEventListener('click', event=>{
+           event.preventDefault();
+           mainForm.style.display = 'block';
+            deleteActions.style.display = 'none';
+       })
+
+
+
+
+       
+   </script>
+
+{% endblock %}
