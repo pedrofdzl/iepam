@@ -200,3 +200,13 @@ body {
     transform: translate(2px, -42px) scaleX(1);
     border-radius: 0.3rem;
 }
+
+.error-fields {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    background-color: #b44d4d;
+    color: white;
+    border-radius: 0.5rem;
+    font-weight: 500;
+}

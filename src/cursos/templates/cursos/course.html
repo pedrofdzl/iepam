@@ -45,7 +45,7 @@
                     <br>
 
                     {% for lec in mod.lecturas.all %}
-                        {% if is_member %}
+                        {% if is_member or is_owner %}
                             <a href="{% url 'cursos:course_lecture' id=lec.pk %}" class="no-style-a">
                                 {% if lec in user.read_lectures.all %}
                                     <div class="module-item checked">
@@ -79,7 +79,7 @@
                     {% endfor %}
 
                     {% for act in mod.actividades.all %}
-                        {% if is_member %}
+                        {% if is_member or is_owner %}
                             <a href="{% url 'cursos:course_activity' id=act.pk %}" class="no-style-a">
                                 <div class="module-item">
                                     <span class="material-icons module-item-icon">description</span>
@@ -102,7 +102,7 @@
                     {% endfor %}
 
                     {% for vid in mod.videos.all %}
-                        {% if is_member %}
+                        {% if is_member or is_owner %}
                             <a href="{% url 'cursos:course_video' id=vid.pk %}" class="no-style-a">
                                 {% if vid in user.watched_videos.all %}
                                     <div class="module-item checked">

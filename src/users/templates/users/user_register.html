@@ -30,104 +30,107 @@
         <div class="container">
             <a class="title"><img src="{% static 'svg/iepam-logo-white.svg' %}"><p>IEPAM</p></a>
             <div class="register-container">
-                <div class="register-title">Registrar nuevo usuario</div>
                     <form class="register-form" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                
-                        <div class="form-col">
-                            <label>Usuario</label>
-                            <div>
-                                {{ form.username.errors }}
-                                {{ form.username }}
-                            </div>
-                            
-                            <label>Nombre</label>
-                            <div>
-                                {{ form.first_name.errors }}
-                                {{ form.first_name }}
-                            </div>
-                    
-                            <label>Apellido Paterno</label>
-                            <div>
-                                {{ form.first_last_name.errors }}
-                                {{ form.first_last_name }}
-                            </div>
-                    
-                            <label>Apellido Materno</label>
-                            <div>
-                                {{ form.second_last_name.errors }}
-                                {{ form.second_last_name }}
-                            </div>
-
-                            <label>Tipo de Miembro:</label>
-                            <div>
-                                {{ form.user_type.errors }}
-                                {{ form.user_type }}
-                            </div>
-                            
-
-                            <label>CV</label>
-                            <div class="custom-file-input">
-                                {{ form.cv.errors }}
-                                {{ form.cv }}
-                            </div>
-                        
+                        <div class="register-title">Registrar nuevo usuario</div>
+                        <div class="error-fields">
+                            {{ form.non_field_errors}}
                         </div>
+                        <div class="register-form-fields">
+                            <div class="form-col">
+                                <label>Usuario</label>
+                                <div>
+                                    {{ form.username.errors }}
+                                    {{ form.username }}
+                                </div>
+                                
+                                <label>Nombre</label>
+                                <div>
+                                    {{ form.first_name.errors }}
+                                    {{ form.first_name }}
+                                </div>
                         
-                        <div class="form-col">
-                            <label>Correo Electronico</label>
-                            <div>
-                                {{ form.email.errors }}
-                                {{ form.email }}
-                            </div>
-
-                            <div class="date-row">
+                                <label>Apellido Paterno</label>
                                 <div>
-                                    <label>Dia</label>
-                                    <div>
-                                        {{ form.day.errors }}
-                                        {{ form.day }}
-                                    </div>
+                                    {{ form.first_last_name.errors }}
+                                    {{ form.first_last_name }}
                                 </div>
+                        
+                                <label>Apellido Materno</label>
                                 <div>
-                                    <label>Mes</label>
-                                    <div>
-                                        {{ form.month.errors }}
-                                        {{ form.month }}
-                                    </div>
+                                    {{ form.second_last_name.errors }}
+                                    {{ form.second_last_name }}
                                 </div>
+    
+                                <label>Tipo de Miembro:</label>
                                 <div>
-                                    <label>Año</label>
-                                    <div>
-                                        {{ form.year.errors }}
-                                        {{ form.year }}
-                                    </div>
+                                    {{ form.user_type.errors }}
+                                    {{ form.user_type }}
                                 </div>
+                                
+    
+                                <label>CV</label>
+                                <div class="custom-file-input">
+                                    {{ form.cv.errors }}
+                                    {{ form.cv }}
+                                </div>
+                            
                             </div>
                             
-                            <label>Nivel Academico</label>
-                            <div>
-                                {{ form.academic_level.errors }}
-                                {{ form.academic_level }}
+                            <div class="form-col">
+                                <label>Correo Electronico</label>
+                                <div>
+                                    {{ form.email.errors }}
+                                    {{ form.email }}
+                                </div>
+    
+                                <div class="date-row">
+                                    <div>
+                                        <label>Dia</label>
+                                        <div>
+                                            {{ form.day.errors }}
+                                            {{ form.day }}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label>Mes</label>
+                                        <div>
+                                            {{ form.month.errors }}
+                                            {{ form.month }}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label>Año</label>
+                                        <div>
+                                            {{ form.year.errors }}
+                                            {{ form.year }}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <label>Nivel Academico</label>
+                                <div>
+                                    {{ form.academic_level.errors }}
+                                    {{ form.academic_level }}
+                                </div>
+                        
+                        
+                                <label>Contraseña</label>
+                                <div>
+                                    {{ form.password.errors }}
+                                    {{ form.password }}
+                                </div>
+                                
+                                
+                                <label>Confirma Contraseña</label>
+                                <div>
+                                    {{ form.v_password.errors }}
+                                    {{ form.v_password }}
+                                </div>
                             </div>
-                    
-                    
-                            <label>Contraseña</label>
-                            <div>
-                                {{ form.password.errors }}
-                                {{ form.password }}
-                            </div>
-                            
-                            
-                            <label>Confirma Contraseña</label>
-                            <div>
-                                {{ form.v_password.errors }}
-                                {{ form.v_password }}
-                            </div>
+                            <a href="{% url 'panel' %}" class="btn-cancel">Cancelar operación</a>
+                            <button class="btn-register" type="submit">Registrar</button>
                         </div>
-                        <a href="{% url 'panel' %}" class="btn-cancel">Cancelar operación</a>
-                        <button class="btn-register" type="submit">Registrar</button>
-                        {{ form.non_field_errors}}
                     </form>
             </div>
         </div>

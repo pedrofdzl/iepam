@@ -40,20 +40,40 @@ body {
     padding-right: 1.6rem;
     padding-bottom: 1.8rem;
     border-radius: 1.4rem;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .register-title {
     font-size: 40px;
     font-weight: 700;
-    margin-bottom: 1.6rem;
+    margin-bottom: 0.8rem;
 }
 
 .register-form {
     display: grid;
+    grid-template-rows: auto 1fr;
+    width: fit-content;
+}
+.register-form-fields {
+    display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
     width: fit-content;
+}
+
+.errorlist {
+    list-style: none;
+}
+
+.error-fields ul {
+    margin-top: -0.4rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    background-color: #b44d4d;
+    color: white;
+    border-radius: 0.5rem;
+    font-weight: 500;
 }
 
 .form-col {
@@ -153,7 +173,7 @@ input:focus {
 
 /* width */
 ::-webkit-scrollbar {
-    width: 0px;
+    width: 10px;
   }
   
   /* Track */

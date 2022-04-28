@@ -90,3 +90,14 @@
     transform: scaleX(0.5);
     z-index: 1;
 }
+
+.owner-buttons {
+    vertical-align: bottom;
+    margin-bottom: 1.5rem;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-rows: 1fr 0fr;
+    height: 100%;
+}
