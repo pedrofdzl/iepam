@@ -127,6 +127,12 @@
                                     {{ form.v_password.errors }}
                                     {{ form.v_password }}
                                 </div>
+
+                                <label>Foto de perfil</label>
+                                <div class="custom-file-input">
+                                    {{ form.profile_pic.errors }}
+                                    {{ form.profile_pic }}
+                                </div>
                             </div>
                             <a href="{% url 'panel' %}" class="btn-cancel">Cancelar operación</a>
                             <button class="btn-register" type="submit">Registrar</button>

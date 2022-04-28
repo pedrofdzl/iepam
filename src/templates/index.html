@@ -15,8 +15,54 @@
 <div class="container-window">
     <div class="index-main-container">
 
-        <div class="index-title">Bienvenido de vuelta, {{ user.first_name }}.
-            <div class="index-subtitle">¡Vas bien, sigue asi!</div>
+        <div class="index-header">
+            <div class="index-title">Bienvenido de vuelta, {{ user.first_name }}.
+                <div class="index-subtitle">¡Vas bien, sigue asi!</div>
+            </div>
+            <div class="index-date">
+                {% if date.weekday == 1 %}
+                Lunes,
+                {% elif date.weekday == 2 %}
+                Martes,
+                {% elif date.weekday == 3 %}
+                Miercoles,
+                {% elif date.weekday == 4 %}
+                Jueves,
+                {% elif date.weekday == 5 %}
+                Viernes,
+                {% elif date.weekday == 6 %}
+                Sabado,
+                {% elif date.weekday == 7 %}
+                Domingo,
+                {% endif %} 
+                {{ date.day }} de 
+                {% if date.month == 1 %}
+                Enero
+                {% elif date.month == 2 %}
+                Febrero
+                {% elif date.month == 3 %}
+                Marzo
+                {% elif date.month == 4 %}
+                Abril
+                {% elif date.month == 5 %}
+                Mayo
+                {% elif date.month == 6 %}
+                Junio
+                {% elif date.month == 7 %}
+                Julio
+                {% elif date.month == 8 %}
+                Agosto
+                {% elif date.month == 9 %}
+                Septiembre
+                {% elif date.month == 10 %}
+                Octubre
+                {% elif date.month == 11 %}
+                Noviembre
+                {% elif date.month == 12 %}
+                Diciembre
+                {% endif %}
+                {{ date.year }}
+            </div>
         </div>
 
         <div class="index-secondary-container">

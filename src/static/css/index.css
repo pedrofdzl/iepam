@@ -25,6 +25,10 @@
     width: fit-content;
 }
 
+.index-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
 .index-title {
     margin: 1rem;
     margin-top: 0.4rem;
@@ -38,6 +42,13 @@
     margin-bottom: 0;
     font-size: 18px;
     font-weight: 400;
+    color: rgb(102, 102, 102);
+}
+.index-date {
+    width: fit-content;
+    margin: 1.5rem;
+    font-size: 18px;
+    font-weight: 500;
     color: rgb(102, 102, 102);
 }
 

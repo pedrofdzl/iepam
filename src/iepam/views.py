@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required, permission_required
@@ -11,7 +12,13 @@ from django.core.exceptions import PermissionDenied
 # Create your views here.
 @login_required
 def index(request):
-    return render(request, 'index.html')
+    context = {}
+
+    dateToday = datetime.now()
+
+    context['date'] = dateToday
+
+    return render(request, 'index.html', context)
 
 
 @login_required

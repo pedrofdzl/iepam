@@ -25,8 +25,8 @@
 
             <div class="profile-background"></div>
             <div class="profile-picture">
-                {% if user.extended_user.profile_pic %}
-                    <img src="{{ user.extended_user.profile_pic.url }}">
+                {% if extended_user.profile_pic %}
+                    <img src="{{ extended_user.profile_pic.url }}">
                 {% else %}
                     <img src="{% static 'img/view.jpg' %}">
                 {% endif %}
@@ -41,7 +41,7 @@
                     {% endif %}
                 </p>
             </div>
-            <a href="{% url 'users:user_update' id=user.pk %}" class="user-edit-info-secondary">Editar Perfil</a>
+            <a href="{% url 'users:user_update' id=extended_user.user.pk %}" class="user-edit-info-secondary">Editar Perfil</a>
         </div>
 
         

@@ -27,11 +27,12 @@
         <div class="profile-rows-cell">
             <div class="profile-background"></div>
             <div class="profile-picture">
-                {% if user.extended_user.profile_pic %}
-                    <img src="{{ user.extended_user.profile_pic.url }}">
-                {% else %}
-                    <img src="{% static 'img/view.jpg' %}">
-                {% endif %}
+                <a href="">
+                    <div class="profile-picture-placeholder">
+                        <span class="material-icons">photo_camera</span>
+                        <p>Cambiar foto</p>
+                    </div>
+                </a>
             </div>
             <div class="profile-name">
                 <p class="profile-main-name">{{ user.extended_user.get_full_name }}</p>

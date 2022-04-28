@@ -60,6 +60,8 @@ class RegisterForm(forms.Form):
     cv = forms.FileField(required=False, validators=[
                                                         file_max_size(CV_MAX_SIZE), validate_file_extension],
                                                         widget=forms.FileInput(attrs={'class':'custom-file-input', 'id':'file'}))
+    profile_pic = forms.ImageField(required=False, 
+                                                        widget=forms.FileInput(attrs={'class':'custom-file-input', 'id':'file'}))
     
 
 
@@ -125,6 +127,8 @@ class UserUpdateForm(forms.Form):
                                                                         ))
 
     academic_level = forms.CharField(max_length=255)
+    profile_pic = forms.ImageField(required=False, 
+                                                        widget=forms.FileInput(attrs={'class':'custom-file-input', 'id':'file'}))
 
 
     def clean(self):
