@@ -25,8 +25,8 @@
 
             <div class="profile-background"></div>
             <div class="profile-picture">
-                {% if user.extended_user.profile_pic %}
-                    <img src="{{ user.extended_user.profile_pic.url }}">
+                {% if extended_user.profile_pic %}
+                    <img src="{{ extended_user.profile_pic.url }}">
                 {% else %}
                     <img src="{% static 'img/view.jpg' %}">
                 {% endif %}
@@ -34,14 +34,16 @@
             <div class="profile-name">
                 <p class="profile-main-name">{{ extended_user.get_full_name }}</p>
                 <p class="profile-secondary-name">
-                    {% if extended_user.canTeach %}
+                    {% if extended_user.is_admin %}
+                        Admin
+                    {% elif extended_user.can_teach %}
                         Capacitador
                     {% else %}
                         Usuario
                     {% endif %}
                 </p>
             </div>
-            <a href="{% url 'users:user_update' id=user.pk %}" class="user-edit-info-secondary">Editar Perfil</a>
+            <a href="{% url 'users:user_update' id=extended_user.user.pk %}" class="user-edit-info-secondary">Editar Perfil</a>
         </div>
 
         
@@ -60,11 +62,11 @@
                     </div>
                     <div class="user-info-field-container">
                         <p class="user-info-prompt">Fecha de Nacimiento</p>
-                        <input class="user-info-field" readonly=true value="{{ extended_user.user.extended_user.birthdate }}">
+                        <input class="user-info-field" readonly=true value="{{ extended_user.birthdate }}">
                     </div>
                     <div class="user-info-field-container">
                         <p class="user-info-prompt">Nivel Académico</p>
-                        <input class="user-info-field" readonly=true value="{{ extended_user.user.extended_user.academic_level }}">
+                        <input class="user-info-field" readonly=true value="{{ extended_user.academic_level }}">
                     </div>
                     <div class="user-info-field-container" style="text-align: center; margin-top: 2rem; margin-bottom: 0.6rem;">
                         <a class="user-info-cv" href="">Descargar CV&nbsp;<span class="material-icons">file_download</span></a>
@@ -77,7 +79,7 @@
                     <p class="user-info-title">Capacitaciones actuales</p>
                     <hr class="hr-nice">
 
-                {% include 'users/_user_courses_snippet.html' with courses=incomplete_courses %}
+                    {% include 'users/_user_courses_snippet.html' with courses=incomplete_courses %}
 
                     <br>
                 </div>
@@ -86,7 +88,7 @@
                     <p class="user-info-title">Capacitaciones Completadas</p>
                     <hr class="hr-nice">
             
-                    {% include 'users/_user_courses_snippet.html' %}
+                        {% include 'users/_user_courses_snippet.html' %}
             
                     <br>
                 </div>

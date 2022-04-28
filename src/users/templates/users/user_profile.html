@@ -27,7 +27,9 @@
             <div class="profile-name">
                 <p class="profile-main-name">{{ user.extended_user.get_full_name }}</p>
                 <p class="profile-secondary-name">
-                    {% if user.canTeach %}
+                    {% if user.extended_user.is_admin %}
+                        Admin
+                    {% elif user.extended_user.can_teach %}
                         Capacitador
                     {% else %}
                         Usuario
@@ -68,15 +70,7 @@
                     <p class="user-info-title">Capacitaciones actuales</p>
                     <hr class="hr-nice">
             
-                    {% for course in courses %}
-                        <div class="user-course-card">
-                            <div class="user-course-card-title">{{ course.course.name }}</div>
-                            <div class="user-course-card-desc">{{ course.course.description }}</div>
-                            <small>Iniciado: {{ course.dateJoined }}</small>
-                        </div>
-                    {% empty %}
-                        <h5>Ningun curso actual</h5>
-                    {% endfor %}
+                   {% include 'users/_user_courses_snippet.html' with courses=incomplete_courses %}
             
                     <br>
                 </div>
@@ -85,20 +79,7 @@
                     <p class="user-info-title">Capacitaciones Completadas</p>
                     <hr class="hr-nice">
             
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en BlahBlah</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-            
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en WeeHyy</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-            
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en Word y Powerpoint</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
+                        {% include 'users/_user_courses_snippet.html' %}
             
                     <br>
                 </div>

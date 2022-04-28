@@ -1,3 +1,4 @@
+from django.forms import formset_factory
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.http import Http404
@@ -8,8 +9,12 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 from datetime import date
 
-from .models import Course, Entrega, MemberOf, Modulo, Lectura, Actividad, Video, Quiz
-from .forms import CourseCreateForm, EntregaAddForm, LectureAddForm, ModuleAddForm, ActivityAddForm, VideoAddForm
+from .models import Course, Entrega, MemberOf, Modulo, Lectura, Actividad, Question, Video, Quiz, QuestionOption
+from .forms import (
+                    CourseCreateForm, EntregaAddForm, LectureAddForm, 
+                    ModuleAddForm, ActivityAddForm, VideoAddForm,
+                    QuizForm, QuestionForm, QuestionOptionsForm
+                )
 from users.models import ExtendedUser
 
 User = get_user_model()
@@ -115,6 +120,9 @@ def adcourse_members_view(request, id):
                     Q(second_last_name__contains=username) 
                     # Q(user__username__contains=username)
                 )
+
+    if request.user.extended_user == course.owner:
+        context['is_owner'] = True
 
     context['course'] = course
     context['members'] = members
@@ -389,6 +397,9 @@ def course_create_item_view(request, id, action):
     activity_form = ActivityAddForm()
     video_form = VideoAddForm()
 
+    # Quiz forms
+    quiz_form = QuizForm()
+
     if request.method == 'POST':
         if action == 1:
             lecture_form = LectureAddForm(request.POST)
@@ -443,10 +454,23 @@ def course_create_item_view(request, id, action):
             else:
                 print(video_form.errors)
 
+        if action == 4:
+            quiz_form = QuizForm(request.POST)
+
+            if quiz_form.is_valid():
+                quiz = quiz_form.save(commit=False)
+                quiz.modulo = modulo
+                quiz.save()
+
+                return redirect(reverse('cursos:course_quiz', kwargs={'id':quiz.pk}))
+            else:
+                print(quiz_form.errorr)
+
     context['modulo'] = modulo
     context['lec_form'] = lecture_form
     context['act_form'] = activity_form
     context['vid_form'] = video_form
+    context['quiz_form'] = quiz_form
     context['action'] = action
 
     return render(request, template_name, context)
@@ -526,6 +550,275 @@ def youtube_url_to_embed(link):
     video_code = link[-11:]
     embed_template = "https://www.youtube.com/embed/"
     return embed_template + video_code
+
+
+@login_required
+def course_quiz_view(request, id):
+    user = request.user
+    extended_user = user.extended_user
+    context = {}
+    template_name = template_prefix + 'quiz.html'
+
+    quiz = get_object_or_404(Quiz, pk=id)
+    course = quiz.modulo.curso
+
+    questions = quiz.questions.all()
+
+
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+    context['quiz'] = quiz
+    context['questions'] = questions
+
+    return render(request, template_name, context)
+
+
+@login_required
+def course_quiz_create_question_view(request, id):
+    user = request.user
+    extended_user = user.extended_user
+    context = {}
+    template_name = template_prefix + 'quiz_question_form.html'
+
+    quiz = get_object_or_404(Quiz, pk=id)
+    course = quiz.modulo.curso
+
+
+    question_form = QuestionForm()
+
+    if request.method == 'POST':
+        question_form = QuestionForm(request.POST)
+
+        if question_form.is_valid():
+            question = question_form.save(commit=False)
+            question.quiz = quiz
+            question.save()
+
+            return redirect(reverse('cursos:curso_question_add_option', kwargs={'id': question.pk}))
+        else:
+            print(question_form.errors)
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+    context['quiz'] = quiz
+    context['form'] = question_form
+
+    return render(request, template_name, context)
+
+
+
+@login_required
+def course_quiz_delete_question_view(request, id):
+    question = get_object_or_404(Question, pk=id)
+    quiz = question.quiz
+    question.delete()
+
+    return redirect(reverse('cursos:course_quiz', kwargs={'id': quiz.pk}))
+
+@login_required
+def course_quiz_update_question_view(request, id):
+    user = request.user
+    extended_user = user.extended_user
+    context = {}
+    template_name = template_prefix + 'quiz_question_form.html'
+
+    question = get_object_or_404(Question, pk=id)
+    quiz = question.quiz
+    modulo = quiz.modulo
+    course = modulo.curso
+
+
+    question_form = QuestionForm(instance=question)
+
+    if request.method == 'POST':
+        question_form = QuestionForm(request.POST, instance=question)
+
+        if question_form.is_valid():
+            question = question_form.save()
+
+            return redirect(reverse('cursos:course_quiz_edit_question', kwargs={'id': question.pk}))
+        else:
+            print(question_form.errors)
+
+    context['form'] = question_form
+    context['quiz'] = quiz
+    context['editing'] = True
+    context['question'] = question
+
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+    return render(request, template_name, context)
+
+
+
+def course_quiz_option_create_view(request, id):
+    user = request.user
+    extended_user = user.extended_user
+    context = {}
+    template_name = template_prefix + 'quiz_questionoption_form.html'
+
+
+    question = get_object_or_404(Question, pk=id)
+    quiz = question.quiz
+    modulo = quiz.modulo
+    course = modulo.curso
+
+
+    option_form = QuestionOptionsForm()
+
+    if request.method == 'POST':
+        option_form = QuestionOptionsForm(request.POST)
+
+        if option_form.is_valid():
+            option = option_form.save(commit=False)
+            option.question = question
+            option.save()
+            return redirect(reverse('cursos:course_quiz_edit_question', kwargs={'id': question.pk}))
+        else:
+            print(option_form.errors)
+
+    context['form'] = option_form
+    context['quiz'] = quiz
+    context['question'] = question
+
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+    return render(request, template_name, context)
+
+
+
+def course_quiz_option_update_view(request, id):
+    user = request.user
+    extended_user = user.extended_user
+    context = {}
+    template_name = template_prefix + 'quiz_questionoption_form.html'
+
+    option = get_object_or_404(QuestionOption, pk=id)
+    question = option.question
+    quiz = question.quiz
+    modulo = quiz.modulo
+    course = modulo.curso
+
+
+    option_form = QuestionOptionsForm(instance=option)
+
+    if request.method == 'POST':
+        option_form = QuestionOptionsForm(request.POST, instance=option)
+
+        if option_form.is_valid():
+            option = option_form.save(commit=False)
+            option.question = question
+            option.save()
+            return redirect(reverse('cursos:course_quiz_edit_question', kwargs={'id': question.pk}))
+
+        else:
+            print(option_form.errors)
+    
+    
+    context['form'] = option_form
+    context['quiz'] = quiz
+    context['question'] = question
+
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+    return render(request, template_name, context)
+
+@login_required
+def course_quiz_option_delete_view(request, id):
+    option = get_object_or_404(QuestionOption, pk=id)
+    question = option.question
+
+    option.delete()
+    return redirect(reverse('cursos:course_quiz_edit_question', kwargs={'id': question.pk}))
 
 @login_required
 def course_lecture_view(request, id):

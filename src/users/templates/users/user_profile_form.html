@@ -36,7 +36,9 @@
             <div class="profile-name">
                 <p class="profile-main-name">{{ user.extended_user.get_full_name }}</p>
                 <p class="profile-secondary-name">
-                    {% if user.canTeach == true %}
+                    {% if user.extended_user.is_admin %}
+                        Admin
+                    {% elif user.extended_user.can_teach %}
                         Capacitador
                     {% else %}
                         Usuario

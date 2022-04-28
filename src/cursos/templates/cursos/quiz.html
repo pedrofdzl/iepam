@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+
+
+{% block body %}
+
+    <h1>{{ quiz.name }}</h1>
+    <p>{{ quiz.description }}</p>
+
+    {% if is_owner %}
+    
+    
+    <h2>Preguntas:</h2>
+    <a href="{% url 'cursos:course_quiz_add_question' id=quiz.pk %}">Agregar Pregunta</a>
+        {% for question in questions %}
+        
+            <h3>Pregunta {{ forloop.counter }}:</h3>
+            {{ question.prompt }}
+
+            <p>Opciones</p>
+
+            {% for option in question.options.all %}
+            <p>{{ option.prompt }}</p>
+            {% endfor %}
+            <a href="{% url 'cursos:course_quiz_edit_question' id=question.pk %}">Editar</a>
+            <hr>
+        
+        {% empty %}
+
+            <h4>No se encontraron Preguntas</h4>
+        {% endfor %}
+
+    {% endif %}
+
+{% endblock %}

@@ -136,13 +136,27 @@
                     {% endfor %}
 
                     {% for quiz in mod.quizzes.all %}
-                    <div class="module-item">
-                        <span class="material-icons module-item-icon">quiz</span>
-                        <div>
-                            <div class="module-item-title">Quiz: {{ quiz.name }}</div>
-                            <div class="module-item-grade">No realizado</div>
+
+                    {% if is_member or is_owner %}
+                            <a href="{% url 'cursos:course_quiz' id=quiz.pk %}" class="no-style-a">
+                                <div class="module-item">
+                                    <span class="material-icons module-item-icon">quiz</span>
+                                    <div>
+                                        <div class="module-item-title">Quiz: {{ quiz.name }}</div>
+                                        <div class="module-item-grade">No realizado</div>
+                                    </div>
+                                </div>
+                            </a>
+                    {% else %}
+                        <div class="module-item">
+                            <span class="material-icons module-item-icon">quiz</span>
+                            <div>
+                                <div class="module-item-title">Quiz: {{ quiz.name }}</div>
+                                <div class="module-item-grade">No realizado</div>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
+                    
                     {% endfor %}
 
                 </div>

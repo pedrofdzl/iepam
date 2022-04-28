@@ -104,8 +104,10 @@ class Quiz(models.Model):
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="questions", verbose_name="quiz")
     prompt = models.CharField("prompt", max_length=255)
-    weight = models.IntegerField("weight",validators=[MinValueValidator(0, "Ingresa un valor positivo"), MaxValueValidator(500, "El valor de la pregunta es demasiado grande")])
+    # weight = models.IntegerField("weight",validators=[MinValueValidator(0, "Ingresa un valor positivo"), MaxValueValidator(500, "El valor de la pregunta es demasiado grande")])
 
+    def __str__(self):
+        return f'Question {self.prompt} for quiz'
 
 class QuestionOption(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="options", verbose_name="question")

@@ -26,5 +26,14 @@ urlpatterns = [
     path('curso/lectura/<int:id>/', views.course_lecture_view, name='course_lecture'),
     path('curso/actividad/<int:id>/', views.course_activity_view, name='course_activity'),
     path('curso/video/<int:id>/', views.course_video_view, name='course_video'),
+    path('curso/quiz/<int:id>/', views.course_quiz_view, name='course_quiz'),
+    path('curso/quiz/<int:id>/agregar-pregunta/', views.course_quiz_create_question_view, name='course_quiz_add_question'),
+    path('curso/quiz/<int:id>/editar-pregunta/', views.course_quiz_update_question_view, name='course_quiz_edit_question'),
+    path('curso/quiz/<int:id>/eliminar-pregunta/', views.course_quiz_delete_question_view, name='course_quiz_delete_question'),
+    path('curso/quiz/<int:id>/agregar-opcion/', views.course_quiz_option_create_view, name='curso_question_add_option'),
+    path('curso/quiz/<int:id>/editar-opcion/', views.course_quiz_option_update_view, name='curso_question_edit_option'),
+    path('curso/quiz/<int:id>/eliminar-opcion/', views.course_quiz_option_delete_view, name='curso_question_delete_option'),
+
+
 ]
 
