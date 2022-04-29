@@ -95,6 +95,19 @@ class QuestionOptionsForm(forms.ModelForm):
             'prompt': forms.Textarea(attrs={'rows': 5})
         }
 
+    def clean(self):
+        all_cleaned_data = super().clean()
+        question = self.instance.question
+        correct = all_cleaned_data['correct']
+        
+        if correct:
+            if QuestionOption.objects.filter(question=question).exists():
+                for option in question.options.all():
+                    if option.correct:
+                        raise forms.ValidationError('¡Ya existe una respuesta correcta!')
+
+
+
 
 class FileResourceForm(forms.ModelForm):
     class Meta:

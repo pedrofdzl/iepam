@@ -786,10 +786,11 @@ def course_quiz_option_create_view(request, id):
 
     if request.method == 'POST':
         option_form = QuestionOptionsForm(request.POST)
+        option_form.instance.question = question
 
         if option_form.is_valid():
             option = option_form.save(commit=False)
-            option.question = question
+            # option.question = question
             option.save()
             return redirect(reverse('cursos:course_quiz_edit_question', kwargs={'id': question.pk}))
         else:
