@@ -12,13 +12,20 @@
 <div id="id-app" style="display: none;">cap</div>
 
 <div class="container-window">
-    <form method="get">
-        <input class="searchbar" placeholder="¿En que te quieres capacitar?" name="curso" id="curso">
-        <button class="searchbar-icon">
-            <span class="material-icons">search</span>
-        </button>
-
-    </form>
+    <div class="menu-header">
+        <form method="get">
+            <input class="searchbar" placeholder="¿En que te quieres capacitar?" name="curso" id="curso">
+            <button class="searchbar-icon">
+                <span class="material-icons">search</span>
+            </button>
+        </form>
+        {% if extended_user.can_teach %}
+        <a href="{% url 'cursos:adcourse_create' %}" class="menu-btn-register tooltip">
+            <span class="material-icons">add</span>
+            <div class="tooltiptext">Registrar nueva capacitación</div>
+        </a>
+        {% endif %}
+    </div>
 
     <div class="tag-container">
         <div class="tags">

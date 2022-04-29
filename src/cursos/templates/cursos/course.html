@@ -137,7 +137,7 @@
 
                     {% for quiz in mod.quizzes.all %}
 
-                    {% if is_member or is_owner %}
+                    {% if is_owner %}
                             <a href="{% url 'cursos:course_quiz' id=quiz.pk %}" class="no-style-a">
                                 <div class="module-item">
                                     <span class="material-icons module-item-icon">quiz</span>
@@ -147,13 +147,24 @@
                                     </div>
                                 </div>
                             </a>
+                    {% elif is_member %}
+                            <a href="{% url 'cursos:course_quiz_answer' id=quiz.pk %}" class="no-style-a">
+                                <div class="module-item">
+                                    <span class="material-icons module-item-icon">quiz</span>
+                                    <div>
+                                        <div class="module-item-title">Quiz: {{ quiz.name }}</div>
+                                        <div class="module-item-grade">No realizado</div>
+                                    </div>
+                                </div>
+                            </a>
                     {% else %}
-                        <div class="module-item">
-                            <span class="material-icons module-item-icon">quiz</span>
+                        <div class="module-item locked">
+                            <span class="material-icons module-item-icon locked-text">quiz</span>
                             <div>
-                                <div class="module-item-title">Quiz: {{ quiz.name }}</div>
-                                <div class="module-item-grade">No realizado</div>
+                                <div class="module-item-title locked-text">Quiz: {{ quiz.name }}</div>
+                                <div class="module-item-grade locked-text">No realizado</div>
                             </div>
+                            <span class="material-icons lock">lock</span>
                         </div>
                     {% endif %}
                     

@@ -323,6 +323,33 @@ body {
     color: white !important;
 }
 
+.menu-header {
+    width: fit-content;
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+}
+
+.menu-btn-register {
+    width: 32px;
+    height: 31px;
+    padding-top: 0.55rem;
+    padding-bottom: 0.05rem;
+    padding-left: 0.5rem;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    margin: 1rem;
+    margin-left: -2rem;
+    border: none;
+    background-color: #20CC82;
+    color: white;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+}
+.menu-btn-register:hover {
+    background-color: #20CC82;
+    box-shadow: 0 0 10px #20CC82;
+}
+
 .card-container {
     width: 100%;
     max-height: 80%;

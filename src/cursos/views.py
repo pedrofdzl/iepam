@@ -297,7 +297,7 @@ def menu(request):
 
 
     context['cursos'] = cursos
-
+    context['extended_user'] = extended_user
 
     return render(request, template_name, context)
 
@@ -588,6 +588,76 @@ def course_quiz_view(request, id):
 
     context['quiz'] = quiz
     context['questions'] = questions
+
+    return render(request, template_name, context)
+
+
+@login_required
+def course_quiz_answer_view(request, id):
+    user = request.user
+    extended_user = user.extended_user
+    context = {}
+    template_name = template_prefix + 'quiz_answer.html'
+
+    quiz = get_object_or_404(Quiz, pk=id)
+    course = quiz.modulo.curso
+
+    questions = quiz.questions.all()
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['course'] = quiz.modulo.curso
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+    quizData = quiz.name + '|' + str(quiz.questions.all().count()) + '|'
+    quizQuestions = Question.objects.filter(quiz=quiz.pk)
+    for question in quizQuestions:
+        quizData += str(question.options.all().count()) + '|'
+    for question in quizQuestions:
+        quizData += question.prompt + '|'
+    for question in quizQuestions:
+        correct = question.options.all().filter(correct=True)
+        questionOptions = QuestionOption.objects.filter(question=question.pk)
+        quizData += correct[0].prompt + '|'
+        for option in questionOptions:
+            if option != correct[0]:
+                quizData += option.prompt + '|'
+    quizData += str(quiz.pk) + '|'
+
+    context['quizData'] = quizData
+    context['quiz'] = quiz
+    context['questions'] = questions
+
+    return render(request, template_name, context)
+
+
+@login_required
+def course_quiz_submit_view(request, id, calif):
+    user = request.user
+    extended_user = user.extended_user
+    context = {}
+    template_name = template_prefix + 'quiz_submit.html'
+
+    quiz = get_object_or_404(Quiz, pk=id)
+
+    context['extended_user'] = extended_user
+    context['quiz'] = quiz
+    context['grade'] = calif
 
     return render(request, template_name, context)
 
