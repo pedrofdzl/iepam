@@ -50,30 +50,11 @@
                 <div class="subtitle">Especificaciones de entrega</div>
                 {{ activity.instructions }}
             </div>
-
+            {% if not is_owner %}
             <div class="upload-container">
-
-
-                {% if is_owner %}
-                <h1>Entregas:</h1>
-                <div class="form-col-2">
-                    {% for entrega in activity.entregas.all %}
-                        <h5>{{ entrega.user }}</h5>
-                        <p>Entregada: {{ entrega.created_date }}</p>
-                        <a href="{% url 'cursos:course_activity_entry' id=entrega.pk %}">Ver Entrega</a>
-                        <a href="{% url 'cursos:course_activity_entry_delete' id=entrega.pk %}">Eliminar</a>
-
-                        {% empty %}
-
-                        <h1>Sin entregas</h1>
-                    {% endfor %}
-                
-                {% else %}
-                
                     {% if submited %}
-                    <h1>Actividad Entregada!</h1>
-                    <a href="{% url 'cursos:course_activity_entry' id=entry.pk %}">Ver Entrega</a>
-                    
+                        <div class="subtitle">Actividad Entregada!</div>
+                        <a class="submit-button-a" href="{% url 'cursos:course_activity_entry' id=entry.pk %}">Ver Entrega</a>
                     {% else %}
                         <div class="subtitle">Entregar actividad</div>
                             <form class="form-col-2" method="post" enctype="multipart/form-data">
@@ -91,15 +72,36 @@
                             </form>
                             <div class="small-subtitle">Recuerda que los tipos de archivo aceptados son: .pdf, .docx, .xlsx y .pptx.</div>
                         </div>
-
                     {% endif %}
+            </div>
             {% endif %}
         </div>
 
         <div>
+            {% if is_owner %}
+            <div class="side-panel">
+                <div class="entrega-panel">
+                    <h1 style="margin-bottom: 0.5rem;">Entregas</h1>
+                    {% for entrega in activity.entregas.all %}
+                    <a href="{% url 'cursos:course_activity_entry' id=entrega.pk %}">
+                        <div class="entrega">
+                            <div class="entrega-user">{{ entrega.user }}</div>
+                            <div class="entrega-date">Entregada el {{ entrega.created_date }}</div>
+                        </div>
+                    </a>
+
+                            {% empty %}
+
+                            <h4>Sin entregas</h4>
+
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
             <div class="side-panel">
                 {% include 'cursos/side_panel.html' %}
             </div>
+            {% endif %}
         </div>
 
     </div>

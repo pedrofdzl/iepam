@@ -48,6 +48,18 @@ body {
     font-weight: 700;
     margin-bottom: 0.8rem;
 }
+.register-subtitle {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+}
+
+.register-prompt {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    font-size: 20px;
+    font-weight: 400;
+}
 
 .register-form {
     display: grid;
@@ -280,6 +292,11 @@ a {
     text-decoration: none;
 }
 
+.btn-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
 .btn-cancel {
     width: 250px;
     font-size: 18px;
@@ -301,6 +318,17 @@ a {
 .btn-cancel:hover {
     transform: scale(1.02);
     box-shadow: 0 0 10px #202022;
+}
+
+.right-btn {
+    margin-right: 0;
+    margin-left: 0.5rem;
+    width: auto;
+}
+.left-btn {
+    margin-right: 0.5rem;
+    margin-left: 0rem;
+    width: auto;
 }
 
 .margin-right-btn {

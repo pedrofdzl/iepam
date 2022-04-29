@@ -27,6 +27,14 @@
     font-weight: 700;
     color: #202022;
 }
+.title-smaller {
+    margin: 1rem;
+    margin-top: 0.4rem;
+    margin-bottom: 0.5rem;
+    font-size: 32px;
+    font-weight: 700;
+    color: #202022;
+}
 
 .description {
     margin: 1rem;
@@ -93,7 +101,7 @@
     background-color: whitesmoke;
     border-radius: 1rem;
     margin: 1rem;
-    padding: 1rem;
+    padding: 1.5rem;
     font-size: 18px;
     box-shadow: 0 0 10px rgb(201, 201, 201);
 }
@@ -180,6 +188,31 @@ input[type=file]::-webkit-file-upload-button:hover {
     transition: all 0.2s ease-in-out;
 }
 .submit-button:hover {
+    box-shadow: 0 0 10px #20CC82;
+}
+
+.submit-button-a {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    width: 250px;
+    height: 36px;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #20CC82;
+    margin: 0rem;
+    margin-top: 0.6rem;
+    margin-right: 0.5rem;
+    padding-top: 0.6rem;
+    border-radius: 0.3rem;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px #d6d6d6;
+    transition: all 0.2s ease-in-out;
+}
+.submit-button-a:hover {
     box-shadow: 0 0 10px #20CC82;
 }
 
@@ -280,6 +313,34 @@ input[type=file]::-webkit-file-upload-button:hover {
 .button-delete:hover {
     background-color: #c74848;
     box-shadow: 0 0 10px #ff6363;
+}
+
+.a-button {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    width: fit-content;
+    height: fit-content;
+    padding: 0.6rem 1rem;
+    padding-bottom: 0.4rem;
+    margin: 0;
+    margin-bottom: 1rem;
+    font-size: 16px;
+}
+.a-button span {
+    margin: 0;
+    margin-left: 0.4rem;
+    font-size: 20px;
+    vertical-align: middle;
+}
+
+.color-green {
+    background-color: #20CC82;
+}
+.color-green:hover {
+    background-color: #20CC82;
+    box-shadow: 0 0 10px #20CC82;
 }
 
 .button-delete span {
@@ -430,4 +491,50 @@ input[type=file]::-webkit-file-upload-button:hover {
 .question-edit-button:hover {
     background-color: #424242;
     box-shadow: 0 0 10px #6d6d6d;
+}
+
+.entrega-panel {
+    padding: 0rem 2rem;
+    overflow-y: auto;
+}
+.entrega-panel a {
+    color: #202022;
+    text-decoration: none;
+}
+.entrega {
+    display: block;
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.5rem;
+    width: auto;
+    border-radius: 0.5rem;
+    background-color: rgb(230, 230, 230);
+}
+.entrega:hover {
+    background-color: lightgray;
+}
+.entrega-user {
+    font-weight: 600;
+}
+
+.course-container-one {
+    padding-left: 1rem;
+}
+
+.entrega-info {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    width: fit-content;
+}
+.entrega-info p {
+    margin: 0.4rem 0.5rem;
+}
+.entrega-info b {
+    margin: 0.4rem 0rem;
+}
+
+.grade-thing {
+    font-weight: 500;
+    margin-top: 2rem;
+    width: fit-content;
+    padding: 0.5rem;
 }

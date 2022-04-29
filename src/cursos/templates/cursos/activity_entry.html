@@ -1,54 +1,88 @@
 {% extends 'base.html' %}
 
+{% block head %}
+
+{% load static %}
+<title>Entrega de {{ entry.user }}</title>
+
+{% endblock %}
+
 {% block body %}
+<link rel="stylesheet" href="{% static 'css/activities.css' %}">
 
-    <h1>{{ activity.name }}</h1>
+<div id="id-app" style="display: none;">cap</div>
 
-    <hr>
-    <h3>Detalle</h3>
-    <p>Creador: {{ entry.user }}</p>
-    <p>Entregada en: {{ entry.created_date }}</p>
-    <p>Calificación: {% if not entry.grade %} Sin Calificar {% else %} {{ entry.grade }} {% endif %} </p>
+<div class="container-window">
+    <div class="activity-header">
+        <div>
+            <a href="{% url 'cursos:course_activity' id=activity.pk %}" class="no-style-a">
+                <div class="return">
+                    <span class="material-icons">chevron_left</span>
+                    Volver al entregable
+                </div>
+            </a>
+        
+        
+            <div class="description">{{ activity.modulo.name }}</div>
+            <div class="title-smaller">Entrega de {{ entry.user }} para {{ activity.name }}</div>
+        </div>
+    </div>
+    <div class="course-container-one">
+        <div class="entrega-info">
+            <div style="display: inline-flex;">
+                <b>Usuario: </b>
+                <p>{{ entry.user.get_full_name }}</p>
+            </div>
+            <div style="display: inline-flex;">
+                <b>Entregada: </b>
+                <p>{{ entry.created_date }}</p>
+            </div>
+            <div style="display: inline-flex;">
+                <b>Calificación:</b>
+                <p>{% if not entry.grade %} Sin Calificar {% else %} {{ entry.grade }} {% endif %}</p>
+            </div>
+        </div>
+        
 
-    <a href="{% url 'cursos:course_activity_entry_file' id=entry.pk %}">Ver Archivo</a>
-    
+        <a class="button-edit a-button" href="{% url 'cursos:course_activity_entry_file' id=entry.pk %}">Ver Archivo<span class="material-icons">visibility</span></a>
 
-    {% if error_message %}
-        <p>{{ error_message }}</p>
-    {% endif %}
+        {% if error_message %}
+            <p>{{ error_message }}</p>
+        {% endif %}
 
-    {% if is_owner %}
-        <a href="{% url 'cursos:course_activity_entry_delete' id=entry.pk %}">Eliminar</a>
-        <button id="grade-btn">Calificar</button>
+        {% if is_owner %}
+            <button class="button-edit a-button color-green" id="grade-btn">Calificar<span class="material-icons">task</span></button>
 
+            <form class="grade-thing" style="display: none;" method="post" id="grade-form">
+                {% csrf_token %}
+                <label for="">Calificación</label>
+                <input type="number" name="grade" id="grade">
+                <button id="cancel-btn">Cancelar</button>
+                <button type="submit">Aceptar</button>
+            </form>
 
-        <form style="display: none;" method="post" id="grade-form">
-            {% csrf_token %}
-            <label for="">Calificación</label>
-            <input type="number" name="grade" id="grade">
-            <button id="cancel-btn">Cancelar</button>
-            <button type="submit">Aceptar</button>
-        </form>
-    {% endif %}
+            <a class="button-delete a-button" href="{% url 'cursos:course_activity_entry_delete' id=entry.pk %}">Eliminar</a>
+        {% endif %}
+    </div>
+</div>
 
+<script>
+    const gradeForm = document.getElementById('grade-form');
+    const gradeBtn = document.getElementById('grade-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
 
-    <script>
-        const gradeForm = document.getElementById('grade-form');
-        const gradeBtn = document.getElementById('grade-btn');
-        const cancelBtn = document.getElementById('cancel-btn');
+    gradeBtn.addEventListener('click', event=>{
+        event.preventDefault();
+        gradeBtn.style.display = 'none';
+        gradeForm.style.display = 'block'
+    });
 
-        gradeBtn.addEventListener('click', event=>{
-            event.preventDefault();
-            gradeBtn.style.display = 'none';
-            gradeForm.style.display = 'block'
-        });
+    cancelBtn.addEventListener('click', event=>{
+        event.preventDefault();
+        gradeBtn.style.display = 'block';
+        gradeForm.style.display = 'none'
+    })
 
-        cancelBtn.addEventListener('click', event=>{
-            event.preventDefault();
-            gradeBtn.style.display = 'block';
-            gradeForm.style.display = 'none'
-        })
-
-    </script>
+</script>
 
 {% endblock %}

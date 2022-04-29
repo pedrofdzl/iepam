@@ -1,3 +1,4 @@
+from ast import Mod
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.http import Http404, FileResponse
@@ -236,6 +237,11 @@ def course_detail_view(request, id):
             if video.watches.filter(pk=user.pk).exists():
                 completed_items += 1
 
+        total_items += module.actividades.all().count()
+        for activity in module.actividades.all():
+            if Entrega.objects.all().filter(actividad=activity.pk, user=user.pk).exists():
+                completed_items += 1
+
     if total_items > 0:
         completion_ratio = completed_items / total_items
         completion_percentage = int(completion_ratio * 100)
@@ -254,6 +260,11 @@ def course_detail_view(request, id):
     if extended_user == course.owner:
         is_owner = True
 
+    entregas_user = user.extended_user.entregas
+    turned_activities = []
+    for entrega in entregas_user.all():
+        turned_activities.append(entrega.actividad)
+
     context['is_owner'] = is_owner
     context['is_member'] = is_member
     context['liked'] = liked
@@ -265,6 +276,7 @@ def course_detail_view(request, id):
     context['completed_items'] = completed_items
     context['completion_ratio'] = completion_ratio
     context['completion_percentage'] = completion_percentage
+    context['turned_activities'] = turned_activities
 
     return render(request, template_name, context)
 
@@ -971,6 +983,7 @@ def course_lecture_view(request, id):
 
     lecture = get_object_or_404(Lectura, pk=id)
     course = lecture.modulo.curso
+    modules = Modulo.objects.all().filter(curso=course.pk)
 
     # Side Panel Variables
     liked = False
@@ -1000,6 +1013,39 @@ def course_lecture_view(request, id):
     context['viewed'] = viewed
     context['lecture'] = lecture
     context['course'] = course
+
+    # Calculo de actividades totales para el progreso
+    total_items = 0
+    completed_items = 0
+    completion_ratio = 0
+    completion_percentage = 0
+    
+    for module in modules:
+
+        total_items += module.lecturas.all().count()
+        for lecture in module.lecturas.all():
+            if lecture.reads.filter(pk=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.videos.all().count()
+        for video in module.videos.all():
+            if video.watches.filter(pk=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.actividades.all().count()
+        for activity in module.actividades.all():
+            if Entrega.objects.all().filter(actividad=activity.pk, user=user.pk).exists():
+                completed_items += 1
+
+    if total_items > 0:
+        completion_ratio = completed_items / total_items
+        completion_percentage = int(completion_ratio * 100)
+
+    context['total_items'] = total_items
+    context['completed_items'] = completed_items
+    context['completion_ratio'] = completion_ratio
+    context['completion_percentage'] = completion_percentage
+
 
     return render(request, template_name, context)
 
@@ -1080,6 +1126,7 @@ def course_activity_view(request, id):
 
     activity = get_object_or_404(Actividad, pk=id)
     course = activity.modulo.curso
+    modules = Modulo.objects.all().filter(curso=course.pk)
     submited = False
 
     if Entrega.objects.filter(user=extended_user, actividad=activity).exists():
@@ -1136,7 +1183,37 @@ def course_activity_view(request, id):
     context['liked'] = liked
     # end of side panel
 
+    # Calculo de actividades totales para el progreso
+    total_items = 0
+    completed_items = 0
+    completion_ratio = 0
+    completion_percentage = 0
+    
+    for module in modules:
 
+        total_items += module.lecturas.all().count()
+        for lecture in module.lecturas.all():
+            if lecture.reads.filter(pk=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.videos.all().count()
+        for video in module.videos.all():
+            if video.watches.filter(pk=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.actividades.all().count()
+        for activity in module.actividades.all():
+            if Entrega.objects.all().filter(actividad=activity.pk, user=user.pk).exists():
+                completed_items += 1
+
+    if total_items > 0:
+        completion_ratio = completed_items / total_items
+        completion_percentage = int(completion_ratio * 100)
+
+    context['total_items'] = total_items
+    context['completed_items'] = completed_items
+    context['completion_ratio'] = completion_ratio
+    context['completion_percentage'] = completion_percentage
 
     return render(request, template_name, context)
 
@@ -1299,6 +1376,7 @@ def course_video_view(request, id):
 
     video = get_object_or_404(Video, pk=id)
     course = video.modulo.curso
+    modules = Modulo.objects.all().filter(curso=course.pk)
 
     viewed = False
 
@@ -1328,6 +1406,38 @@ def course_video_view(request, id):
     context['is_member'] = is_member
     context['liked'] = liked
     # end of side panel
+
+    # Calculo de actividades totales para el progreso
+    total_items = 0
+    completed_items = 0
+    completion_ratio = 0
+    completion_percentage = 0
+    
+    for module in modules:
+
+        total_items += module.lecturas.all().count()
+        for lecture in module.lecturas.all():
+            if lecture.reads.filter(pk=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.videos.all().count()
+        for video in module.videos.all():
+            if video.watches.filter(pk=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.actividades.all().count()
+        for activity in module.actividades.all():
+            if Entrega.objects.all().filter(actividad=activity.pk, user=user.pk).exists():
+                completed_items += 1
+
+    if total_items > 0:
+        completion_ratio = completed_items / total_items
+        completion_percentage = int(completion_ratio * 100)
+
+    context['total_items'] = total_items
+    context['completed_items'] = completed_items
+    context['completion_ratio'] = completion_ratio
+    context['completion_percentage'] = completion_percentage
 
     return render(request, template_name, context)
 

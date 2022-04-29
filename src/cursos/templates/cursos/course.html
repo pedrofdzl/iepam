@@ -80,6 +80,18 @@
 
                     {% for act in mod.actividades.all %}
                         {% if is_member or is_owner %}
+                            {% if act in turned_activities %}
+                            <a href="{% url 'cursos:course_activity' id=act.pk %}" class="no-style-a">
+                                <div class="module-item checked">
+                                    <span class="material-icons module-item-icon checked-text">description</span>
+                                    <div>
+                                        <div class="module-item-title checked-text">Entregable: {{ act.name }}</div>
+                                        <div class="module-item-grade checked-text">Entregado</div>
+                                    </div>
+                                    <span class="material-icons checkmark">done</span>
+                                </div>
+                            </a>
+                            {% else %}
                             <a href="{% url 'cursos:course_activity' id=act.pk %}" class="no-style-a">
                                 <div class="module-item">
                                     <span class="material-icons module-item-icon">description</span>
@@ -89,6 +101,7 @@
                                     </div>
                                 </div>
                             </a>
+                            {% endif %}
                         {% else %}
                             <div class="module-item locked">
                                 <span class="material-icons module-item-icon locked-text">description</span>
