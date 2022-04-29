@@ -689,11 +689,17 @@ def course_quiz_grade(request, user_pk, quiz_pk, grade):
     extended_user = get_object_or_404(ExtendedUser, pk=user_pk)
     quiz = get_object_or_404(Quiz, pk=quiz_pk)
 
-    result = QuizResult()
+    if QuizResult.objects.filter(quiz=quiz, user=extended_user).exists():
+        result = QuizResult.objects.filter(quiz=quiz, user=extended_user).first()
+        if result.grade < grade:
+            result.grade = grade
+            result.save()
+    else:
+        result = QuizResult()
 
-    result.user = extended_user
-    result.quiz = quiz
-    result.grade = int(grade)
+        result.user = extended_user
+        result.quiz = quiz
+        result.grade = int(grade)
 
     return redirect(reverse('cursos:course_detail', kwargs={'id': quiz.modulo.curso.pk}))
 
