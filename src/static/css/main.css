@@ -2,6 +2,10 @@
     font-family: 'Kumbh Sans', sans-serif;
 }
 
+body {
+    overflow-y: hidden;
+}
+
 .container {
     --container-width: calc(100vw - 240px);
     position: absolute;
@@ -321,12 +325,15 @@
 
 .card-container {
     width: 100%;
+    max-height: 80%;
     padding: 16px;
     display: inline-flex;
     flex-wrap: wrap;
+    overflow-y: auto;
 }
 .card-container a {
     width: fit-content;
+    height: fit-content;
     text-decoration: none;
     color: #202022;
 }

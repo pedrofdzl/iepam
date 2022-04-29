@@ -211,7 +211,7 @@ input:focus {
 }
 
 input[type=file] {
-    height: 28px;
+    height: 32px;
 }
 
 .file-upload-button {

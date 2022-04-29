@@ -40,6 +40,34 @@ a {
     height: 100%;
     width: auto;
 }
+.profile-picture a {
+    color: white;
+}
+
+.profile-picture-placeholder {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: -6px;
+    left: -6px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 6px solid white;
+    background-color: gray;
+    text-align: center;
+    transition: all 0.1s ease-in-out;
+}
+.profile-picture-placeholder:hover {
+    background-color: rgb(88, 88, 88);
+}
+.profile-picture-placeholder span {
+    margin-top: 38%;
+    margin-bottom: 0;
+}
+.profile-picture-placeholder p {
+    margin-top: 0;
+    font-weight: 500;
+}
 
 .profile-name p {
     position: absolute;
@@ -100,7 +128,7 @@ label {
     font-weight: 400;
     background-color: whitesmoke;
     color:#202022;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     margin-top: 0.3rem;
     padding-top: 0.3rem;
     padding-left: 0.5rem;

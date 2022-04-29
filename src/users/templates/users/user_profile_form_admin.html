@@ -33,18 +33,17 @@
             </a>
             <div class="profile-background"></div>
             <div class="profile-picture">
-                {% if extended_user.profile_pic %}
-                    <img src="{{ user.extended_user.profile_pic.url }}">
-                {% else %}
-                    <img src="{% static 'img/view.jpg' %}">
-                {% endif %}
+                <a href="">
+                    <div class="profile-picture-placeholder">
+                        <span class="material-icons">photo_camera</span>
+                        <p>Cambiar foto</p>
+                    </div>
+                </a>
             </div>
             <div class="profile-name">
                 <p class="profile-main-name">{{ extended_user.get_full_name }}</p>
                 <p class="profile-secondary-name">
-                    {% if extended_user.is_admin %}
-                        Admin
-                    {% elif extended_user.can_teach %}
+                    {% if extended_user.canTeach %}
                         Capacitador
                     {% else %}
                         Usuario

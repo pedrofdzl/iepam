@@ -82,6 +82,9 @@ def aduser_member_register_View(request):
             if "cv" in request.FILES:
                 extendedUser.cv = request.FILES["cv"]
 
+            if "profile_pic" in request.FILES:
+                extendedUser.profile_pic = request.FILES["profile_pic"]
+
             extendedUser.save()
 
             return redirect(reverse('users:user_detail', kwargs={'id':user.pk}))
@@ -181,6 +184,7 @@ def aduser_update_view(request, id):
             print(update_form.errors)
 
     context["form"] = update_form
+    context["extended_user"] = extended_user
     return render(request, template_name, context)
 
 
