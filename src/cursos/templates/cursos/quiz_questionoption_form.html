@@ -20,7 +20,13 @@
             {{ form.correct }}
         </div>
         <a href="{% url 'cursos:course_quiz_edit_question' id=question.pk %}">Cancel</a>
-        <button>Agregar</button>
+
+        {% if editing %}
+            <button>Actualizar</button>
+        
+        {% else %}
+            <button>Agregar</button>
+        {% endif %}
     </form>
 
 

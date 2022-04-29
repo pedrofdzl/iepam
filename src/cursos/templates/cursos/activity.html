@@ -30,7 +30,7 @@
                         <p>Editar</p>
                         <span class="material-icons">edit</span>
                     </a>
-                    <a href="" class="button-delete no-style-a">
+                    <a href="{% url 'cursos:course_activity_delete' id=activity.pk %}" class="button-delete no-style-a">
                         <p>Eliminar</p>
                         <span class="material-icons">delete</span>
                     </a>
@@ -52,22 +52,48 @@
             </div>
 
             <div class="upload-container">
-                <div class="subtitle">Entregar actividad</div>
-                <form class="form-col-2" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ entrega_form.non_field_errors}}
-            
-                    <div class="custom-file-input">
-                        {{ entrega_form.file.errors }}
-                        {{ entrega_form.file }}
-                    </div>
+
+
+                {% if is_owner %}
+                <h1>Entregas:</h1>
+                <div class="form-col-2">
+                    {% for entrega in activity.entregas.all %}
+                        <h5>{{ entrega.user }}</h5>
+                        <p>Entregada: {{ entrega.created_date }}</p>
+                        <a href="{% url 'cursos:course_activity_entry' id=entrega.pk %}">Ver Entrega</a>
+                        <a href="{% url 'cursos:course_activity_entry_delete' id=entrega.pk %}">Eliminar</a>
+
+                        {% empty %}
+
+                        <h1>Sin entregas</h1>
+                    {% endfor %}
+                
+                {% else %}
+                
+                    {% if submited %}
+                    <h1>Actividad Entregada!</h1>
+                    <a href="{% url 'cursos:course_activity_entry' id=entry.pk %}">Ver Entrega</a>
                     
-                    <div style="text-align: end;">
-                        <button class="submit-button" type="submit">Subir</button>
-                    </div>
-                </form>
-                <div class="small-subtitle">Recuerda que los tipos de archivo aceptados son: .pdf, .docx, .xlsx y .pptx.</div>
-            </div>
+                    {% else %}
+                        <div class="subtitle">Entregar actividad</div>
+                            <form class="form-col-2" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ entrega_form.non_field_errors}}
+                                
+                                <div class="custom-file-input">
+                                    {{ entrega_form.file.errors }}
+                                    {{ entrega_form.file }}
+                                </div>
+                                
+                                <div style="text-align: end;">
+                                    <button class="submit-button" type="submit">Subir</button>
+                                </div>
+                            </form>
+                            <div class="small-subtitle">Recuerda que los tipos de archivo aceptados son: .pdf, .docx, .xlsx y .pptx.</div>
+                        </div>
+
+                    {% endif %}
+            {% endif %}
         </div>
 
         <div>

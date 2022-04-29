@@ -8,7 +8,34 @@ from django.contrib.auth import get_user_model
 from users.models import ExtendedUser
 
 from datetime import date
+from django.utils import timezone
 User = get_user_model()
+from pathlib import Path
+
+
+
+def resource_upload_handler(instance, filename):
+    destination = Path('resources') / str(instance.module.name)
+
+    extension = str(Path(filename).suffix)
+    file = Path(instance.title + extension)
+
+    destination = str(destination / file)
+    return destination
+
+def entrega_upload_handler(instance, filename):
+    destination = Path('entregas') / str(instance.actividad.modulo.name) / str(instance.actividad.name)
+
+    extension = str(Path(filename).suffix)
+    file = Path(f'{instance.actividad.name}_{instance.user.user.username}' + extension)
+
+    destination = str(destination / file)
+    return destination
+
+
+PERMITTED_FILE_EXTENSIONS = [
+    'pdf', 'docx', 'xlsx', 'pptx'
+]
 
 # Create your models here.
 class Course(models.Model):
@@ -77,8 +104,9 @@ class Actividad(models.Model):
 class Entrega(models.Model):
     actividad = models.ForeignKey(Actividad, on_delete=models.CASCADE, related_name='entregas', verbose_name='actividad')
     user = models.ForeignKey(ExtendedUser, on_delete=models.CASCADE, related_name='entregas', verbose_name='users')
-    file = models.FileField('file', upload_to='entregas', blank=True, null=True, validators=[FileExtensionValidator(allowed_extensions=['.pdf', '.docx', '.xlsx', '.pptx'])])
-    grade = models.FloatField('grade', validators=[MinValueValidator(-1), MaxValueValidator(100)])
+    created_date = models.DateTimeField(default=timezone.now) 
+    file = models.FileField('file', upload_to=entrega_upload_handler, blank=True, null=True, validators=[FileExtensionValidator(allowed_extensions=PERMITTED_FILE_EXTENSIONS)])
+    grade = models.FloatField('grade', validators=[MinValueValidator(-1), MaxValueValidator(100)], null=True, blank=True)
 
 
 class Video(models.Model):
@@ -120,3 +148,16 @@ class QuizResult(models.Model):
     user = models.ForeignKey(ExtendedUser, on_delete=models.CASCADE, related_name='quiz_results', default=None)
     grade = models.FloatField("grade", validators=[MinValueValidator(0, "La calificacion no puede ser menor a 0"), MaxValueValidator(100, "La calificacion no puede ser mayor a 100")])
     
+
+class FileResource(models.Model):
+    module = models.ForeignKey(Modulo, on_delete=models.CASCADE, related_name='archivos')
+    title = models.CharField('Titulo', max_length=255)
+    description = models.CharField('Description', max_length=255)
+    resource = models.FileField('Resource', upload_to=resource_upload_handler, validators=[FileExtensionValidator(allowed_extensions=PERMITTED_FILE_EXTENSIONS)])
+
+    class Meta:
+        verbose_name = 'File Resource'
+        verbose_name_plural = 'File Resources'
+
+    def __str__(self):
+        return f'File: {self.title}'

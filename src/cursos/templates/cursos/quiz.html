@@ -8,7 +8,7 @@
     <p>{{ quiz.description }}</p>
 
     {% if is_owner %}
-    
+    <a href="{% url 'cursos:course_quiz_delete' id=quiz.pk %}">Eliminar</a>
     
     <h2>Preguntas:</h2>
     <a href="{% url 'cursos:course_quiz_add_question' id=quiz.pk %}">Agregar Pregunta</a>
