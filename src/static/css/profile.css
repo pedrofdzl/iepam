@@ -34,6 +34,7 @@ a {
     border-radius: 50%;
     overflow: hidden;
     border: 6px solid white;
+    background-color: #202022;
     color: white;
 }
 .profile-picture img {

@@ -281,6 +281,42 @@ def course_detail_view(request, id):
     return render(request, template_name, context)
 
 
+def course_delete_view(request, id):
+    user = request.user
+    extended_user = user.extended_user
+    context = {}
+    template_name = template_prefix + 'course_confirm_delete.html'
+
+    course = get_object_or_404(Course, pk=id)
+
+    if request.method == 'POST':
+        course.delete()
+        return redirect(reverse('cursos:menu'))
+
+    
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+
+
+    context['course'] = course
+
+    return render(request, template_name, context)
+
 ############################
 ######## Member Views #######
 ############################
@@ -497,9 +533,6 @@ def course_edit_item_view(request, id, action):
     context = {}
     template_name = template_prefix + 'course_edit_item.html'
 
-    module = get_object_or_404(Modulo, pk=id)
-    if module.curso.owner != request.user.extended_user:
-        raise Http404()
 
     if (action == 1):
         stuff = get_object_or_404(Lectura, pk=id)
@@ -511,6 +544,11 @@ def course_edit_item_view(request, id, action):
     lecture_form = LectureAddForm()
     activity_form = ActivityAddForm()
     video_form = VideoAddForm()
+
+
+    module = stuff.modulo
+    if module.curso.owner != request.user.extended_user:
+        raise Http404()
 
     if request.method == 'GET':
         if (action == 1):

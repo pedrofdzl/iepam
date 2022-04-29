@@ -10,7 +10,7 @@ urlpatterns = [
     path('curso/<int:id>/miembros/', views.adcourse_members_view, name='adcourse_members'),
     path('curso/<int:id>/agregar-miembros/', views.adcourse_addmember_view, name='adcourse_add_members'),
     path('curso/<int:id>/agregando-miembro/<int:user_id>/', views.adcourse_addingmember_view, name='adcourse_adding_member'),
-    path('curso/<int:id>/eliminar/', views.adcourse_delete_view, name='adcourse_delete'),
+    path('curso/<int:id>/eliminar/', views.course_delete_view, name='adcourse_delete'),
 
     path('curso/<int:id>/add-members/', views.adcourse_addmember_view, name='adcourse_addmember'),
 
