@@ -10,7 +10,7 @@ from datetime import date
 from django.utils import timezone
 import os
 
-from .models import Course, Entrega, MemberOf, Modulo, Lectura, Actividad, Question, Video, Quiz, QuestionOption
+from .models import Course, Entrega, MemberOf, Modulo, Lectura, Actividad, Question, Video, Quiz, QuestionOption, QuizResult
 from .forms import (
                     CourseCreateForm, EntregaAddForm, LectureAddForm, 
                     ModuleAddForm, ActivityAddForm, VideoAddForm,
@@ -683,6 +683,21 @@ def course_quiz_create_question_view(request, id):
 
     return render(request, template_name, context)
 
+
+def course_quiz_grade(request, user_pk, quiz_pk, grade):
+
+    extended_user = get_object_or_404(ExtendedUser, pk=user_pk)
+    quiz = get_object_or_404(Quiz, pk=quiz_pk)
+
+    result = QuizResult()
+
+    result.user = extended_user
+    result.quiz = quiz
+    result.grade = int(grade)
+
+    return redirect(reverse('cursos:course_detail', kwargs={'id': quiz.modulo.curso.pk}))
+
+    
 
 
 @login_required

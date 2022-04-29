@@ -55,6 +55,7 @@ urlpatterns = [
     path('curso/quiz/<int:id>/agregar-opcion/', views.course_quiz_option_create_view, name='curso_question_add_option'),
     path('curso/quiz/<int:id>/editar-opcion/', views.course_quiz_option_update_view, name='curso_question_edit_option'),
     path('curso/quiz/<int:id>/eliminar-opcion/', views.course_quiz_option_delete_view, name='curso_question_delete_option'),
+    path('curso/quiz/calificar/<int:user_pk>/<int:quiz_pk>/<int:grade>/', views.course_quiz_grade, name='curso_quiz_grade'),
 
 
 ]
