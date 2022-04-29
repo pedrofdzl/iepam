@@ -591,6 +591,47 @@ def course_quiz_view(request, id):
     return render(request, template_name, context)
 
 
+
+def course_quiz_delete_view(request, id):
+    user = request.user
+    extended_user = user.extended_user
+    context = {}
+    template_name = template_prefix + 'quiz_confirm_delete.html'
+
+    quiz = get_object_or_404(Quiz, pk=id)
+    course = quiz.modulo.curso
+
+    
+    if request.method == 'POST':
+        quiz.delete()
+        return redirect(reverse('cursos:course_detail', kwargs={'id':course.pk}))
+
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+    context['quiz'] = quiz
+
+    return render(request, template_name, context)
+
+
+
 @login_required
 def course_quiz_create_question_view(request, id):
     user = request.user
@@ -864,6 +905,56 @@ def course_lecture_view(request, id):
     return render(request, template_name, context)
 
 
+def course_lecture_delete_view(request, id):
+    user = request.user
+    context = {}
+    template_name = template_prefix + 'lecture_confirm_delete.html'
+
+    user = request.user
+    extended_user = user.extended_user
+
+    lecture = get_object_or_404(Lectura, pk=id)
+    course = lecture.modulo.curso
+
+
+    if request.method == 'POST':
+        lecture.delete()
+        return redirect(reverse('cursos:course_detail', kwargs={'id':course.pk}))
+
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+    viewed = False
+
+    if user.is_authenticated:
+        if user.read_lectures.filter(pk=id).exists():
+            viewed = True
+
+    context['viewed'] = viewed
+    context['lecture'] = lecture
+    context['course'] = course
+
+    return render(request, template_name, context)
+
+
+
 
 def read_lecture(request, id):
     lecture = get_object_or_404(Lectura, pk=id)
@@ -877,6 +968,9 @@ def read_lecture(request, id):
         liked = True
 
     return redirect(reverse('cursos:course_lecture', kwargs={'id': lecture.pk}))
+
+
+
 
 @login_required
 def course_activity_view(request, id):
@@ -974,6 +1068,55 @@ def course_video_view(request, id):
     context['is_member'] = is_member
     context['liked'] = liked
     # end of side panel
+
+    return render(request, template_name, context)
+
+
+def course_video_delete_view(request, id):
+    user = request.user
+    context = {}
+    template_name = template_prefix + 'video_confirm_delete.html'
+
+    user = request.user
+    extended_user = user.extended_user
+
+    video = get_object_or_404(Video, pk=id)
+    course = video.modulo.curso
+
+
+    if request.method == 'POST':
+        video.delete()
+        return redirect(reverse('cursos:course_detail', kwargs={'id':course.pk}))
+
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+    viewed = False
+
+    if user.is_authenticated:
+        if user.read_lectures.filter(pk=id).exists():
+            viewed = True
+
+    context['viewed'] = viewed
+    context['video'] = video
+    context['course'] = course
 
     return render(request, template_name, context)
 

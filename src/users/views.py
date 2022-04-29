@@ -249,6 +249,11 @@ def memuser_profile_view(request):
     user = request.user
     extended_user = user.extended_user
 
+    if user.has_perm('users.is_teacher'):
+        own_courses = extended_user.own_courses.all()
+        print(own_courses)
+        context['own_courses'] = own_courses
+
     incomplete_courses = extended_user.courses.filter(status='Cursando')
 
     context["user"] = user
