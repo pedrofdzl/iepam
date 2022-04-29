@@ -16,6 +16,9 @@ from .forms import (
                     ModuleAddForm, ActivityAddForm, VideoAddForm,
                     QuizForm, QuestionForm, QuestionOptionsForm
                 )
+
+from .extras import get_iframe_url
+
 from users.models import ExtendedUser
 
 User = get_user_model()
@@ -446,7 +449,7 @@ def course_create_item_view(request, id, action):
 
                 video.name = video_form.cleaned_data['name']
                 video.description = video_form.cleaned_data['description']
-                video.url = youtube_url_to_embed(video_form.cleaned_data['url'])
+                video.url = get_iframe_url(video_form.cleaned_data['url'])
                 video.modulo = modulo
 
                 video.save()
@@ -531,7 +534,7 @@ def course_edit_item_view(request, id, action):
 
             if video_form.is_valid():
 
-                stuff.url = youtube_url_to_embed(video_form.cleaned_data['url'])
+                stuff.url = get_iframe_url(video_form.cleaned_data['url'])
                 stuff.save()
 
                 return redirect(reverse('cursos:course_detail', kwargs={'id': stuff.modulo.curso.pk}))
