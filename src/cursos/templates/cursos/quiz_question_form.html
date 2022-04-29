@@ -1,79 +1,114 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+{% load static %}
 
-{%  block body %}
-    <h1>Quiz: {{ quiz.name }}</h1>
-    <hr>
+<html lang="en">
 
-   <form method="post" id="main-form">
-       {% csrf_token %}
-       {{ form.non_field_errors }}
-       
-        <label for="">Pregunta</label>
-        <div>
-            {{ form.prompt.errors }}
-            {{ form.prompt }}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Material icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- CSS -->    
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+    <title>Quiz</title>
+    <link rel="icon" type="svg" href="{% static 'svg/iepam-logo-white.svg' %}">
+</head>
+<body>
+    
+    <main>
+        <div class="container">
+            <a class="title"><img src="{% static 'svg/iepam-logo-white.svg' %}"><p>IEPAM</p></a>
+            <div class="register-container">
+                <div class="register-title">Pregunta para {{ quiz.name }}</div>
+                
+                <form method="post" id="main-form">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    
+                     <label for="">Pregunta</label>
+                     <div class="input-line">
+                         {{ form.prompt.errors }}
+                         {{ form.prompt }}
+                     </div>
+
+                     <div id="normal-actions" style="text-align: center;">
+                        <a href="{% url 'cursos:course_quiz' id=quiz.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
+                        {% if editing %}
+                            <button class="margin-right-btn" type="submit">Actualizar</button>
+                            <button id="start-delete-btn" class="button-delete">Eliminar</button>
+                        {% else %}
+                            <button class="margin-left-btn margin-right-btn" type="submit">Agregar</button>
+                        {% endif %}
+                     </div>
+
+                </form>
+
+                <br>
+
+                {% if editing %}
+ 
+                    <label>Opciones</label>
+
+                    {% for option in question.options.all %}
+            
+                        <div class="option">
+                            <div style="display: grid; grid-template-columns: 1fr 0fr;">
+                                <div class="option-prompt">{{ forloop.counter }}) &nbsp; {{option.prompt}}</div>
+                                <span class="material-icons correct-check">{% if option.correct %}check_box{% else %}check_box_outline_blank{% endif %}</span>
+                            </div>
+                            <a href="{% url 'cursos:curso_question_edit_option' id=option.pk %}">Editar</a>
+                            <a href="{% url 'cursos:curso_question_delete_option' id=option.pk %}">Eliminar</a>
+                        </div>
+            
+                    {% empty %}
+            
+                    <h4>sin opciones</h4>
+                    {% endfor %}
+    
+                    <a class="button-add" href="{% url 'cursos:curso_question_add_option' id=question.pk %}">Agregar opción</a>
+
+                    <br>
+                 <div class="delete-actions" id="delete-actions" style="display: none;">
+                    <p>¿Estás seguro de que deseas eliminar la pregunta?</p>
+                    <button class="btn-cancel" style="width: fit-content;" id="cancel-delete-btn">Cancelar</button>
+                    <a class="btn-cancel margin-right-btn red-color" href="{% url 'cursos:course_quiz_delete_question' id=question.pk %}">Eliminar</a>
+                </div>
+                {% endif %}
+
+            </div>
         </div>
-
-        <a href="{% url 'cursos:course_quiz' id=quiz.pk %}">Cancelar</a>
-        <button id="start-delete-btn">Eliminar</button>
-        {% if editing %}
+        <script>
+            const mainForm = document.getElementById('main-form');
+            const deleteActions = document.getElementById('delete-actions');
+            const normalActions = document.getElementById('normal-actions');
+            const startdeleteBtn = document.getElementById('start-delete-btn');
+            const cancelBtn = document.getElementById('cancel-delete-btn');
         
-            <button type="submit">Actualizar</button>
-
-        {% else %}
-            <button type="submit">Agregar</button>
-        {% endif %}
-   </form>
-
-   <div id="delete-actions" style="display: none;">
-        <h5>Deseas eliminar la pregunta {{question.prompt}}</h5>
-       <button id="cancel-delete-btn">cancel</button>
-       <a href="{% url 'cursos:course_quiz_delete_question' id=question.pk %}">Delete</a>
-
-   </div>
-
-   {% if editing %}
-
-        <h3>Opciones</h3>
-        <a href="{% url 'cursos:curso_question_add_option' id=question.pk %}">Agregar opciones</a>
-        {% for option in question.options.all %}
-
-            <p>{{option.prompt}}</p>
-            <p>correcta? {% if option.correct %}Si{% else %}No{% endif %}</p>
-            <a href="{% url 'cursos:curso_question_edit_option' id=option.pk %}">Editar</a>
-            <a href="{% url 'cursos:curso_question_delete_option' id=option.pk %}">delete</a>
-
-
-        {% empty %}
-
-        <h4>sin opciones</h4>
-        {% endfor %}
-
-   {% endif %}
-
-
-   <script>
-        const mainForm = document.getElementById('main-form');
-        const deleteActions = document.getElementById('delete-actions');
-        const startdeleteBtn = document.getElementById('start-delete-btn');
-        const cancelBtn = document.getElementById('cancel-delete-btn');
-
-        startdeleteBtn.addEventListener('click', (event)=>{
-        event.preventDefault();
-        mainForm.style.display = 'none';
-        deleteActions.style.display = 'block';
-       });
-
-       cancelBtn.addEventListener('click', event=>{
-           event.preventDefault();
-           mainForm.style.display = 'block';
-            deleteActions.style.display = 'none';
-       })
-
-
-
-
-       
-   </script>
-
-{% endblock %}
+            startdeleteBtn.addEventListener('click', (event)=>{
+            event.preventDefault();
+            mainForm.style.display = 'none';
+            deleteActions.style.display = 'block';
+            normalActions.style.display = 'none';
+           });
+        
+           cancelBtn.addEventListener('click', event=>{
+               event.preventDefault();
+               mainForm.style.display = 'block';
+                deleteActions.style.display = 'none';
+                normalActions.style.display = 'block';
+           })
+        </script>
+    </main>
+</body>
+</html>
