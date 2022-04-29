@@ -32,11 +32,12 @@
             <div class="register-container">
                 <div class="register-subtitle">¿Deseas eliminar el entregable {{ activity.name }}?</div>
                 <div class="register-prompt">*Esta acción no puede ser revertida.</div>
+                <br>
                 <form method="post">
                     {% csrf_token %}
-                    <div class="btn-container">
-                        <a class="btn-cancel left-btn" href="{% url 'cursos:course_activity' id=activity.pk %}">Cancelar</a>
-                        <button class="red-color right-btn" type="submit">Eliminar</button>
+                    <div class="btn-container-vertical">
+                        <button class="red-color" type="submit">Eliminar</button>
+                        <a class="btn-cancel" href="{% url 'cursos:course_activity' id=activity.pk %}">Cancelar</a>
                     </div>
                 </form>
 

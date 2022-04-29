@@ -20,19 +20,19 @@
                 <div class="index-subtitle">¡Vas bien, sigue asi!</div>
             </div>
             <div class="index-date">
-                {% if date.weekday == 1 %}
+                {% if date.weekday == 0 %}
                 Lunes,
-                {% elif date.weekday == 2 %}
+                {% elif date.weekday == 1 %}
                 Martes,
-                {% elif date.weekday == 3 %}
+                {% elif date.weekday == 2 %}
                 Miercoles,
-                {% elif date.weekday == 4 %}
+                {% elif date.weekday == 3 %}
                 Jueves,
-                {% elif date.weekday == 5 %}
+                {% elif date.weekday == 4 %}
                 Viernes,
-                {% elif date.weekday == 6 %}
+                {% elif date.weekday == 5 %}
                 Sabado,
-                {% elif date.weekday == 7 %}
+                {% elif date.weekday == 6 %}
                 Domingo,
                 {% endif %} 
                 {{ date.day }} de 
