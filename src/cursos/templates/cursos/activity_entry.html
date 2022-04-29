@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <h1>{{ activity.name }}</h1>
+
+    <hr>
+    <h3>Detalle</h3>
+    <p>Creador: {{ entry.user }}</p>
+    <p>Entregada en: {{ entry.created_date }}</p>
+    <p>Calificación: {% if not entry.grade %} Sin Calificar {% else %} {{ entry.grade }} {% endif %} </p>
+
+    <a href="{% url 'cursos:course_activity_entry_file' id=entry.pk %}">Ver Archivo</a>
+    
+
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+
+    {% if is_owner %}
+        <a href="{% url 'cursos:course_activity_entry_delete' id=entry.pk %}">Eliminar</a>
+        <button id="grade-btn">Calificar</button>
+
+
+        <form style="display: none;" method="post" id="grade-form">
+            {% csrf_token %}
+            <label for="">Calificación</label>
+            <input type="number" name="grade" id="grade">
+            <button id="cancel-btn">Cancelar</button>
+            <button type="submit">Aceptar</button>
+        </form>
+    {% endif %}
+
+
+    <script>
+        const gradeForm = document.getElementById('grade-form');
+        const gradeBtn = document.getElementById('grade-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+
+        gradeBtn.addEventListener('click', event=>{
+            event.preventDefault();
+            gradeBtn.style.display = 'none';
+            gradeForm.style.display = 'block'
+        });
+
+        cancelBtn.addEventListener('click', event=>{
+            event.preventDefault();
+            gradeBtn.style.display = 'block';
+            gradeForm.style.display = 'none'
+        })
+
+    </script>
+
+{% endblock %}

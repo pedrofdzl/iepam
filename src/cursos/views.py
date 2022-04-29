@@ -1,20 +1,24 @@
-from django.forms import formset_factory
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from django.http import Http404
+from django.http import Http404, FileResponse
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
 from django.contrib.auth.decorators import login_required, permission_required
 
 from datetime import date
+from django.utils import timezone
+import os
 
-from .models import Course, Entrega, MemberOf, Modulo, Lectura, Actividad, Question, Video, Quiz, QuestionOption
+from .models import Course, Entrega, MemberOf, Modulo, Lectura, Actividad, Question, Video, Quiz, QuestionOption, QuizResult
 from .forms import (
                     CourseCreateForm, EntregaAddForm, LectureAddForm, 
                     ModuleAddForm, ActivityAddForm, VideoAddForm,
                     QuizForm, QuestionForm, QuestionOptionsForm
                 )
+
+from .extras import get_iframe_url
+
 from users.models import ExtendedUser
 
 User = get_user_model()
@@ -445,7 +449,7 @@ def course_create_item_view(request, id, action):
 
                 video.name = video_form.cleaned_data['name']
                 video.description = video_form.cleaned_data['description']
-                video.url = youtube_url_to_embed(video_form.cleaned_data['url'])
+                video.url = get_iframe_url(video_form.cleaned_data['url'])
                 video.modulo = modulo
 
                 video.save()
@@ -530,7 +534,7 @@ def course_edit_item_view(request, id, action):
 
             if video_form.is_valid():
 
-                stuff.url = youtube_url_to_embed(video_form.cleaned_data['url'])
+                stuff.url = get_iframe_url(video_form.cleaned_data['url'])
                 stuff.save()
 
                 return redirect(reverse('cursos:course_detail', kwargs={'id': stuff.modulo.curso.pk}))
@@ -590,6 +594,47 @@ def course_quiz_view(request, id):
     context['questions'] = questions
 
     return render(request, template_name, context)
+
+
+
+def course_quiz_delete_view(request, id):
+    user = request.user
+    extended_user = user.extended_user
+    context = {}
+    template_name = template_prefix + 'quiz_confirm_delete.html'
+
+    quiz = get_object_or_404(Quiz, pk=id)
+    course = quiz.modulo.curso
+
+    
+    if request.method == 'POST':
+        quiz.delete()
+        return redirect(reverse('cursos:course_detail', kwargs={'id':course.pk}))
+
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+    context['quiz'] = quiz
+
+    return render(request, template_name, context)
+
 
 
 @login_required
@@ -712,6 +757,27 @@ def course_quiz_create_question_view(request, id):
     return render(request, template_name, context)
 
 
+def course_quiz_grade(request, user_pk, quiz_pk, grade):
+
+    extended_user = get_object_or_404(ExtendedUser, pk=user_pk)
+    quiz = get_object_or_404(Quiz, pk=quiz_pk)
+
+    if QuizResult.objects.filter(quiz=quiz, user=extended_user).exists():
+        result = QuizResult.objects.filter(quiz=quiz, user=extended_user).first()
+        if result.grade < grade:
+            result.grade = grade
+            result.save()
+    else:
+        result = QuizResult()
+
+        result.user = extended_user
+        result.quiz = quiz
+        result.grade = int(grade)
+
+    return redirect(reverse('cursos:course_detail', kwargs={'id': quiz.modulo.curso.pk}))
+
+    
+
 
 @login_required
 def course_quiz_delete_question_view(request, id):
@@ -720,6 +786,7 @@ def course_quiz_delete_question_view(request, id):
     question.delete()
 
     return redirect(reverse('cursos:course_quiz', kwargs={'id': quiz.pk}))
+
 
 @login_required
 def course_quiz_update_question_view(request, id):
@@ -792,10 +859,11 @@ def course_quiz_option_create_view(request, id):
 
     if request.method == 'POST':
         option_form = QuestionOptionsForm(request.POST)
+        option_form.instance.question = question
 
         if option_form.is_valid():
             option = option_form.save(commit=False)
-            option.question = question
+            # option.question = question
             option.save()
             return redirect(reverse('cursos:course_quiz_edit_question', kwargs={'id': question.pk}))
         else:
@@ -860,6 +928,7 @@ def course_quiz_option_update_view(request, id):
     context['form'] = option_form
     context['quiz'] = quiz
     context['question'] = question
+    context['editing'] = True
 
 
     # Side Panel Variables
@@ -935,6 +1004,56 @@ def course_lecture_view(request, id):
     return render(request, template_name, context)
 
 
+def course_lecture_delete_view(request, id):
+    user = request.user
+    context = {}
+    template_name = template_prefix + 'lecture_confirm_delete.html'
+
+    user = request.user
+    extended_user = user.extended_user
+
+    lecture = get_object_or_404(Lectura, pk=id)
+    course = lecture.modulo.curso
+
+
+    if request.method == 'POST':
+        lecture.delete()
+        return redirect(reverse('cursos:course_detail', kwargs={'id':course.pk}))
+
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+    viewed = False
+
+    if user.is_authenticated:
+        if user.read_lectures.filter(pk=id).exists():
+            viewed = True
+
+    context['viewed'] = viewed
+    context['lecture'] = lecture
+    context['course'] = course
+
+    return render(request, template_name, context)
+
+
+
 
 def read_lecture(request, id):
     lecture = get_object_or_404(Lectura, pk=id)
@@ -949,6 +1068,9 @@ def read_lecture(request, id):
 
     return redirect(reverse('cursos:course_lecture', kwargs={'id': lecture.pk}))
 
+
+
+
 @login_required
 def course_activity_view(request, id):
     context = {}
@@ -958,30 +1080,42 @@ def course_activity_view(request, id):
 
     activity = get_object_or_404(Actividad, pk=id)
     course = activity.modulo.curso
+    submited = False
+
+    if Entrega.objects.filter(user=extended_user, actividad=activity).exists():
+        # print('hey')
+        entry = Entrega.objects.filter(user=extended_user, actividad=activity).first()
+        context['entry'] = entry
+        submited = True
 
     entrega_form = EntregaAddForm()
 
-    if request.method == 'POST':
-        entrega_form = EntregaAddForm(request.POST)
+    if request.method == 'POST' and not submited:
+        entrega_form = EntregaAddForm(request.POST, files=request.FILES)
 
         if entrega_form.is_valid():
 
             entrega = Entrega()
+            
 
-            entrega.file = entrega_form.cleaned_data['file']
+            if 'file' in request.FILES:
+                entrega.file = entrega_form.cleaned_data['file']
+
             entrega.actividad = activity
             entrega.user = request.user.extended_user
-            entrega.grade = -1
+            entrega.created_date = timezone.now()
 
             entrega.save()
 
-            return redirect(reverse('cursos:course_detail', kwargs={'id': activity.modulo.curso.pk}))
+            # submited = True
+            return redirect(reverse('cursos:course_activity', kwargs={'id': activity.pk}))
         else:
             print(entrega_form.errors)
 
     context['activity'] = activity
     context['entrega_form'] = entrega_form
     context['course'] = course
+    context['submited'] = submited
 
     # Side Panel Variables
     liked = False
@@ -1005,6 +1139,155 @@ def course_activity_view(request, id):
 
 
     return render(request, template_name, context)
+
+def course_activity_delete_view(request, id):
+    context = {}
+    template_name = template_prefix + 'activity_confirm_delete.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    activity = get_object_or_404(Actividad, pk=id)
+    course = activity.modulo.curso
+
+
+    if request.method == 'POST':
+        activity.delete()
+        return redirect(reverse('cursos:course_detail', kwargs={'id': course.pk}))
+   
+
+    context['activity'] = activity
+    context['course'] = course
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+    return render(request, template_name, context)
+
+
+def course_activity_entry_detail_view(request, id):
+    context = {}
+    template_name = template_prefix + 'activity_entry.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    entry = get_object_or_404(Entrega, pk=id)
+    activity = entry.actividad
+    course = activity.modulo.curso
+    valid = False
+
+    if request.method == 'POST':
+        try:
+            grade = int(request.POST.get('grade'))
+            valid = True
+        except:
+            context['error_message'] = 'No es un valor valido' 
+        
+        if valid and 0 <= grade <= 100:
+            entry.grade = grade
+            entry.save()
+
+            return redirect(reverse('cursos:course_activity_entry', kwargs={'id': entry.pk}))
+
+        else:
+            context['error_message'] = 'No es un valor valido' 
+
+    context['activity'] = activity
+    context['entry'] = entry
+    context['course'] = course
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+
+    return render(request, template_name, context)
+
+
+def course_activity_entry_file_view(request, id):
+    entry = get_object_or_404(Entrega, pk=id)
+
+    if os.path.exists(entry.file.path):
+        return FileResponse(open(entry.file.path, 'rb'), as_attachment=True)
+    return Http404('No hay archivo disponible')
+
+
+
+def course_activity_entry_delete_view(request, id):
+    context = {}
+    template_name = template_prefix + 'activity_entry_delete.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    entry = get_object_or_404(Entrega, pk=id)
+    activity = entry.actividad
+    course = activity.modulo.curso
+
+    if request.method == 'POST':
+        entry.delete()
+        return redirect(reverse('cursos:course_activity', kwargs={'id': activity.pk}))
+
+
+    context['activity'] = activity
+    context['entry'] = entry
+    context['course'] = course
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+
+    return render(request, template_name, context)
+
+
+
+
+
 
 @login_required
 def course_video_view(request, id):
@@ -1045,6 +1328,55 @@ def course_video_view(request, id):
     context['is_member'] = is_member
     context['liked'] = liked
     # end of side panel
+
+    return render(request, template_name, context)
+
+
+def course_video_delete_view(request, id):
+    user = request.user
+    context = {}
+    template_name = template_prefix + 'video_confirm_delete.html'
+
+    user = request.user
+    extended_user = user.extended_user
+
+    video = get_object_or_404(Video, pk=id)
+    course = video.modulo.curso
+
+
+    if request.method == 'POST':
+        video.delete()
+        return redirect(reverse('cursos:course_detail', kwargs={'id':course.pk}))
+
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+    viewed = False
+
+    if user.is_authenticated:
+        if user.read_lectures.filter(pk=id).exists():
+            viewed = True
+
+    context['viewed'] = viewed
+    context['video'] = video
+    context['course'] = course
 
     return render(request, template_name, context)
 

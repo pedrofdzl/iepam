@@ -1,7 +1,12 @@
 from django import forms
 
-from .models import Course, Modulo, Lectura, Actividad, Question, Quiz, Video, QuestionOption
+from .models import Course, Modulo, Lectura, Actividad, Question, Quiz, Video, QuestionOption, FileResource
 from django.core.validators import MaxLengthValidator, FileExtensionValidator, MinLengthValidator
+
+
+PERMITTED_FILE_EXTENSIONS = [
+    'pdf', 'docx', 'xlsx', 'pptx'
+]
 
 class CourseCreateForm(forms.ModelForm):
     class Meta:
@@ -41,8 +46,10 @@ class ActivityAddForm(forms.ModelForm):
             'description': MaxLengthValidator(500)
         }
 
+
 class EntregaAddForm(forms.Form):
-    file = forms.FileField(validators=[FileExtensionValidator(allowed_extensions=['.pdf', '.docx', '.xlsx', '.pptx'])])
+    file = forms.FileField(validators=[FileExtensionValidator(allowed_extensions=PERMITTED_FILE_EXTENSIONS)])
+
 
 class VideoAddForm(forms.ModelForm):
     class Meta:
@@ -87,3 +94,22 @@ class QuestionOptionsForm(forms.ModelForm):
         widgets = {
             'prompt': forms.Textarea(attrs={'rows': 5})
         }
+
+    def clean(self):
+        all_cleaned_data = super().clean()
+        question = self.instance.question
+        correct = all_cleaned_data['correct']
+        
+        if correct:
+            if QuestionOption.objects.filter(question=question).exists():
+                for option in question.options.all():
+                    if option.correct:
+                        raise forms.ValidationError('¡Ya existe una respuesta correcta!')
+
+
+
+
+class FileResourceForm(forms.ModelForm):
+    class Meta:
+        model = FileResource
+        fields = ('title', 'description', 'resource')

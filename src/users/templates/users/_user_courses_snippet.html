@@ -1,3 +1,4 @@
+<!-- ! Usa el membersOf  -->
 {% for course in courses %}
 <div class="user-course-card">
     <div class="user-course-card-title">{{ course.course.name }}</div>
@@ -5,5 +6,5 @@
     <small>Iniciado: {{ course.dateJoined }}</small>
 </div>
 {% empty %}
-<h5>Ningun curso actual</h5>
+<h5>Ningun curso</h5>
 {% endfor %}

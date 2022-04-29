@@ -30,7 +30,7 @@
                     <p>Editar</p>
                     <span class="material-icons">edit</span>
                 </a>
-                <a href="" class="button-delete no-style-a">
+                <a href="{% url 'cursos:course_lecture_delete' id=lecture.pk %}" class="button-delete no-style-a">
                     <p>Eliminar</p>
                     <span class="material-icons">delete</span>
                 </a>

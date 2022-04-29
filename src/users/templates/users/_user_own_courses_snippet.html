@@ -1,0 +1,13 @@
+<!-- ! Usa el courses  -->
+{% for course in courses %}
+<a href="{% url 'cursos:course_detail' id=course.pk %}">
+
+    <div class="user-course-card">
+        <div class="user-course-card-title">{{ course.name }}</div>
+        <div class="user-course-card-desc">{{ course.description }}</div>
+        <small>Creado: {{ course.date_created }}</small>
+    </div>
+</a>
+{% empty %}
+<h5>Ningun curso</h5>
+{% endfor %}
