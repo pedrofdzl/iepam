@@ -265,8 +265,15 @@ button {
     transition: all 0.2s ease-in-out;
 }
 button:hover {
-    transform: scale(1.02);
     box-shadow: 0 0 10px #20CC82;
+}
+
+.button-delete {
+    background-color: #b44d4d;
+}
+.button-delete:hover {
+    background-color: #c74848;
+    box-shadow: 0 0 10px #ff6363;
 }
 
 a {
@@ -298,6 +305,10 @@ a {
 
 .margin-right-btn {
     margin-right: 1rem;
+}
+
+.margin-left-btn {
+    margin-left: 1rem;
 }
 
 .input-line input {
@@ -378,4 +389,68 @@ a {
     color: whitesmoke;
     font-size: 52px;
     font-weight: 600;
+}
+
+.button-add {
+    display: block;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: #20CC82;
+    color: white;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+    margin-top: 1rem;
+}
+.button-add:hover {
+    background-color: #20CC82;
+    box-shadow: 0 0 10px #20CC82;
+}
+
+.option {
+    display: grid;
+    grid-template-columns: 1fr 0fr 0fr 0fr;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.option a {
+    color: #202022;
+    text-decoration: underline;
+    margin-left: 1rem;
+}
+
+.correct-check {
+    margin-left: 1rem;
+    margin-top: -0.1rem;
+}
+
+.correct-checkbox-input {
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+}
+
+.correct-checkbox-input input {
+    width: fit-content;
+}
+
+.delete-actions {
+    padding: 1rem;
+    padding-top: 0.1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+}
+.delete-actions p {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.red-color {
+    background-color: #b44d4d;
+}
+.red-color:hover {
+background-color: #c74848;
+box-shadow: 0 0 10px #ff6363;
 }

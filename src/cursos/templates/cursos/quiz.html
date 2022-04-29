@@ -1,35 +1,84 @@
 {% extends 'base.html' %}
 
+{% block head %}
 
+{% load static %}
+<title>Quiz</title>
+
+{% endblock %}
 
 {% block body %}
+<link rel="stylesheet" href="{% static 'css/activities.css' %}">
 
-    <h1>{{ quiz.name }}</h1>
-    <p>{{ quiz.description }}</p>
+<div id="id-app" style="display: none;">cap</div>
 
-    {% if is_owner %}
-    
-    
-    <h2>Preguntas:</h2>
-    <a href="{% url 'cursos:course_quiz_add_question' id=quiz.pk %}">Agregar Pregunta</a>
-        {% for question in questions %}
-        
-            <h3>Pregunta {{ forloop.counter }}:</h3>
-            {{ question.prompt }}
+<div class="container-window">
 
-            <p>Opciones</p>
+    <div class="activity-header">
+        <a href="{% url 'cursos:course_detail' id=quiz.modulo.curso.pk %}" class="no-style-a">
+            <div class="return">
+                <span class="material-icons">chevron_left</span>
+                Volver a la capacitación
+            </div>
+        </a>
+                
+        {% if is_owner %}
+        <a href="" class="button-delete no-style-a">
+            <p>Eliminar</p>
+            <span class="material-icons">delete</span>
+        </a>
 
-            {% for option in question.options.all %}
-            <p>{{ option.prompt }}</p>
-            {% endfor %}
-            <a href="{% url 'cursos:course_quiz_edit_question' id=question.pk %}">Editar</a>
-            <hr>
-        
-        {% empty %}
+        {% endif %}
+    </div>
 
-            <h4>No se encontraron Preguntas</h4>
-        {% endfor %}
+    <div class="description">{{ quiz.modulo.name }}</div>
 
-    {% endif %}
+    <div class="title">{{ quiz.name }}</div>
+
+    <div class="description">{{ quiz.description }}</div>
+
+    <div class="quiz-admin-container">
+
+        <div class="quiz-admin-cell">
+            {% if is_owner %}
+
+                <div class="quiz-admin-cell-header">
+                    <div class="quiz-admin-cell-title">Preguntas</div>
+                    <a href="{% url 'cursos:course_quiz_add_question' id=quiz.pk %}" class="button-add tooltip">
+                        <span class="material-icons">add</span>
+                        <div class="tooltiptext">Agregar pregunta</div>
+                    </a>
+                </div>
+
+                {% for question in questions %}
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <div class="question-title">Pregunta {{ forloop.counter }}</div>
+                            <span class="material-icons">expand_more</span>
+                        </div>
+                        <div class="question-prompt">{{ question.prompt }}</div>
+                        <div class="question-options-title">Opciones</div>
+                        {% for option in question.options.all %}
+                            <div class="option">{{ forloop.counter }}) &nbsp; {{ option.prompt }}</div>
+                        {% endfor %}
+                        <a class="question-edit-button" href="{% url 'cursos:course_quiz_edit_question' id=question.pk %}">Editar</a>
+                    </div>
+                        
+                {% empty %}
+
+                    <h4>No se encontraron Preguntas</h4>
+
+                {% endfor %}
+
+            {% endif %}
+        </div>
+
+        <div class="quiz-admin-cell">
+            
+        </div>
+                
+    </div>
+</div>
 
 {% endblock %}

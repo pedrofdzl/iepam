@@ -1,27 +1,63 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+{% load static %}
 
+<html lang="en">
 
-{% block body %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <h1>{{ quiz.name }}</h1>
-    <hr>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
+    <!-- Material icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        <label for="">Opcion</label>
-        <div>
-            {{ form.prompt.errors }}
-            {{ form.prompt }}
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- CSS -->    
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+    <title>Quiz</title>
+    <link rel="icon" type="svg" href="{% static 'svg/iepam-logo-white.svg' %}">
+</head>
+<body>
+    
+    <main>
+        <div class="container">
+            <a class="title"><img src="{% static 'svg/iepam-logo-white.svg' %}"><p>IEPAM</p></a>
+            <div class="register-container">
+                <div class="register-title">Agregar respuesta</div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+            
+                    <label for="">Opcion</label>
+                    <div class="input-line">
+                        {{ form.prompt.errors }}
+                        {{ form.prompt }}
+                    </div>
+    
+                    <div class="correct-checkbox-input">
+                        <label for="">¿Es la respuesta correcta?</label>
+                        {{ form.correct.errors }}
+                        {{ form.correct }}
+                    </div>
+
+                    <a class="btn-cancel margin-right-btn" href="{% url 'cursos:course_quiz_edit_question' id=question.pk %}">Cancel</a>
+                    {% if editing %}
+                    <button style="margin-right: none;">Actualizar</button>
+                    {% else %}
+                    <button>Agregar</button>
+                    {% endif %}
+                </form>
+                
+            </div>
         </div>
-        <label for="">¿Es correcta?</label>
-        <div>
-            {{ form.correct.errors }}
-            {{ form.correct }}
-        </div>
-        <a href="{% url 'cursos:course_quiz_edit_question' id=question.pk %}">Cancel</a>
-        <button>Agregar</button>
-    </form>
-
-
-{% endblock %}
+    </main>
+</body>
+</html>

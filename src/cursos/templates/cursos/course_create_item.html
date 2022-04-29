@@ -36,7 +36,7 @@
 
                 <div class="register-activity-type-list">
                     <a href="{% url 'cursos:course_create_item' id=modulo.pk action=1 %}" class="no-style-a"><div id="lectura" class="register-activity-type-item"><span class="material-icons">book</span><p>Lectura</p></div></a>
-                    <a href="{% url 'cursos:course_create_item' id=modulo.pk action=2 %}" class="no-style-a"><div id="actividad" class="register-activity-type-item"><span class="material-icons">description</span><p>Actividad</p></div></a>
+                    <a href="{% url 'cursos:course_create_item' id=modulo.pk action=2 %}" class="no-style-a"><div id="actividad" class="register-activity-type-item"><span class="material-icons">description</span><p>Entregable</p></div></a>
                     <a href="{% url 'cursos:course_create_item' id=modulo.pk action=3 %}" class="no-style-a"><div id="video" class="register-activity-type-item"><span class="material-icons">smart_display</span><p>Video</p></div></a>
                     <a href="{% url 'cursos:course_create_item' id=modulo.pk action=4 %}" class="no-style-a"><div id="quiz" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Quiz</p></div></a>
                 </div>
@@ -172,7 +172,10 @@
                         </div>
                         <button type="button" id="add-question">Agregar pregunta</button> {% endcomment %}
 
-                        <button type="submit">Crear</button>
+                        <div style="text-align: center;">
+                            <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
+                            <button type="submit">Crear</button>
+                        </div>
                     </form>
                 </div>
 

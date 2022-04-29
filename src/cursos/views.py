@@ -580,6 +580,7 @@ def course_quiz_view(request, id):
     if extended_user == course.owner:
         is_owner = True
 
+    context['course'] = quiz.modulo.curso
     context['is_owner'] = is_owner
     context['is_member'] = is_member
     context['liked'] = liked
@@ -785,7 +786,7 @@ def course_quiz_option_update_view(request, id):
         else:
             print(option_form.errors)
     
-    
+    context['editing'] = True
     context['form'] = option_form
     context['quiz'] = quiz
     context['question'] = question
