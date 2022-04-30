@@ -1,6 +1,3 @@
-from email.policy import default
-from pyexpat import model
-from urllib.parse import MAX_CACHE_SIZE
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, FileExtensionValidator
 from django.contrib.auth import get_user_model
