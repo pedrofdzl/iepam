@@ -3,7 +3,7 @@
 {% block head %}
 
 {% load static %}
-<title>Capacitacion</title>
+<title>{{ video.name }}</title>
 
 {% endblock %}
 
@@ -56,6 +56,7 @@
 
                 <br>
 
+                {% if is_member %}
                 <div style="text-align: center;">
                     <a href="{% url 'cursos:course_watch_video' id=video.pk %}" class="no-style-a button-view">
                         {% if viewed %}
@@ -67,6 +68,8 @@
                         {% endif %}
                     </a>
                 </div>
+                {% endif %}
+
             </div>
             
         </div>

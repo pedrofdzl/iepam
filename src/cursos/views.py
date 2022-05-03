@@ -1,4 +1,5 @@
 from ast import Mod
+from unittest import result
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.http import Http404, FileResponse
@@ -242,6 +243,11 @@ def course_detail_view(request, id):
             if Entrega.objects.all().filter(actividad=activity.pk, user=user.pk).exists():
                 completed_items += 1
 
+        total_items += module.quizzes.all().count()
+        for quiz in module.quizzes.all():
+            if QuizResult.objects.all().filter(quiz=quiz.pk, user=user.pk).exists():
+                completed_items += 1
+
     if total_items > 0:
         completion_ratio = completed_items / total_items
         completion_percentage = int(completion_ratio * 100)
@@ -265,6 +271,11 @@ def course_detail_view(request, id):
     for entrega in entregas_user.all():
         turned_activities.append(entrega.actividad)
 
+    results_user = user.extended_user.quiz_results
+    answered_quizzes = []
+    for result in results_user.all():
+        answered_quizzes.append(result.quiz)
+
     context['is_owner'] = is_owner
     context['is_member'] = is_member
     context['liked'] = liked
@@ -277,6 +288,7 @@ def course_detail_view(request, id):
     context['completion_ratio'] = completion_ratio
     context['completion_percentage'] = completion_percentage
     context['turned_activities'] = turned_activities
+    context['answered_quizzes'] = answered_quizzes
 
     return render(request, template_name, context)
 
@@ -617,7 +629,7 @@ def course_quiz_view(request, id):
     course = quiz.modulo.curso
 
     questions = quiz.questions.all()
-
+    results = quiz.results.all().order_by('-grade')
 
 
     # Side Panel Variables
@@ -642,7 +654,8 @@ def course_quiz_view(request, id):
 
     context['quiz'] = quiz
     context['questions'] = questions
-
+    context['results'] = results
+ 
     return render(request, template_name, context)
 
 
@@ -754,6 +767,44 @@ def course_quiz_submit_view(request, id, calif):
     context['quiz'] = quiz
     context['grade'] = calif
 
+    return course_quiz_grade(request, user.pk, quiz.pk, calif)
+
+
+def course_quiz_grade(request, user_pk, quiz_pk, grade):
+
+    extended_user = get_object_or_404(ExtendedUser, pk=user_pk)
+    quiz = get_object_or_404(Quiz, pk=quiz_pk)
+
+    if QuizResult.objects.filter(quiz=quiz, user=extended_user).exists():
+        result = QuizResult.objects.filter(quiz=quiz, user=extended_user).first()
+        if result.grade < grade:
+            result.grade = grade
+            result.save()
+    else:
+        result = QuizResult()
+
+        result.user = extended_user
+        result.quiz = quiz
+        result.grade = int(grade)
+        result.save()
+
+    return redirect(reverse('cursos:course_detail', kwargs={'id': quiz.modulo.curso.pk}))
+
+
+@login_required
+def course_quiz_answered_view(request, id):
+    user = request.user
+    extended_user = user.extended_user
+    context = {}
+    template_name = template_prefix + 'quiz_answered.html'
+
+    quiz = get_object_or_404(Quiz, pk=id)
+    result = get_object_or_404(QuizResult, quiz=quiz.pk, user=user.pk)
+
+    context['user'] = extended_user
+    context['quiz'] = quiz
+    context['result'] = result
+
     return render(request, template_name, context)
 
 
@@ -806,27 +857,6 @@ def course_quiz_create_question_view(request, id):
 
     return render(request, template_name, context)
 
-
-def course_quiz_grade(request, user_pk, quiz_pk, grade):
-
-    extended_user = get_object_or_404(ExtendedUser, pk=user_pk)
-    quiz = get_object_or_404(Quiz, pk=quiz_pk)
-
-    if QuizResult.objects.filter(quiz=quiz, user=extended_user).exists():
-        result = QuizResult.objects.filter(quiz=quiz, user=extended_user).first()
-        if result.grade < grade:
-            result.grade = grade
-            result.save()
-    else:
-        result = QuizResult()
-
-        result.user = extended_user
-        result.quiz = quiz
-        result.grade = int(grade)
-
-    return redirect(reverse('cursos:course_detail', kwargs={'id': quiz.modulo.curso.pk}))
-
-    
 
 
 @login_required

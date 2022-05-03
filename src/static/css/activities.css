@@ -419,6 +419,22 @@ input[type=file]::-webkit-file-upload-button:hover {
     box-shadow: 0 0 10px #20CC82;
 }
 
+.result {
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+    max-height: 25px;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+}
+.result p,
+.result b {
+    margin: 0px;
+}
+
 .question {
     padding: 1rem;
     margin-bottom: 1rem;
