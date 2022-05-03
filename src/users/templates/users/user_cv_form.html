@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+
+    <h1>Change cv</h1>
+    <hr>
+
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <label for="">Archivo</label>
+        <div>
+            {{ form.cv.errors }}
+            {{ form.cv }}
+
+        </div>
+
+
+
+        {% if profile_view %}
+            <a href="{% url 'users:user_profile' %}">Cancel</a>
+        {% else %}
+            <a href="{% url 'users:user_detail' id=extended_user.user.pk %}">Cancel</a>
+        {% endif %}
+        <button>Actualizar</button>
+    </form>
+
+{% endblock %}

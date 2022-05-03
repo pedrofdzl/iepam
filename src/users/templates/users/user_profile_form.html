@@ -27,7 +27,7 @@
         <div class="profile-rows-cell">
             <div class="profile-background"></div>
             <div class="profile-picture">
-                <a href="">
+                <a href="{% url 'users:user_profile_updatepic' %}">
                     <div class="profile-picture-placeholder">
                         <span class="material-icons">photo_camera</span>
                         <p>Cambiar foto</p>
@@ -58,6 +58,7 @@
                         {% csrf_token %}
                         {{ form.non_field_errors }}
         
+                        <a href="{% url 'users:user_profile_updateCV' %}">Actualizar CV</a>
                         <div class="user-info-field-container">
                             <label for="">Nombre</label>
                             <div>
@@ -121,46 +122,34 @@
                     <br>
                 </div>
         
+                {% if own_courses %}
+                    <div class="user-current-courses-container">
+                        <p class="user-info-title">Capacitaciones Impartidas</p>
+                        <hr class="hr-nice">
+                
+                    {% include 'users/_user_own_courses_snippet.html' with courses=own_courses %}
+                
+                        <br>
+                    </div>
+                {% endif %}
+
                 <div class="user-current-courses-container">
                     <p class="user-info-title">Capacitaciones actuales</p>
                     <hr class="hr-nice">
-        
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en Algo</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-        
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en Otra</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-        
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en Tris</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-        
+            
+                   {% include 'users/_user_courses_snippet.html' with courses=incomplete_courses %}
+            
                     <br>
                 </div>
-        
+            
                 <div class="user-current-courses-container">
                     <p class="user-info-title">Capacitaciones Completadas</p>
                     <hr class="hr-nice">
-        
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en BlahBlah</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-        
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en WeeHyy</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
-        
-                    <div class="user-course-card">
-                        <div class="user-course-card-title">Capacitacion en Word y Powerpoint</div>
-                        <div class="user-course-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                    </div>
+            
+                        {% include 'users/_user_courses_snippet.html' %}
+            
+                    <br>
+                </div>
         
                     <br>
                 </div>

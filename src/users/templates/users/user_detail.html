@@ -69,8 +69,13 @@
                         <input class="user-info-field" readonly=true value="{{ extended_user.academic_level }}">
                     </div>
                     <div class="user-info-field-container" style="text-align: center; margin-top: 2rem; margin-bottom: 0.6rem;">
-                        <a class="user-info-cv" href="">Descargar CV&nbsp;<span class="material-icons">file_download</span></a>
+
+                        {% if extended_user.cv %}
+                        <a class="user-info-cv" href="{% url 'users:user_cv' id=extended_user.user.pk %}">Descargar CV&nbsp;<span class="material-icons">file_download</span></a>
+                        {% else %}
+                        <a class="user-info-cv" href="{% url 'users:user_update_cv' id=extended_user.user.pk %}">Agregar CV&nbsp;<span class="material-icons">file_download</span></a>
                         <!-- <input type="file" class="user-info-field" readonly=true value="Preparatoria"> -->
+                        {% endif %}
                     </div>
                     <br>
                 </div>

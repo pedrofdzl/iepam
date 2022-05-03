@@ -4,7 +4,7 @@ def get_iframe_url(url: str) -> str:
 
     params url(str): A string containing the url
 
-    returns str: a string with the url ready to use in iframe
+    returns str: a string with the url ready to use in an iframe tag
     """
 
     result = 'https://www.youtube.com/embed/'

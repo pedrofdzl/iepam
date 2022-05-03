@@ -33,7 +33,7 @@
             </a>
             <div class="profile-background"></div>
             <div class="profile-picture">
-                <a href="">
+                <a href="{% url 'users:user_update_profilepic' id=extended_user.user.pk %}">
                     <div class="profile-picture-placeholder">
                         <span class="material-icons">photo_camera</span>
                         <p>Cambiar foto</p>
@@ -57,8 +57,11 @@
                 <div class="user-info-container">    
                     <p class="user-info-title">Información del usuario</p>
                     <hr class="hr-nice">
+
         
                     <form method="post">
+                    <a href="{% url 'users:user_update_cv' id=extended_user.user.pk %}">Actualizar CV</a>
+
                         {% csrf_token %}
                         {{ form.non_field_errors }}
         

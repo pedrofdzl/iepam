@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+
+    <h1>Change Profile Pic</h1>
+    <hr>
+
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+
+
+        {% if profile_view %}
+            <a href="{% url 'users:user_profile'  %}">Cancel</a>
+        {% else %}
+            <a href="{% url 'users:user_detail' id=extended_user.user.pk %}">Cancel</a>
+        {% endif %}
+        <button>Actualizar</button>
+    </form>
+
+{% endblock %}

@@ -1,16 +1,18 @@
-from re import L
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, permission_required  
 
-from django.http import Http404
+from django.http import Http404, FileResponse
 from django.urls import reverse
 
 from datetime import date
 
-from .forms import RegisterForm, UserUpdateForm, UserCVForm
+from .forms import RegisterForm, UserUpdateForm, UserCVForm, ProfilePicForm
 from .models import ExtendedUser
+
+import os
+
 
 User = get_user_model()
 
@@ -144,7 +146,7 @@ def aduser_update_view(request, id):
     }
 
     incomplete_courses = extended_user.courses.filter(status='Cursando')
-    print(incomplete_courses)
+    # print(incomplete_courses)
 
     context['incomplete_courses'] = incomplete_courses
     context['extended_user'] = extended_user
@@ -221,24 +223,76 @@ def aduser_activate_view(request, id):
     return redirect(reverse('users:user_detail', kwargs={'id':user.pk}))
 
 
+@login_required
+@permission_required(['users.is_admin'])
+def aduser_change_profilepic_view(request, id):
+    context = {}
+    template_name = admin_template_pre + "user_profilepic_form.html"
 
-# def aduser_change_cv(request, id):
-#     context = {}
-#     template_name = admin_template_pre + "user_cv_form.html"
+    user = get_object_or_404(User, pk=id)
+    extended_user = user.extended_user
 
-#     initial_data = {
-#         'cv': request.user.extended_user.cv
-#     }
+    picture_form = ProfilePicForm(instance=extended_user)
 
-#     cv_form = UserCVForm(initial=initial_data)
+    if extended_user.profile_pic:
+        picture_path = extended_user.profile_pic.path
+    else:
+        picture_path = ''
 
-#     if request.method == 'POST':
-#         cv_form = UserCVForm(request.POST, initial=initial_data)
+    if request.method == 'POST':
+        picture_form = ProfilePicForm(request.POST, files=request.FILES, instance=extended_user)
 
-#         if cv_form.is_valid():
+        if picture_form.is_valid():
+
+            extended_user = picture_form.save(commit=False)
+
+            if extended_user.profile_pic.path != picture_path:
+                os.remove(picture_path)
             
-#             if 
+            extended_user.save()
 
+            return redirect(reverse('users:user_detail', kwargs={'id': user.pk}))
+
+
+    context['extended_user'] = extended_user
+    context['form'] = picture_form
+
+
+    return render(request, template_name, context)
+
+
+@login_required
+@permission_required(['users.is_admin'])
+def aduser_change_cv(request, id):
+    context = {}
+    template_name = admin_template_pre + "user_cv_form.html"
+    user = get_object_or_404(User, pk=id)
+    extended_user = user.extended_user
+
+    if extended_user.cv:
+        cv_path = extended_user.cv.path
+    else:
+        cv_path = ''
+
+    cv_form = UserCVForm(instance=extended_user)
+
+    if request.method == 'POST':
+        cv_form = UserCVForm(request.POST, instance=extended_user, files=request.FILES)
+
+        if cv_form.is_valid():
+            extended_user = cv_form.save(commit=False)
+            
+            if cv_path != extended_user.cv.path and cv_path != '':
+                os.remove(cv_path)
+
+            extended_user.save()
+
+            return redirect(reverse('users:user_detail', kwargs={'id': user.pk}))
+
+    context['form'] = cv_form
+    context['extended_user'] = extended_user
+
+    return render(request, template_name, context)
 
 
 ############################
@@ -255,13 +309,12 @@ def memuser_profile_view(request):
 
     if user.has_perm('users.is_teacher'):
         own_courses = extended_user.own_courses.all()
-        print(own_courses)
         context['own_courses'] = own_courses
 
     incomplete_courses = extended_user.courses.filter(status='Cursando')
+    context['incomplete_courses'] = incomplete_courses
 
     context["user"] = user
-    context['incomplete_courses'] = incomplete_courses
 
     return render(request, template_name, context)
 
@@ -272,6 +325,7 @@ def memuser_update_view(request):
     template_name = template_prefix + "user_profile_form.html"
 
     user = request.user
+    extended_user = user.extended_user
 
     initial_data = {
         'first_name': user.first_name,
@@ -318,6 +372,14 @@ def memuser_update_view(request):
         else:
             print(user_form.errors)
 
+
+    if user.has_perm('users.is_teacher'):
+        own_courses = extended_user.own_courses.all()
+        context['own_courses'] = own_courses
+
+    incomplete_courses = extended_user.courses.filter(status='Cursando')
+    context['incomplete_courses'] = incomplete_courses
+
     context["form"] = user_form
 
     return render(request, template_name, context)
@@ -325,11 +387,15 @@ def memuser_update_view(request):
 
 @login_required
 def memuser_changeCV_view(request):
-    template_name = template_prefix + 'user_changecv_form.html'
+    template_name = template_prefix + 'user_cv_form.html'
     context = {}
 
     user = request.user
 
+    if user.extended_user.cv:
+        cv_path = user.extended_user.cv.path
+    else:
+        cv_path = ''
 
     cv_form = UserCVForm(instance=user.extended_user)
 
@@ -337,17 +403,70 @@ def memuser_changeCV_view(request):
         cv_form = UserCVForm(request.POST, instance=user.extended_user, files=request.FILES)
 
         if cv_form.is_valid():
-            extended = cv_form.save(commit=False)
-
-            if 'cv' in request.FILES:
-                extended.cv = request.FILES['cv']
-                extended.save()
+            extended_user = cv_form.save(commit=False)
+            
+            if cv_path != extended_user.cv.path and cv_path != '':
+                os.remove(cv_path)
+            
+            extended_user.save()
+            
         else:
             print(cv_form.errors)
     
     context['form'] = cv_form
+    context['profile_view'] = True
 
     return render(request, template_name, context)
+
+
+def memuser_change_profilepic_view(request):
+    context = {}
+    template_name = admin_template_pre + "user_profilepic_form.html"
+
+    user = request.user
+    extended_user = user.extended_user
+
+    picture_form = ProfilePicForm(instance=extended_user)
+
+    if extended_user.profile_pic:
+        picture_path = extended_user.profile_pic.path
+    else:
+        picture_path = ''
+
+    if request.method == 'POST':
+        picture_form = ProfilePicForm(request.POST, files=request.FILES, instance=extended_user)
+
+        if picture_form.is_valid():
+
+            extended_user = picture_form.save(commit=False)
+
+            if extended_user.profile_pic.path != picture_path:
+                os.remove(picture_path)
+            
+            extended_user.save()
+
+            return redirect(reverse('users:user_profile'))
+
+
+    context['extended_user'] = extended_user
+    context['form'] = picture_form
+    context['profile_view'] = True
+
+
+    return render(request, template_name, context)
+
+
+
+def user_get_cv_view(request, id):
+    user = get_object_or_404(User, pk=id)
+    extended_user = user.extended_user
+
+    file_path = extended_user.cv.path
+
+    if os.path.exists(file_path):
+        return FileResponse(extended_user.cv.open(mode='rb'), as_attachment=True)
+    else:
+        raise Http404()
 
 
 

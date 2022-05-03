@@ -7,6 +7,7 @@ from datetime import date
 from calendar import monthrange
 
 from .models import ExtendedUser
+import os
 
 MONTHS = [
     (1, "Enero"), (2, "Febrero"), (3, "Marzo"), (4, "Abril"),
@@ -128,7 +129,7 @@ class UserUpdateForm(forms.Form):
 
     academic_level = forms.CharField(max_length=255)
     profile_pic = forms.ImageField(required=False, 
-                                                        widget=forms.FileInput(attrs={'class':'custom-file-input', 'id':'file'}))
+                                                widget=forms.FileInput(attrs={'class':'custom-file-input', 'id':'file'}))
 
 
     def clean(self):
@@ -149,4 +150,11 @@ class UserCVForm(forms.ModelForm):
     class Meta:
         model = ExtendedUser
         fields = ('cv',)
+
+
+class ProfilePicForm(forms.ModelForm):
+    profile_pic = forms.ImageField(validators=[file_max_size(CV_MAX_SIZE)])
+    class Meta:
+        model = ExtendedUser
+        fields = ('profile_pic',)
 
