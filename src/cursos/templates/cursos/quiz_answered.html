@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% load static %}
+<title>Entrega de {{ entry.user }}</title>
+
+{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{% static 'css/activities.css' %}">
+
+<div id="id-app" style="display: none;">cap</div>
+
+<div class="container-window">
+
+    <div class="course-container">
+
+        <div>
+            <div class="activity-header">
+                <a href="{% url 'cursos:course_detail' id=quiz.modulo.curso.pk %}" class="no-style-a">
+                    <div class="return">
+                        <span class="material-icons">chevron_left</span>
+                        Volver al entregable
+                    </div>
+                </a>
+
+                {% if is_owner%}
+                    <a href="" class="button-delete no-style-a">
+                        <p>Eliminar</p>
+                        <span class="material-icons">delete</span>
+                    </a>
+                {% endif %}
+
+            </div>
+
+            <div class="description">{{ quiz.modulo.name }}</div>
+
+            <div class="title-smaller">{{ quiz.name }}</div>
+
+            <div class="description">{{ quiz.description }}</div>
+
+            <div class="lecture-container">
+                <div class="subtitle">Resultado</div>
+                <p>Tu calificacion actual es de {{ result.grade }}</p>
+                <a href="{% url 'cursos:course_quiz_answer' id=quiz.pk %}" class="no-style-a button-view" style="margin-left: 0px;">
+                    Volver a responder este quiz
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

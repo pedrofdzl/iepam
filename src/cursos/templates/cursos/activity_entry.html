@@ -13,57 +13,97 @@
 <div id="id-app" style="display: none;">cap</div>
 
 <div class="container-window">
-    <div class="activity-header">
+
+    <div class="course-container">
+
         <div>
-            <a href="{% url 'cursos:course_activity' id=activity.pk %}" class="no-style-a">
-                <div class="return">
-                    <span class="material-icons">chevron_left</span>
-                    Volver al entregable
-                </div>
-            </a>
-        
-        
+            <div class="activity-header">
+                <a href="{% url 'cursos:course_activity' id=activity.pk %}" class="no-style-a">
+                    <div class="return">
+                        <span class="material-icons">chevron_left</span>
+                        Volver al entregable
+                    </div>
+                </a>
+
+                {% if is_owner%}
+                    <a href="{% url 'cursos:course_activity_entry_delete' id=entry.pk %}" class="button-delete no-style-a">
+                        <p>Eliminar</p>
+                        <span class="material-icons">delete</span>
+                    </a>
+                {% endif %}
+            </div>
+
             <div class="description">{{ activity.modulo.name }}</div>
+
             <div class="title-smaller">Entrega de {{ entry.user }} para {{ activity.name }}</div>
+
+            <div class="lecture-container">
+                <div class="entrega-info">
+                    <div style="display: inline-flex;">
+                        <b>Usuario: </b>
+                        <p>{{ entry.user.get_full_name }}</p>
+                    </div>
+                    <div style="display: inline-flex;">
+                        <b>Entregada: </b>
+                        <p>{{ entry.created_date }}</p>
+                    </div>
+                    <div style="display: inline-flex;">
+                        <b>Calificación:</b>
+                        <p>{% if not entry.grade %} Sin Calificar {% else %} {{ entry.grade }} {% endif %}</p>
+                    </div>
+                </div>
+
+                <a class="button-edit a-button" href="{% url 'cursos:course_activity_entry_file' id=entry.pk %}">Ver Archivo<span class="material-icons">visibility</span></a>
+
+                {% if error_message %}
+                    <p>{{ error_message }}</p>
+                {% endif %}
+
+                {% if is_owner %}
+                    <button class="button-edit a-button color-green" id="grade-btn">Calificar<span class="material-icons">task</span></button>
+
+                    <form class="grade-thing" style="display: none;" method="post" id="grade-form">
+                        {% csrf_token %}
+                        <label for="">Calificación</label>
+                        <input type="number" name="grade" id="grade">
+                        <button id="cancel-btn">Cancelar</button>
+                        <button type="submit">Aceptar</button>
+                    </form>
+
+                {% endif %}
+            </div>
+
         </div>
-    </div>
-    <div class="course-container-one">
-        <div class="entrega-info">
-            <div style="display: inline-flex;">
-                <b>Usuario: </b>
-                <p>{{ entry.user.get_full_name }}</p>
+
+        <div>
+            {% if is_owner %}
+            <div class="side-panel">
+                <div class="entrega-panel">
+                    <h1 style="margin-bottom: 0.5rem;">Entregas</h1>
+                    {% for entrega in activity.entregas.all %}
+                    <a href="{% url 'cursos:course_activity_entry' id=entrega.pk %}">
+                        <div class="entrega">
+                            <div class="entrega-user">{{ entrega.user }}</div>
+                            <div class="entrega-date">Entregada el {{ entrega.created_date }}</div>
+                        </div>
+                    </a>
+
+                            {% empty %}
+
+                            <h4>Sin entregas</h4>
+
+                    {% endfor %}
+                </div>
             </div>
-            <div style="display: inline-flex;">
-                <b>Entregada: </b>
-                <p>{{ entry.created_date }}</p>
+            {% else %}
+            <div class="side-panel">
+                {% include 'cursos/side_panel.html' %}
             </div>
-            <div style="display: inline-flex;">
-                <b>Calificación:</b>
-                <p>{% if not entry.grade %} Sin Calificar {% else %} {{ entry.grade }} {% endif %}</p>
-            </div>
+            {% endif %}
         </div>
-        
 
-        <a class="button-edit a-button" href="{% url 'cursos:course_activity_entry_file' id=entry.pk %}">Ver Archivo<span class="material-icons">visibility</span></a>
-
-        {% if error_message %}
-            <p>{{ error_message }}</p>
-        {% endif %}
-
-        {% if is_owner %}
-            <button class="button-edit a-button color-green" id="grade-btn">Calificar<span class="material-icons">task</span></button>
-
-            <form class="grade-thing" style="display: none;" method="post" id="grade-form">
-                {% csrf_token %}
-                <label for="">Calificación</label>
-                <input type="number" name="grade" id="grade">
-                <button id="cancel-btn">Cancelar</button>
-                <button type="submit">Aceptar</button>
-            </form>
-
-            <a class="button-delete a-button" href="{% url 'cursos:course_activity_entry_delete' id=entry.pk %}">Eliminar</a>
-        {% endif %}
     </div>
+
 </div>
 
 <script>

@@ -161,6 +161,18 @@
                                 </div>
                             </a>
                     {% elif is_member %}
+                        {% if quiz in answered_quizzes %}
+                            <a href="{% url 'cursos:course_quiz_answered' id=quiz.pk %}" class="no-style-a">
+                                <div class="module-item checked">
+                                    <span class="material-icons module-item-icon checked-text">quiz</span>
+                                    <div>
+                                        <div class="module-item-title checked-text">Quiz: {{ quiz.name }}</div>
+                                        <div class="module-item-grade checked-text">Completado</div>
+                                    </div>
+                                    <span class="material-icons checkmark">done</span>
+                                </div>
+                            </a>
+                        {% else %}
                             <a href="{% url 'cursos:course_quiz_answer' id=quiz.pk %}" class="no-style-a">
                                 <div class="module-item">
                                     <span class="material-icons module-item-icon">quiz</span>
@@ -170,6 +182,7 @@
                                     </div>
                                 </div>
                             </a>
+                        {% endif %}
                     {% else %}
                         <div class="module-item locked">
                             <span class="material-icons module-item-icon locked-text">quiz</span>

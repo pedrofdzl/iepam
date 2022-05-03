@@ -23,12 +23,12 @@
         </a>
                 
         {% if is_owner %}
-        <a href="" class="button-delete no-style-a">
-            <p>Eliminar</p>
-            <span class="material-icons">delete</span>
-        </a>
-
+            <a href="" class="button-delete no-style-a">
+                <p>Eliminar</p>
+                <span class="material-icons">delete</span>
+            </a>
         {% endif %}
+
     </div>
 
     <div class="description">{{ quiz.modulo.name }}</div>
@@ -75,7 +75,18 @@
         </div>
 
         <div class="quiz-admin-cell">
-            
+            {% if is_owner %}
+                <div class="quiz-admin-cell-header">
+                    <div class="quiz-admin-cell-title">Resultados</div>
+                </div>
+                
+                {% for result in results %}
+                <div class="result">
+                    <p>{{ result.user.get_full_name }}</p>
+                    <b>{{ result.grade }}</b>
+                </div>
+                {% endfor %}
+            {% endif %}
         </div>
                 
     </div>

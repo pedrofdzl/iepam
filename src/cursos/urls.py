@@ -49,6 +49,7 @@ urlpatterns = [
     # Quiz
     path('curso/quiz/<int:id>/', views.course_quiz_view, name='course_quiz'),
     path('curso/quiz/<int:id>/answer/', views.course_quiz_answer_view, name='course_quiz_answer'),
+    path('curso/quiz/<int:id>/answered/', views.course_quiz_answered_view, name='course_quiz_answered'),
     path('curso/quiz/<int:id>/submit/<int:calif>/', views.course_quiz_submit_view, name='course_quiz_submit'),
     path('curso/quiz/<int:id>/eliminar/', views.course_quiz_delete_view, name='course_quiz_delete'),
     path('curso/quiz/<int:id>/agregar-pregunta/', views.course_quiz_create_question_view, name='course_quiz_add_question'),
