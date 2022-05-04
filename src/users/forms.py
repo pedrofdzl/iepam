@@ -158,3 +158,16 @@ class ProfilePicForm(forms.ModelForm):
         model = ExtendedUser
         fields = ('profile_pic',)
 
+
+class UserChangeGroupForm(forms.Form):
+    user_type = forms.ChoiceField(choices=USER_TYPES)
+
+    def clean(self):
+        all_cleaned_data = super().clean()
+
+        user_type = all_cleaned_data['user_type']
+        if user_type == '':
+            raise forms.ValidationError('Por favor escoger un un tipo de usuario')
+
+        if not Group.objects.filter(name=user_type).exists():
+            raise forms.ValidationError('Ese no es un grupo valido')
