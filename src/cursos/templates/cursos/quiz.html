@@ -70,6 +70,12 @@
                     <h4>No se encontraron Preguntas</h4>
 
                 {% endfor %}
+                <script>
+                    var divs = document.getElementsByClassName('question');
+                    for (var i = 0, len = divs.length; i < len; i++){
+                        divs[i].setAttribute('tabindex', '0');
+                    }
+                </script>
 
             {% endif %}
         </div>

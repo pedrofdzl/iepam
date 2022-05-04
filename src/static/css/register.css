@@ -309,6 +309,7 @@ a {
     display: grid;
     grid-template-rows: 1fr 1fr;
     row-gap: 10px;
+    min-width: 300px;
 }
 .btn-container-vertical a {
     width: auto;
@@ -336,7 +337,6 @@ a {
     transition: all 0.2s ease-in-out;
 }
 .btn-cancel:hover {
-    transform: scale(1.02);
     box-shadow: 0 0 10px #202022;
 }
 

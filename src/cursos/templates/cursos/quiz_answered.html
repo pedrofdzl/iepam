@@ -42,12 +42,31 @@
 
             <div class="lecture-container">
                 <div class="subtitle">Resultado</div>
-                <p>Tu calificacion actual es de {{ result.grade }}</p>
+                <p>Tu calificacion actual es de <b>{{ grade }}</b>/100</p>
                 <a href="{% url 'cursos:course_quiz_answer' id=quiz.pk %}" class="no-style-a button-view" style="margin-left: 0px;">
                     Volver a responder este quiz
                 </a>
             </div>
 
+            <div class="lecture-container">
+                <div class="subtitle" style="margin-bottom: 0.8rem; display: grid; grid-template-columns: 1fr 0fr;">
+                    <div>Mejores calificaciones</div>
+                    <span class="material-icons">emoji_events</span>
+                </div>
+                {% for res in top_results %}
+                    <div class="result">
+                        <p>{{ forloop.counter }}. &nbsp; {{ res.user.get_full_name }}</p>
+                        <b>{{ res.grade }}</b>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div>
+            <div class="side-panel">
+                {% include 'cursos/side_panel.html' %}
+            </div>
         </div>
 
     </div>
