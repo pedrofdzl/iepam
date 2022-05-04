@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <h1>{{ hangman.title }}</h1>
+    <hr>
+    <p>{{ hangman.description }}</p>
+
+
+    <a href="{% url 'cursos:course_hangman_delete' id=hangman.pk %}">Eliminar</a>
+
+    <a href="{% url 'cursos:course_hangman_add_option' id=hangman.pk %}">Agregar Opción</a>
+    {% for option in options %}
+        <p>
+            {{ option.option }} <br>
+            Palabra clave 1: {{ option.hint_1 }} <br>
+            Palabra Clave 2: {{ option.hint_2 }}
+        </p>
+        <a href="{% url 'cursos:course_hangman_edit_option' id=option.pk %}">Editar</a>
+        <a href="{% url 'cursos:course_hangman_delete_option' id=option.pk %}">Eliminar</a>
+    {% empty %}
+        <p>No tiene opciones</p>
+
+    {% endfor %}
+
+{% endblock %}

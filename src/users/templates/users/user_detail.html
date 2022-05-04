@@ -41,6 +41,7 @@
                     {% else %}
                         Usuario
                     {% endif %}
+                    <a href="{% url 'users:user_change_group' id=extended_user.user.pk %}">Cambiar Tipo de usuario</a>
                 </p>
             </div>
             <a href="{% url 'users:user_update' id=extended_user.user.pk %}" class="user-edit-info-secondary">Editar Perfil</a>
@@ -71,7 +72,7 @@
                     <div class="user-info-field-container" style="text-align: center; margin-top: 2rem; margin-bottom: 0.6rem;">
 
                         {% if extended_user.cv %}
-                        <a class="user-info-cv" href="{% url 'users:user_cv' id=extended_user.user.pk %}">Descargar CV&nbsp;<span class="material-icons">file_download</span></a>
+                        <a class="user-info-cv" href="{% url 'users:user_cv' id=extended_user.user.pk %}" target="_blank">Ver CV&nbsp;<span class="material-icons">file_download</span></a>
                         {% else %}
                         <a class="user-info-cv" href="{% url 'users:user_update_cv' id=extended_user.user.pk %}">Agregar CV&nbsp;<span class="material-icons">file_download</span></a>
                         <!-- <input type="file" class="user-info-field" readonly=true value="Preparatoria"> -->

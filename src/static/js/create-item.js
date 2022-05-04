@@ -20,10 +20,22 @@ else if (action == 4) {
     hideAll();
     document.getElementById('div-quiz').style.display = 'block';
 }
+else if (action == 5) {
+    document.getElementById('resource').classList.add('active');
+    hideAll();
+    document.getElementById('div-resource').style.display = 'block';
+}
+else if (action == 6) {
+    document.getElementById('hangman').classList.add('active');
+    hideAll();
+    document.getElementById('div-hangman').style.display = 'block';
+}
 
 function hideAll() {
     document.getElementById('div-lectura').style.display = 'none';
     document.getElementById('div-actividad').style.display = 'none';
     document.getElementById('div-video').style.display = 'none';
     document.getElementById('div-quiz').style.display = 'none';
+    document.getElementById('div-resource').style.display = 'none'
+    document.getElementById('div-hangman').style.display = 'none'
 }

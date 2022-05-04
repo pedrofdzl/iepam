@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <h1>{{ hangman.title }}</h1>
+    <hr>
+    <p>{{ hangman.description }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        {{ option_form.as_p }}
+        <a href="{% url 'cursos:course_hangman' id=hangman.pk %}">Cancelar</a>
+        <button type="submit">Actualizar</button>
+    </form>
+
+
+{% endblock %}

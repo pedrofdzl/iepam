@@ -1,5 +1,3 @@
-from ast import Mod
-from unittest import result
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.http import Http404, FileResponse
@@ -14,11 +12,17 @@ from datetime import date
 from django.utils import timezone
 import os
 
-from .models import Course, Entrega, MemberOf, Modulo, Lectura, Actividad, Question, Video, Quiz, QuestionOption, QuizResult
+from .models import (
+                        Course, Entrega, MemberOf, Modulo, 
+                        Lectura, Actividad, Question, Video,
+                        Quiz, QuestionOption, QuizResult,
+                        FileResource, HangmanGame, HangmanOption
+                    )
 from .forms import (
-                    CourseCreateForm, EntregaAddForm, LectureAddForm, 
+                    CourseCreateForm, EntregaAddForm, HangmanOptionForm, LectureAddForm, 
                     ModuleAddForm, ActivityAddForm, VideoAddForm,
-                    QuizForm, QuestionForm, QuestionOptionsForm
+                    QuizForm, QuestionForm, QuestionOptionsForm, FileResourceForm,
+                    HangmanForm, HangmanOption
                 )
 
 from .extras import get_iframe_url
@@ -408,9 +412,9 @@ def course_create_item_view(request, id, action):
     lecture_form = LectureAddForm()
     activity_form = ActivityAddForm()
     video_form = VideoAddForm()
-
-    # Quiz forms
     quiz_form = QuizForm()
+    resource_form = FileResourceForm()
+    hangman_form = HangmanForm() 
 
     if request.method == 'POST':
         if action == 1:
@@ -478,11 +482,41 @@ def course_create_item_view(request, id, action):
             else:
                 print(quiz_form.errorr)
 
+        
+        if action == 5:
+            # print(request.FILES)
+            resource_form = FileResourceForm(request.POST, files=request.FILES)
+
+            if resource_form.is_valid():
+                resource = resource_form.save(commit=False)
+                resource.module = modulo
+                resource.save()
+
+                return redirect(reverse('cursos:course_detail', kwargs={'id': modulo.curso.pk}))
+            else:
+                print(resource_form.errors)
+
+        if action == 6:
+            hangman_form = HangmanForm(request.POST)
+
+            if hangman_form.is_valid():
+                hangman_game = hangman_form.save(commit=False)
+                hangman_game.modulo = modulo
+                hangman_game.save()
+
+                return redirect(reverse('cursos:course_hangman', kwargs={'id': hangman_game.pk}))
+            else:
+                print(hangman_form.errors)
+                
+
+
     context['modulo'] = modulo
     context['lec_form'] = lecture_form
     context['act_form'] = activity_form
     context['vid_form'] = video_form
     context['quiz_form'] = quiz_form
+    context['resource_form'] = resource_form
+    context['hangman_form'] = hangman_form
     context['action'] = action
 
     return render(request, template_name, context)
@@ -494,16 +528,22 @@ def course_edit_item_view(request, id, action):
     template_name = template_prefix + 'course_edit_item.html'
 
 
-    if (action == 1):
+    if action == 1:
         stuff = get_object_or_404(Lectura, pk=id)
-    if (action == 2):
+    if action == 2:
         stuff = get_object_or_404(Actividad, pk=id)
-    if (action == 3):
+    if action == 3:
         stuff = get_object_or_404(Video, pk=id)
+    if action == 4:
+        stuff = get_object_or_404(Quiz, pk=id)
+    if action == 5:
+        stuff = get_object_or_404(FileResource, pk=id)
 
     lecture_form = LectureAddForm()
     activity_form = ActivityAddForm()
     video_form = VideoAddForm()
+    resource_form = FileResourceForm()
+    quiz_form = QuizForm()
 
 
     module = stuff.modulo
@@ -511,12 +551,16 @@ def course_edit_item_view(request, id, action):
         raise Http404()
 
     if request.method == 'GET':
-        if (action == 1):
+        if action == 1:
             lecture_form = LectureAddForm(instance=stuff)
-        if (action == 2):
+        if action == 2:
             activity_form = ActivityAddForm(instance=stuff)
-        if (action == 3):
+        if action == 3:
             video_form = VideoAddForm(instance=stuff)
+        if action == 4:
+            quiz_form = QuizForm(instance=stuff)
+        if action == 5:
+            resource_form = FileResourceForm(instance=stuff)
 
     if request.method == 'POST':
         if action == 1:
@@ -551,10 +595,39 @@ def course_edit_item_view(request, id, action):
             else:
                 print(video_form.errors)
 
+        if action == 4:
+            quiz_form = QuizForm(request.POST, instance=stuff)
+
+            if quiz_form.is_valid():
+
+                stuff.save()
+
+                return redirect(reverse('cursos:course_quiz', kwargs={'id':stuff.pk}))
+            else:
+                print(quiz_form.errors)
+
+        if action == 5:
+            stuff_resource_path = stuff.resource.path
+            resource_form = FileResourceForm(request.POST, files=request.FILES, instance=stuff)
+
+            if resource_form.is_valid():
+                stuff = resource_form.save(commit=False)
+
+                if stuff_resource_path != stuff.resource.path:
+                    os.remove(stuff_resource_path)
+
+                stuff.save()
+
+                return redirect(reverse('cursos:course_detail', kwargs={'id': stuff.modulo.curso.pk}))
+            else:
+                print(resource_form.errors)
+
     context['modulo'] = stuff.modulo
     context['lec_form'] = lecture_form
     context['act_form'] = activity_form
     context['vid_form'] = video_form
+    context['quiz_form'] = quiz_form
+    context['resource_form'] = resource_form
     context['action'] = action
 
     return render(request, template_name, context)
@@ -853,7 +926,7 @@ def course_quiz_update_question_view(request, id):
         if question_form.is_valid():
             question = question_form.save()
 
-            return redirect(reverse('cursos:course_quiz_edit_question', kwargs={'id': question.pk}))
+            return redirect(reverse('cursos:course_quiz', kwargs={'id': question.quiz.pk}))
         else:
             print(question_form.errors)
 
@@ -886,6 +959,7 @@ def course_quiz_update_question_view(request, id):
 
 
 
+@login_required
 def course_quiz_option_create_view(request, id):
     user = request.user
     extended_user = user.extended_user
@@ -940,7 +1014,7 @@ def course_quiz_option_create_view(request, id):
     return render(request, template_name, context)
 
 
-
+@login_required
 def course_quiz_option_update_view(request, id):
     user = request.user
     extended_user = user.extended_user
@@ -996,6 +1070,7 @@ def course_quiz_option_update_view(request, id):
 
     return render(request, template_name, context)
 
+
 @login_required
 def course_quiz_option_delete_view(request, id):
     option = get_object_or_404(QuestionOption, pk=id)
@@ -1003,6 +1078,7 @@ def course_quiz_option_delete_view(request, id):
 
     option.delete()
     return redirect(reverse('cursos:course_quiz_edit_question', kwargs={'id': question.pk}))
+
 
 @login_required
 def course_lecture_view(request, id):
@@ -1028,6 +1104,7 @@ def course_lecture_view(request, id):
     return render(request, template_name, context)
 
 
+@login_required
 def course_lecture_delete_view(request, id):
     user = request.user
     context = {}
@@ -1078,7 +1155,7 @@ def course_lecture_delete_view(request, id):
 
 
 
-
+@login_required
 def read_lecture(request, id):
     lecture = get_object_or_404(Lectura, pk=id)
     
@@ -1091,6 +1168,99 @@ def read_lecture(request, id):
         liked = True
 
     return redirect(reverse('cursos:course_lecture', kwargs={'id': lecture.pk}))
+
+
+@login_required
+def course_resource_view(request, id):
+    context = {}
+    template_name = template_prefix + 'resource.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    resource = get_object_or_404(FileResource, pk=id)
+    course = resource.modulo.curso
+
+    context['resource'] = resource
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+
+    return render(request, template_name, context)
+
+
+
+def course_resource_delete_view(request, id):
+    context = {}
+    template_name = template_prefix + 'resource_confirm_delete.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    resource = get_object_or_404(FileResource, pk=id)
+    course = resource.modulo.curso
+
+    context['resource'] = resource
+
+    if request.method == 'POST':
+        resource.delete()
+        return redirect(reverse('cursos:course_detail', kwargs={'id': course.pk}))
+
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+
+    return render(request, template_name, context)
+
+
+def course_resource_download_view(request, id):
+
+    resource = get_object_or_404(FileResource, pk=id)
+    course = resource.modulo.curso
+    resource_path = resource.resource.path
+
+    if os.path.exists(resource_path):
+
+        if MemberOf.objects.filter(member=request.user.extended_user, course=course).exists():
+            resource.reads.add(request.user)
+
+        return FileResponse(resource.resource.open(mode='rb'), as_attachment=True)
+    else:
+        raise Http404()
+
+
 
 
 
@@ -1146,6 +1316,8 @@ def course_activity_view(request, id):
 
     return render(request, template_name, context)
 
+
+@login_required
 def course_activity_delete_view(request, id):
     context = {}
     template_name = template_prefix + 'activity_confirm_delete.html'
@@ -1186,6 +1358,7 @@ def course_activity_delete_view(request, id):
     return render(request, template_name, context)
 
 
+@login_required
 def course_activity_entry_detail_view(request, id):
     context = {}
     template_name = template_prefix + 'activity_entry.html'
@@ -1240,6 +1413,7 @@ def course_activity_entry_detail_view(request, id):
     return render(request, template_name, context)
 
 
+@login_required
 def course_activity_entry_file_view(request, id):
     entry = get_object_or_404(Entrega, pk=id)
 
@@ -1248,7 +1422,7 @@ def course_activity_entry_file_view(request, id):
     return Http404('No hay archivo disponible')
 
 
-
+@login_required
 def course_activity_entry_delete_view(request, id):
     context = {}
     template_name = template_prefix + 'activity_entry_delete.html'
@@ -1291,7 +1465,196 @@ def course_activity_entry_delete_view(request, id):
     return render(request, template_name, context)
 
 
+def course_hangman_view(request, id):
+    context = {}
+    template_name = template_prefix + 'hangman.html'
+    user = request.user
+    extended_user = user.extended_user
 
+    hangman = get_object_or_404(HangmanGame, pk=id)
+    course = hangman.modulo.curso
+    options = hangman.options.all()
+
+    context['hangman'] = hangman
+    context['course'] = course
+    context['options'] = options
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+
+    return render(request, template_name, context)
+
+
+
+
+def course_hangman_delete_view(request, id):
+    context = {}
+    template_name = template_prefix + 'hangman_confirm_delete.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    hangman = get_object_or_404(HangmanGame, pk=id)
+    course = hangman.modulo.curso
+
+    if request.method == 'POST':
+        hangman.delete()
+        return redirect(reverse('cursos:course_detail', kwargs={'id': course.pk}))
+
+
+    context['hangman'] = hangman
+    context['course'] = course
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+
+    return render(request, template_name, context)
+
+
+
+def course_hangman_option_create_view(request, id):
+    context = {}
+    template_name = template_prefix + 'hangman_option_form.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    hangman = get_object_or_404(HangmanGame, pk=id)
+    course = hangman.modulo.curso
+
+    option_form = HangmanOptionForm()
+
+    if request.method == 'POST':
+        option_form = HangmanOptionForm(request.POST)
+
+        if option_form.is_valid():
+            option = option_form.save(commit=False)
+
+            option.game = hangman
+            option.save()
+
+            return redirect(reverse('cursos:course_hangman', kwargs={'id': hangman.pk}))
+        else:
+            print(option_form.errors)
+    
+
+    context['option_form'] = option_form
+    context['hangman'] = hangman
+    context['course'] = course
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+
+    return render(request, template_name, context)
+
+
+
+def course_hangman_option_edit_view(request, id):
+    context = {}
+    template_name = template_prefix + 'hangman_option_form.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    option = get_object_or_404(HangmanOption, pk=id)
+    hangman = option.game
+    course = hangman.modulo.curso
+
+    option_form = HangmanOptionForm(instance=option)
+
+
+    if request.method == 'POST':
+        option_form = HangmanOptionForm(request.POST, instance=option)
+
+        if option_form.is_valid():
+            option = option_form.save()
+
+            return redirect(reverse('cursos:course_hangman', kwargs={'id': hangman.pk}))
+        else:
+            print(option_form.errors)
+    
+
+    context['option_form'] = option_form
+    context['hangman'] = hangman
+    context['course'] = course
+
+    # Side Panel Variables
+    liked = False
+    is_member = False
+    is_owner = False
+
+    if user.likes.filter(pk=id).exists():
+        liked = True
+    
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if extended_user == course.owner:
+        is_owner = True
+
+    context['is_owner'] = is_owner
+    context['is_member'] = is_member
+    context['liked'] = liked
+    # end of side panel
+
+
+    return render(request, template_name, context)
+
+
+def course_hangman_option_delete_view(request, id):
+    option = get_object_or_404(HangmanOption, pk=id)
+    hangman = option.game
+
+    option.delete()
+    return redirect(reverse('cursos:course_hangman', kwargs={'id': hangman.pk}))
 
 
 
@@ -1322,6 +1685,7 @@ def course_video_view(request, id):
     return render(request, template_name, context)
 
 
+@login_required
 def course_video_delete_view(request, id):
     user = request.user
     context = {}
@@ -1371,6 +1735,7 @@ def course_video_delete_view(request, id):
     return render(request, template_name, context)
 
 
+@login_required
 def watch_video(request, id):
     video = get_object_or_404(Video, pk=id)
     
@@ -1385,6 +1750,7 @@ def watch_video(request, id):
     return redirect(reverse('cursos:course_video', kwargs={'id': video.pk}))
 
 
+@login_required
 def watch_video(request, id):
     video = get_object_or_404(Video, pk=id)
     

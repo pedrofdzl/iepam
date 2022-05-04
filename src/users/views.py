@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from datetime import date
 
-from .forms import RegisterForm, UserUpdateForm, UserCVForm, ProfilePicForm
+from .forms import RegisterForm, UserUpdateForm, UserCVForm, ProfilePicForm, UserChangeGroupForm
 from .models import ExtendedUser
 
 import os
@@ -295,6 +295,49 @@ def aduser_change_cv(request, id):
     return render(request, template_name, context)
 
 
+def aduser_change_group(request, id):
+    context = {}
+    template_name = admin_template_pre + 'user_profile_form_admin.html'
+    user = get_object_or_404(User, pk=id)
+    extended_user = user.extended_user
+
+    initial_data = {'user_type':user.groups.first().name}
+
+    group_form = UserChangeGroupForm(initial=initial_data)
+
+    if request.method == 'POST':
+        group_form = UserChangeGroupForm(request.POST, initial=initial_data)
+
+        if group_form.is_valid():
+            user_type = group_form.cleaned_data['user_type']
+
+            group = get_object_or_404(Group, name=user_type)
+
+            user.groups.clear()
+            user.groups.add(group)
+            print(user_type)
+
+            if user_type == 'Administradores':
+                extended_user.is_admin = True
+                extended_user.can_teach = True
+            elif user_type == 'Capacitadores':
+                extended_user.can_teach = True
+
+            user.save()
+            extended_user.save()
+
+            return redirect(reverse('users:user_detail',kwargs={'id':user.pk}))
+        else:
+            print(group_form.errors)
+
+    context['group_form'] = group_form
+    context['changing_group'] = True
+    context['extended_user'] = extended_user
+
+    return render(request, template_name, context)
+
+
+
 ############################
 ######## Member Views #######
 ############################
@@ -464,7 +507,7 @@ def user_get_cv_view(request, id):
     file_path = extended_user.cv.path
 
     if os.path.exists(file_path):
-        return FileResponse(extended_user.cv.open(mode='rb'), as_attachment=True)
+        return FileResponse(extended_user.cv.open(mode='rb'), as_attachment=False)
     else:
         raise Http404()
 

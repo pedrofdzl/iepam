@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+
+{% block body %}
+
+    <h1>{{ resource.title }}</h1>
+    <hr>
+
+
+    <a href="{% url 'cursos:course_edit_item' id=resource.pk action=5 %}">Editar</a>
+    <a href="{% url 'cursos:course_resource_delete' id=resource.pk %}">Eliminar</a>
+    
+    <p>{{ resource.description }}</p>
+    <a href="{% url 'cursos:course_resource_file' id=resource.pk %}">Descargar Recurso</a>
+
+
+{% endblock %}

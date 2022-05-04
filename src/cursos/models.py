@@ -9,6 +9,8 @@ from django.utils import timezone
 User = get_user_model()
 from pathlib import Path
 
+import os
+
 
 
 def resource_upload_handler(instance, filename):
@@ -106,6 +108,13 @@ class Entrega(models.Model):
     grade = models.FloatField('grade', validators=[MinValueValidator(-1), MaxValueValidator(100)], null=True, blank=True)
 
 
+    def delete(self) ->tuple[int, dict[int, str]]:
+        if os.path.exists(self.file.path):
+            os.remove(self.file.path)
+        
+        return super().delete()
+
+
 class Video(models.Model):
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE, related_name="videos", verbose_name="modulo")
     name = models.CharField("name", max_length=255)
@@ -147,10 +156,11 @@ class QuizResult(models.Model):
     
 
 class FileResource(models.Model):
-    module = models.ForeignKey(Modulo, on_delete=models.CASCADE, related_name='archivos')
+    modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE, related_name='archivos')
     title = models.CharField('Titulo', max_length=255)
     description = models.CharField('Description', max_length=255)
     resource = models.FileField('Resource', upload_to=resource_upload_handler, validators=[FileExtensionValidator(allowed_extensions=PERMITTED_FILE_EXTENSIONS)])
+    reads = models.ManyToManyField(User, related_name='viewed_resources')
 
     class Meta:
         verbose_name = 'File Resource'
@@ -158,3 +168,29 @@ class FileResource(models.Model):
 
     def __str__(self):
         return f'File: {self.title}'
+
+    def delete(self) -> tuple[int, dict[str, int]]:
+        if os.path.exists(self.resource.path):
+            os.remove(self.resource.path)
+
+        return super().delete()
+
+
+
+class HangmanGame(models.Model):
+    modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE, related_name='hangmangames')
+    title = models.CharField('Title', max_length=255)
+    description = models.CharField('Description', max_length=255)
+
+    def __str__(self):
+        return f'Hangman Game module: {self.modulo.name}-{self.title}'
+
+
+class HangmanOption(models.Model):
+    game = models.ForeignKey(HangmanGame, on_delete=models.CASCADE, related_name='options')
+    option = models.CharField('Option', max_length=255)
+    hint_1 = models.CharField('hint 1', max_length=255)
+    hint_2 = models.CharField('hint_2', max_length=255)
+
+    def __str__(self):
+        return f'Hangman Game {self.game.title} option: {self.option}'

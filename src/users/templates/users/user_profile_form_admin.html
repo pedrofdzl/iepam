@@ -59,6 +59,25 @@
                     <hr class="hr-nice">
 
         
+                    {% if changing_group %}
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ group_form.non_fields_errors }}
+
+                        <label for="">Seleccionar Grupo</label>
+                        <div>
+                            {{ group_form.user_type.errors }}
+                            {{ group_form.user_type }}
+                        </div>
+                        
+                        <a href="{% url 'users:user_detail' id=extended_user.user.pk %}">Cancelar</a>
+                        <button type="submit">Cambiar</button>
+
+                    </form>
+                    
+                    {% else %}
+
                     <form method="post">
                     <a href="{% url 'users:user_update_cv' id=extended_user.user.pk %}">Actualizar CV</a>
 
@@ -127,6 +146,7 @@
                     </form>
                     <br>
                 </div>
+                {% endif %}
         
                 <div class="user-current-courses-container">
                     <p class="user-info-title">Capacitaciones actuales</p>

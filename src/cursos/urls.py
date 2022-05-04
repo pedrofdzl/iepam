@@ -46,12 +46,26 @@ urlpatterns = [
     path('curso/video/<int:id>/eliminar/', views.course_video_delete_view, name='course_video_delete'),
 
 
+    # Cursos
+    path('curso/recurso/<int:id>/', views.course_resource_view, name='course_resource'),
+    path('curso/recurso/<int:id>/eliminar/', views.course_resource_delete_view, name='course_resource_delete'),
+    path('curso/recurso/<int:id>/archivo/', views.course_resource_download_view, name='course_resource_file'),
+    
+
+    # Hangman
+    path('curso/hangman/<int:id>/', views.course_hangman_view, name='course_hangman'),
+    path('curso/hangman/<int:id>/eliminar/', views.course_hangman_delete_view, name='course_hangman_delete'),
+    path('curso/hangman/<int:id>/crear-opcion/', views.course_hangman_option_create_view, name='course_hangman_add_option'),
+    path('curso/hangman/<int:id>/editar-opcion/', views.course_hangman_option_edit_view, name='course_hangman_edit_option'),
+    path('curso/hangman/<int:id>/eliminar-opcion/', views.course_hangman_option_delete_view, name='course_hangman_delete_option'),
+
+
     # Quiz
     path('curso/quiz/<int:id>/', views.course_quiz_view, name='course_quiz'),
+    path('curso/quiz/<int:id>/eliminar/', views.course_quiz_delete_view, name='course_quiz_delete'),
     path('curso/quiz/<int:id>/answer/', views.course_quiz_answer_view, name='course_quiz_answer'),
     path('curso/quiz/<int:id>/answered/', views.course_quiz_answered_view, name='course_quiz_answered'),
     path('curso/quiz/<int:id>/submit/<int:calif>/', views.course_quiz_submit_view, name='course_quiz_submit'),
-    path('curso/quiz/<int:id>/eliminar/', views.course_quiz_delete_view, name='course_quiz_delete'),
     path('curso/quiz/<int:id>/agregar-pregunta/', views.course_quiz_create_question_view, name='course_quiz_add_question'),
     path('curso/quiz/<int:id>/editar-pregunta/', views.course_quiz_update_question_view, name='course_quiz_edit_question'),
     path('curso/quiz/<int:id>/eliminar-pregunta/', views.course_quiz_delete_question_view, name='course_quiz_delete_question'),
