@@ -23,10 +23,11 @@
         </a>
                 
         {% if is_owner %}
-            <a href="" class="button-delete no-style-a">
+            <a href="{% url 'cursos:course_quiz_delete' id=quiz.pk %}" class="button-delete no-style-a">
                 <p>Eliminar</p>
                 <span class="material-icons">delete</span>
             </a>
+            <a href="{% url 'cursos:course_edit_item' id=quiz.pk action=4 %}">Editar</a>
         {% endif %}
 
     </div>

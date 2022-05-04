@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Course, Modulo, Lectura, Actividad, Question, Quiz, Video, QuestionOption, FileResource
+from .models import Course, Modulo, Lectura, Actividad, Question, Quiz, Video, QuestionOption, FileResource, HangmanGame, HangmanOption
 from django.core.validators import MaxLengthValidator, FileExtensionValidator, MinLengthValidator
 
 
@@ -113,3 +113,34 @@ class FileResourceForm(forms.ModelForm):
     class Meta:
         model = FileResource
         fields = ('title', 'description', 'resource')
+
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 3})
+        }
+
+class HangmanForm(forms.ModelForm):
+    class Meta:
+        model = HangmanGame
+        fields = ('title', 'description')
+
+        widgets = {
+            'description': forms.Textarea(attrs={'rows':3})
+        }
+
+class HangmanOptionForm(forms.ModelForm):
+    class Meta:
+        model = HangmanOption
+        fields = ('option', 'hint_1', 'hint_2')
+
+    
+    def clean_hint_1(self):
+        hint_1 = self.cleaned_data['hint_1']
+
+        hint_1 = hint_1.strip().split(' ')[0]
+        return hint_1
+
+    def clean_hint_2(self):
+        hint_2 = self.cleaned_data['hint_2']
+
+        hint_2 = hint_2.strip().split(' ')[0]
+        return hint_2

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <h1>Deseas eliminar {{ hangman.title }}</h1>
+    <hr>
+    <p>{{ hangman.description }}</p>
+
+
+    <form method="post">
+        {% csrf_token %}
+
+
+        <a href="{% url 'cursos:course_hangman' id=hangman.pk %}">Cancelar</a>
+        <button type="submit">Eliminar</button>
+    </form>
+
+{% endblock %}
