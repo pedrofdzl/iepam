@@ -1156,10 +1156,11 @@ def course_quiz_option_update_view(request, id):
 
     if request.method == 'POST':
         option_form = QuestionOptionsForm(request.POST, instance=option)
+        option_form.is_updating = True
 
         if option_form.is_valid():
             option = option_form.save(commit=False)
-            option.question = question
+            # option.question = question
             option.save()
             return redirect(reverse('cursos:course_quiz_edit_question', kwargs={'id': question.pk}))
 
@@ -1369,10 +1370,6 @@ def course_resource_download_view(request, id):
 
 
 
-
-
-
-
 @login_required
 def course_activity_view(request, id):
     context = {}
@@ -1577,11 +1574,11 @@ def course_hangman_option_create_view(request, id):
 
     if request.method == 'POST':
         option_form = HangmanOptionForm(request.POST)
+        option_form.instance.game = hangman
 
         if option_form.is_valid():
             option = option_form.save(commit=False)
 
-            option.game = hangman
             option.save()
 
             return redirect(reverse('cursos:course_hangman', kwargs={'id': hangman.pk}))
@@ -1614,6 +1611,7 @@ def course_hangman_option_edit_view(request, id):
 
     if request.method == 'POST':
         option_form = HangmanOptionForm(request.POST, instance=option)
+        option_form.is_updating = True
 
         if option_form.is_valid():
             option = option_form.save()
@@ -1695,11 +1693,12 @@ def course_sopa_option_create_view(request, id):
 
     if request.method == 'POST':
         option_form = SopaOptionForm(request.POST)
+        option_form.instance.game = sopa
 
         if option_form.is_valid():
             option = option_form.save(commit=False)
 
-            option.game = sopa
+            # option.game = sopa
             option.save()
 
             return redirect(reverse('cursos:course_sopa', kwargs={'id': sopa.pk}))
@@ -1732,6 +1731,7 @@ def course_sopa_option_edit_view(request, id):
 
     if request.method == 'POST':
         option_form = SopaOptionForm(request.POST, instance=option)
+        option_form.is_updating =True
 
         if option_form.is_valid():
             option = option_form.save()
