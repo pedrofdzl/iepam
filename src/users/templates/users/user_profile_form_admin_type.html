@@ -30,25 +30,22 @@
         <div class="container">
             <a class="title"><img src="{% static 'svg/iepam-logo-white.svg' %}"><p>IEPAM</p></a>
             <div class="register-container">
-                <div class="register-title">Modificar CV</div>
+                <div class="register-title">Cambiar tipo de usuario</div>
                 
+                <p style="max-width: 500px;">*Cambiaras el tipo de usuario de {{ extended_user.get_full_name }}, modificando los permisos con los que cuenta.</p>
+
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form.non_field_errors }}
+                    {{ group_form.non_fields_errors }}
 
-                    <label for="">Archivo</label>
+                    <label for="">Seleccionar Grupo</label>
                     <div>
-                        {{ form.cv.errors }}
-                        {{ form.cv }}
-
+                        {{ group_form.user_type.errors }}
+                        {{ group_form.user_type }}
                     </div>
-                    
-                    <button class="btn-register" type="submit">Actualizar</button>
-                    {% if profile_view %}
-                        <a href="{% url 'users:user_profile' %}" class="btn-cancel margin-right-btn">Cancel</a>
-                    {% else %}
-                        <a href="{% url 'users:user_detail' id=extended_user.user.pk %}" class="btn-cancel margin-right-btn">Cancel</a>
-                    {% endif %}
+                      
+                    <button class="btn-register" type="submit">Cambiar</button>
+                    <a href="{% url 'users:user_detail' id=extended_user.user.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
                 </form>
 
             </div>

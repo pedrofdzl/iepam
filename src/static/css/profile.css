@@ -210,6 +210,26 @@ a {
     box-shadow: 0 0 10px rgb(211, 211, 211);
     transition: all 0.2s ease-in-out;
 }
+
+.user-edit-info-third {
+    position: absolute;
+    height: 20px;
+    top: 240px;
+    right: 10vw;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0.3rem;
+    padding: 0.8rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: #202022;
+    color: white;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+    transition: all 0.2s ease-in-out;
+}
+
 .user-edit-info-secondary:hover {
     box-shadow: 0 0 10px #676767;
     background-color: #676767;

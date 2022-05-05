@@ -28,7 +28,7 @@
                 {% if extended_user.profile_pic %}
                     <img src="{{ extended_user.profile_pic.url }}">
                 {% else %}
-                    <img src="{% static 'img/view.jpg' %}">
+                    <img style="width: 130px; transform: translateX(30px);" src="{% static 'svg/iepam-logo-white.svg' %}">
                 {% endif %}
             </div>
             <div class="profile-name">
@@ -41,9 +41,11 @@
                     {% else %}
                         Usuario
                     {% endif %}
-                    <a href="{% url 'users:user_change_group' id=extended_user.user.pk %}">Cambiar Tipo de usuario</a>
                 </p>
             </div>
+            
+            <a href="{% url 'users:user_change_group' id=extended_user.user.pk %}" class="user-edit-info-third">Cambiar Tipo de usuario</a>
+
             <a href="{% url 'users:user_update' id=extended_user.user.pk %}" class="user-edit-info-secondary">Editar Perfil</a>
         </div>
 

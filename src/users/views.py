@@ -297,7 +297,7 @@ def aduser_change_cv(request, id):
 
 def aduser_change_group(request, id):
     context = {}
-    template_name = admin_template_pre + 'user_profile_form_admin.html'
+    template_name = admin_template_pre + 'user_profile_form_admin_type.html'
     user = get_object_or_404(User, pk=id)
     extended_user = user.extended_user
 
