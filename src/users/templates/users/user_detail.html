@@ -75,6 +75,7 @@
 
                         {% if extended_user.cv %}
                         <a class="user-info-cv" href="{% url 'users:user_cv' id=extended_user.user.pk %}" target="_blank">Ver CV&nbsp;<span class="material-icons">file_download</span></a>
+                        <a class="user-info-cv" href="{% url 'users:user_cv_download' id=user.pk %}">Descargar CV&nbsp;<span class="material-icons">file_download</span></a>
                         {% else %}
                         <a class="user-info-cv" href="{% url 'users:user_update_cv' id=extended_user.user.pk %}">Agregar CV&nbsp;<span class="material-icons">file_download</span></a>
                         <!-- <input type="file" class="user-info-field" readonly=true value="Preparatoria"> -->

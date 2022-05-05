@@ -31,7 +31,7 @@
             <a class="title"><img src="{% static 'svg/iepam-logo-white.svg' %}"><p>IEPAM</p></a>
             <div class="register-container">
                 <div class="register-subtitle">Actualizar Imagen</div>
-                <form class="register-form" method="post">
+                <form class="register-form" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
 
                     {{ form.non_field_errors}}
@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="btn-container-vertical">
-                        <button>Actualizar</button>
+                        <button type="submit">Actualizar s</button>
                         {% if profile_view %}
                             <a class="btn-cancel" href="{% url 'users:user_profile'  %}">Cancelar</a>
                         {% else %}
