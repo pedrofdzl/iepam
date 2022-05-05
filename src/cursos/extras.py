@@ -18,6 +18,8 @@ def get_iframe_url(url: str) -> str:
     if 'youtu.be' in url:
         video_code = url[17:]
         return result + video_code
+    elif result in url:
+        return url
     elif 'youtube.com' in url:
         query_params = url.split('?')[1]
         query_params = query_params.split('v=')[1]

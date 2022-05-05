@@ -38,6 +38,8 @@
                     <a href=""><div id="video" class="register-activity-type-item"><span class="material-icons">smart_display</span><p>Video</p></div></a>
                     <a href=""><div id="quiz" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Quiz</p></div></a>
                     <a href=""><div id="resource" class="register-activity-type-item"><span class="material-icons">folder</span><p>Resource</p></div></a>
+                    <a href="" class="no-style-a"><div id="hangman" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Juego: Ahorcado</p></div></a>
+                    <a href="" class="no-style-a"><div id="sopa" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Juego: Sopa de Letras</p></div></a>
                 </div>
 
                 <div id="div-lectura" class="">
@@ -70,8 +72,10 @@
                         </div>
                         
                         <div style="text-align: center;">
-                            <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
-                            <button class="btn-register" type="submit">Guardar</button>
+                            {% if lec_form.instance.pk %}
+                                <a href="{% url 'cursos:course_lecture' id=lec_form.instance.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
+                                <button class="btn-register" type="submit">Guardar</button>
+                            {% endif %}
                         </div>
                     </form>
                 </div>
@@ -100,8 +104,10 @@
                         </div>
                         
                         <div style="text-align: center;">
-                            <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
+                            {% if act_form.instance.pk %}
+                            <a href="{% url 'cursos:course_activity' id=act_form.instance.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
                             <button class="btn-register" type="submit">Guardar</button>
+                            {% endif %}
                         </div>
                     </form>
                 </div>
@@ -130,11 +136,40 @@
                         </div>
                         
                         <div style="text-align: center;">
-                            <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
+                            {% if vid_form.instance.pk %}
+                            <a href="{% url 'cursos:course_video' id=vid_form.instance.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
                             <button class="btn-register" type="submit">Guardar</button>
+                            {% endif %}
                         </div>
                     </form>
                 </div>
+
+                <div id="div-quiz" class="">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ quiz_form.non_field_erros }}
+
+                        <label>Título</label>
+                        <div class="input-line">
+                            {{ quiz_form.name.errors }}
+                            {{ quiz_form.name }}
+                        </div>
+
+                        <label>Descripción</label>
+                        <div class="input-line">
+                            {{ quiz_form.description.errors }}
+                            {{ quiz_form.description }}
+                        </div>
+
+                        <div style="text-align: center;">
+                            {% if quiz_form.instance.pk %}
+                            <a href="{% url 'cursos:course_quiz' id=quiz_form.instance.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
+                            <button type="submit">Guardar</button>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+
 
                 <div id="div-resource" class="">
                     <form method="post" enctype="multipart/form-data">
@@ -159,10 +194,69 @@
                             {{ resource_form.resource }}
                         </div>
 
-                        <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}">Cancelar</a>
-                        <button type="submit">Crear</button>
+                        {% if resource_form.instance.pk %}
+                        <a href="{% url 'cursos:course_resource' id=resource_form.instance.pk %}">Cancelar</a>
+                        <button type="submit">Guardar</button>
+                        {% endif %}
                     </form>
                 </div>
+               
+               
+                <div id="div-hangman" class="">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ hangman_form.non_field_errors }}
+
+                        <label for="">Titulo</label>
+                        <div>
+                            {{ hangman_form.title.errors }}
+                            {{ hangman_form.title }}
+                        </div>
+
+                        <label for="">Descripción</label>
+                        <div>
+                            {{ hangman_form.description.errors }}
+                            {{ hangman_form.description }}
+                        </div>
+
+
+                        <div style="text-align: center;">
+                            {% if hangman_form.instance.pk %}
+                            <a href="{% url 'cursos:course_hangman' id=hangman_form.instance.pk %}">Cancelar</a>
+                            <button type="submit">Guardar</button>
+                            {% endif %}
+                        </div>
+
+                    </form>
+                </div>
+
+
+                <div id="div-sopa" class="">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ sopa_form.non_field_errors }}
+
+                        <label for="">Titulo</label>
+                        <div>
+                            {{ sopa_form.title.errors }}
+                            {{ sopa_form.title }}
+                        </div>
+
+                        <label for="">Descripción</label>
+                        <div>
+                            {{ sopa_form.description.errors }}
+                            {{ sopa_form.description }}
+                        </div>
+                        <div style="text-align: center;">
+                            {% if sopa_form.instance.pk %}
+                            <a href="{% url 'cursos:course_sopa' id=sopa_form.instance.pk %}">Cancelar</a>
+                            <button type="submit">Guardar</button>
+                            {% endif %}
+                        </div>
+
+                    </form>
+                </div>
+
 
             </div>
         </div>

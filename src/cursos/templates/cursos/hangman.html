@@ -26,6 +26,10 @@
                 </a>
 
                 {% if is_owner %}
+                <a href="{% url 'cursos:course_edit_item' id=hangman.pk action=6 %}" class="button-edit no-style-a">
+                    <p>Editar</p>
+                    <span class="material-icons">edit</span>
+                </a>
                 <a href="{% url 'cursos:course_hangman_delete' id=hangman.pk %}" class="button-delete no-style-a">
                     <p>Eliminar</p>
                     <span class="material-icons">delete</span>

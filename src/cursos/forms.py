@@ -185,6 +185,6 @@ class SopaOptionForm(forms.ModelForm):
         all_cleaned_data = super().clean()
         game = self.instance.game
 
-        if len(SopaOption.objects.filter(game=game) >= 5) and not self.is_updating:
+        if len(SopaOption.objects.filter(game=game)) >= 5 and not self.is_updating:
             raise forms.ValidationError('No se pueden tener mas de 5 opciones')
 
