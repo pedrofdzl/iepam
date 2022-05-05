@@ -16,13 +16,14 @@ from .models import (
                         Course, Entrega, MemberOf, Modulo, 
                         Lectura, Actividad, Question, Video,
                         Quiz, QuestionOption, QuizResult,
-                        FileResource, HangmanGame, HangmanOption
+                        FileResource, HangmanGame, HangmanOption, SopaGame,
+                        SopaOption,
                     )
 from .forms import (
                     CourseCreateForm, EntregaAddForm, HangmanOptionForm, LectureAddForm, 
                     ModuleAddForm, ActivityAddForm, VideoAddForm,
                     QuizForm, QuestionForm, QuestionOptionsForm, FileResourceForm,
-                    HangmanForm, HangmanOption
+                    HangmanForm, HangmanOption, SopaForm, SopaOptionForm,
                 )
 
 from .extras import get_iframe_url
@@ -523,6 +524,7 @@ def course_create_item_view(request, id, action):
     quiz_form = QuizForm()
     resource_form = FileResourceForm()
     hangman_form = HangmanForm() 
+    sopa_form = SopaForm()
 
     if request.method == 'POST':
         if action == 1:
@@ -616,6 +618,17 @@ def course_create_item_view(request, id, action):
                 return redirect(reverse('cursos:course_hangman', kwargs={'id': hangman_game.pk}))
             else:
                 print(hangman_form.errors)
+        if action == 7:
+            sopa_form = SopaForm(request.POST)
+
+            if sopa_form.is_valid():
+                sopa_game = sopa_form.save(commit=False)
+                sopa_game.modulo = modulo
+                sopa_game.save()
+
+                return redirect(reverse('cursos:course_sopa', kwargs={'id': sopa_game.pk}))
+            else:
+                print(sopa_form.errors)
                 
 
 
@@ -626,6 +639,7 @@ def course_create_item_view(request, id, action):
     context['quiz_form'] = quiz_form
     context['resource_form'] = resource_form
     context['hangman_form'] = hangman_form
+    context['sopa_form'] = sopa_form
     context['action'] = action
 
     return render(request, template_name, context)
@@ -653,7 +667,6 @@ def course_edit_item_view(request, id, action):
     video_form = VideoAddForm()
     resource_form = FileResourceForm()
     quiz_form = QuizForm()
-
 
     module = stuff.modulo
     if module.curso.owner != request.user.extended_user:
@@ -1292,25 +1305,7 @@ def course_resource_view(request, id):
 
     context['resource'] = resource
 
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
-
+    context = side_panel_context(context, user.pk, course.pk)
 
     return render(request, template_name, context)
 
@@ -1449,24 +1444,7 @@ def course_activity_delete_view(request, id):
     context['activity'] = activity
     context['course'] = course
 
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
+    context = side_panel_context(context, user.pk, course.pk)
 
     return render(request, template_name, context)
 
@@ -1503,25 +1481,7 @@ def course_activity_entry_detail_view(request, id):
     context['entry'] = entry
     context['course'] = course
 
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
-
+    context = side_panel_context(context, user.pk, course.pk)
 
     return render(request, template_name, context)
 
@@ -1555,25 +1515,7 @@ def course_activity_entry_delete_view(request, id):
     context['entry'] = entry
     context['course'] = course
 
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
-
+    context = side_panel_context(context, user.pk, course.pk)
 
     return render(request, template_name, context)
 
@@ -1592,25 +1534,7 @@ def course_hangman_view(request, id):
     context['course'] = course
     context['options'] = options
 
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
-
+    context = side_panel_context(context, user.pk, course.pk)
 
     return render(request, template_name, context)
 
@@ -1634,25 +1558,7 @@ def course_hangman_delete_view(request, id):
     context['hangman'] = hangman
     context['course'] = course
 
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
-
+    context = side_panel_context(context, user.pk, course.pk)
 
     return render(request, template_name, context)
 
@@ -1687,25 +1593,7 @@ def course_hangman_option_create_view(request, id):
     context['hangman'] = hangman
     context['course'] = course
 
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
-
+    context = side_panel_context(context, user.pk, course.pk)
 
     return render(request, template_name, context)
 
@@ -1739,25 +1627,7 @@ def course_hangman_option_edit_view(request, id):
     context['hangman'] = hangman
     context['course'] = course
 
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
-
+    context = side_panel_context(context, user.pk, course.pk)
 
     return render(request, template_name, context)
 
@@ -1770,6 +1640,122 @@ def course_hangman_option_delete_view(request, id):
     return redirect(reverse('cursos:course_hangman', kwargs={'id': hangman.pk}))
 
 
+def course_sopa_view(request, id):
+    context = {}
+    template_name = template_prefix + 'sopa.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    sopa = get_object_or_404(SopaGame, pk=id)
+    course = sopa.modulo.curso
+    options = sopa.options.all()
+
+    context['sopa'] = sopa
+    context['course'] = course
+    context['options'] = options
+
+    context = side_panel_context(context, user.pk, course.pk)
+
+    return render(request, template_name, context)
+
+
+def course_sopa_delete_view(request, id):
+    context = {}
+    template_name = template_prefix + 'sopa_confirm_delete.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    sopa = get_object_or_404(SopaGame, pk=id)
+    course = sopa.modulo.curso
+
+    if request.method == 'POST':
+        sopa.delete()
+        return redirect(reverse('cursos:course_detail', kwargs={'id': course.pk}))
+
+
+    context['sopa'] = sopa
+    context['course'] = course
+
+    context = side_panel_context(context, user.pk, course.pk)
+
+    return render(request, template_name, context)
+
+
+
+def course_sopa_option_create_view(request, id):
+    context = {}
+    template_name = template_prefix + 'sopa_option_form.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    sopa = get_object_or_404(SopaGame, pk=id)
+    course = sopa.modulo.curso
+
+    option_form = SopaOptionForm()
+
+    if request.method == 'POST':
+        option_form = SopaOptionForm(request.POST)
+
+        if option_form.is_valid():
+            option = option_form.save(commit=False)
+
+            option.game = sopa
+            option.save()
+
+            return redirect(reverse('cursos:course_sopa', kwargs={'id': sopa.pk}))
+        else:
+            print(option_form.errors)
+    
+
+    context['option_form'] = option_form
+    context['sopa'] = sopa
+    context['course'] = course
+
+    context = side_panel_context(context, user.pk, course.pk)
+
+    return render(request, template_name, context)
+
+
+
+def course_sopa_option_edit_view(request, id):
+    context = {}
+    template_name = template_prefix + 'sopa_option_form.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    option = get_object_or_404(SopaOption, pk=id)
+    sopa = option.game
+    course = sopa.modulo.curso
+
+    option_form = SopaOptionForm(instance=option)
+
+
+    if request.method == 'POST':
+        option_form = SopaOptionForm(request.POST, instance=option)
+
+        if option_form.is_valid():
+            option = option_form.save()
+
+            return redirect(reverse('cursos:course_sopa', kwargs={'id': sopa.pk}))
+        else:
+            print(option_form.errors)
+    
+
+    context['option_form'] = option_form
+    context['sopa'] = sopa
+    context['course'] = course
+
+    context = side_panel_context(context, user.pk, course.pk)
+
+    return render(request, template_name, context)
+
+
+def course_sopa_option_delete_view(request, id):
+    option = get_object_or_404(SopaOption, pk=id)
+    sopa = option.game
+
+    option.delete()
+    return redirect(reverse('cursos:course_sopa', kwargs={'id': sopa.pk}))
 
 @login_required
 def course_video_view(request, id):

@@ -554,3 +554,95 @@ input[type=file]::-webkit-file-upload-button:hover {
     width: fit-content;
     padding: 0.5rem;
 }
+
+.add-word-btn {
+    display: block;
+    background-color: #20CC82;
+    text-align: center;
+    color: white;
+    padding: 0.6rem;
+    text-decoration: none;
+    margin-top: 1rem;
+    margin-bottom: -0.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+}
+.add-word-btn:hover {
+    box-shadow: 0 0 10px #20CC82;
+}
+
+.word {
+    display: grid;
+    grid-template-columns: 1fr 0.2fr;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+    margin-bottom: 1rem;
+}
+
+.word-sopa {
+    display: grid;
+    grid-template-columns: 1fr 0.2fr 0.2fr;
+    background-color: white;
+    padding: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgb(211, 211, 211);
+    margin-bottom: 1rem;
+}
+
+.word-word {
+    font-weight: 500;
+}
+.word-word-sopa {
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+.word-hints p {
+    font-size: 16px;
+    margin: 0.5rem;
+    margin-left: 2rem;
+}
+
+.word-buttons {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+.word-edit {
+    display: block;
+    background-color: #555555;
+    border-radius: 0.5rem;
+    text-align: center;
+    padding-top: 0.4rem;
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    margin: 0.3rem;
+    font-weight: 500;
+    min-height: 24px;
+}
+.word-edit:hover {
+    background-color: #424242;
+    box-shadow: 0 0 10px #6d6d6d;
+}
+.word-delete {
+    display: block;
+    background-color: #b44d4d;
+    border-radius: 0.5rem;
+    text-align: center;
+    padding-top: 0.4rem;
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    margin: 0.3rem;
+    font-weight: 500;
+    min-height: 24px;
+}
+.word-delete:hover {
+    background-color: #c74848;
+    box-shadow: 0 0 10px #ff6363;
+}

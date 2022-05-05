@@ -61,7 +61,7 @@
 }
 
 .liked {
-    color:#813cc7;
+    color:#20CC82;
 }
 
 .progress-bar {
@@ -79,7 +79,14 @@
     margin-top: 1rem;
     overflow: hidden;
 }
+@keyframes bar {
+    0% {
+        transform: scaleX(0);
+    }
+    100% {
 
+    }
+}
 .progress-bar-fill {
     width: 100%;
     height: 100%;
@@ -89,6 +96,7 @@
     transform-origin: left;
     transform: scaleX(0.5);
     z-index: 1;
+    animation: bar 1s;
 }
 
 .owner-buttons {

@@ -21,7 +21,7 @@
     <!-- CSS -->    
     <link rel="stylesheet" href="{% static 'css/register.css' %}">
 
-    <title>Eliminar</title>
+    <title>Sopa de Letras</title>
     <link rel="icon" type="svg" href="{% static 'svg/iepam-logo-white.svg' %}">
 </head>
 <body>
@@ -29,18 +29,27 @@
     <main>
         <div class="container">
             <a class="title"><img src="{% static 'svg/iepam-logo-white.svg' %}"><p>IEPAM</p></a>
-            <div class="register-container  confirm-container">
-                <div class="register-subtitle">¿Deseas Eliminar este recurso?</div>
-                <p>*Esta acción no puede ser revertida.</p>
-                <br>
+            <div class="register-container">
+                <div class="register-title">Palabra sopa de letras</div>
+                
                 <form method="post">
                     {% csrf_token %}
-                    <div class="btn-container-vertical">
-                        <button class="red-color" type="submit">Eliminar</button>
-                        <a class="btn-cancel" href="{% url 'cursos:course_resource' id=resource.pk %}">Cancelar</a>
+                    {{ option_form.non_field_errors }}
+            
+                    <label for="">Palabra</label>
+                    <div class="input-line">
+                        {{ option_form.option.errors }}
+                        {{ option_form.option }}
                     </div>
-                </form>
 
+                    <a class="btn-cancel margin-right-btn" href="{% url 'cursos:course_sopa' id=sopa.pk %}">Cancel</a>
+                    {% if editing %}
+                    <button style="margin-right: none;">Actualizar</button>
+                    {% else %}
+                    <button>Agregar</button>
+                    {% endif %}
+                </form>
+                
             </div>
         </div>
     </main>

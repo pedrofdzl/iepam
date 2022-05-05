@@ -50,7 +50,7 @@
                             <a href="{% url 'cursos:course_resource' id=resource.pk %}" class="no-style-a">
                                 {% if resource in user.read_lectures.all %}
                                     <div class="module-item checked">
-                                        <span class="material-icons module-item-icon checked-text">book</span>
+                                        <span class="material-icons module-item-icon checked-text">folder</span>
                                         <div>
                                             <div class="module-item-title checked-text">Recurso: {{ lec.name }}</div>
                                                 <div class="module-item-grade checked-text">Leído</div>
@@ -59,7 +59,7 @@
                                     </div>
                                 {% else %}
                                     <div class="module-item">
-                                        <span class="material-icons module-item-icon">book</span>
+                                        <span class="material-icons module-item-icon">folder</span>
                                         <div>
                                             <div class="module-item-title">Recurso: {{ resource.title }}</div>
                                                 <div class="module-item-grade">No leído</div>
@@ -69,7 +69,7 @@
                             </a>
                         {% else %}
                             <div class="module-item locked">
-                                <span class="material-icons module-item-icon locked-text">book</span>
+                                <span class="material-icons module-item-icon locked-text">folder</span>
                                 <div>
                                     <div class="module-item-title locked-text">Lectura: {{ lec.name }}</div>
                                         <div class="module-item-grade locked-text">No leído</div>
@@ -237,16 +237,16 @@
                             <a href="{% url 'cursos:course_hangman' id=hangman.pk %}" class="no-style-a">
                                 {% if resource in user.read_lectures.all %}
                                     <div class="module-item checked">
-                                        <span class="material-icons module-item-icon checked-text">book</span>
+                                        <span class="material-icons module-item-icon checked-text">extension</span>
                                         <div>
-                                            <div class="module-item-title checked-text">Juego: {{ hangman.name }}</div>
+                                            <div class="module-item-title checked-text">Juego: {{ hangman.title }}</div>
                                                 <div class="module-item-grade checked-text">Completado</div>
                                         </div>
                                         <span class="material-icons checkmark">done</span>
                                     </div>
                                 {% else %}
                                     <div class="module-item">
-                                        <span class="material-icons module-item-icon">book</span>
+                                        <span class="material-icons module-item-icon">extension</span>
                                         <div>
                                             <div class="module-item-title">Juego: {{ hangman.title }}</div>
                                                 <div class="module-item-grade">No Completado</div>
@@ -256,9 +256,44 @@
                             </a>
                         {% else %}
                             <div class="module-item locked">
-                                <span class="material-icons module-item-icon locked-text">book</span>
+                                <span class="material-icons module-item-icon locked-text">extension</span>
                                 <div>
-                                    <div class="module-item-title locked-text">Juego: {{ hangman.name }}</div>
+                                    <div class="module-item-title locked-text">Juego: {{ hangman.title }}</div>
+                                        <div class="module-item-grade locked-text">No Completado</div>
+                                </div>
+                                <span class="material-icons lock">lock</span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <!-- ! Agregar cambios de sopa -->
+                    {% for sopa in mod.sopagames.all %}
+                        {% if is_member or is_owner %}
+                            <a href="{% url 'cursos:course_sopa' id=sopa.pk %}" class="no-style-a">
+                                {% if resource in user.read_lectures.all %}
+                                    <div class="module-item checked">
+                                        <span class="material-icons module-item-icon checked-text">pattern</span>
+                                        <div>
+                                            <div class="module-item-title checked-text">Juego: {{ sopa.title }}</div>
+                                                <div class="module-item-grade checked-text">Completado</div>
+                                        </div>
+                                        <span class="material-icons checkmark">done</span>
+                                    </div>
+                                {% else %}
+                                    <div class="module-item">
+                                        <span class="material-icons module-item-icon">pattern</span>
+                                        <div>
+                                            <div class="module-item-title">Juego: {{ sopa.title }}</div>
+                                                <div class="module-item-grade">No Completado</div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            <div class="module-item locked">
+                                <span class="material-icons module-item-icon locked-text">pattern</span>
+                                <div>
+                                    <div class="module-item-title locked-text">Juego: {{ sopa.title }}</div>
                                         <div class="module-item-grade locked-text">No Completado</div>
                                 </div>
                                 <span class="material-icons lock">lock</span>

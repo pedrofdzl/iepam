@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Course, Modulo, Lectura, Actividad, Question, Quiz, Video, QuestionOption, FileResource, HangmanGame, HangmanOption
+from .models import Course, Modulo, Lectura, Actividad, Question, Quiz, SopaGame, SopaOption, Video, QuestionOption, FileResource, HangmanGame, HangmanOption
 from django.core.validators import MaxLengthValidator, FileExtensionValidator, MinLengthValidator
 
 
@@ -144,3 +144,18 @@ class HangmanOptionForm(forms.ModelForm):
 
         hint_2 = hint_2.strip().split(' ')[0]
         return hint_2
+
+
+class SopaForm(forms.ModelForm):
+    class Meta:
+        model = SopaGame
+        fields = ('title', 'description')
+
+        widgets = {
+            'description': forms.Textarea(attrs={'rows':3})
+        }
+
+class SopaOptionForm(forms.ModelForm):
+    class Meta:
+        model = SopaOption
+        fields = ('option',)

@@ -176,11 +176,11 @@ class FileResource(models.Model):
         return super().delete()
 
 
-
 class HangmanGame(models.Model):
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE, related_name='hangmangames')
     title = models.CharField('Title', max_length=255)
     description = models.CharField('Description', max_length=255)
+    completions = models.ManyToManyField(User, related_name="completed_hangmans")
 
     def __str__(self):
         return f'Hangman Game module: {self.modulo.name}-{self.title}'
@@ -188,9 +188,27 @@ class HangmanGame(models.Model):
 
 class HangmanOption(models.Model):
     game = models.ForeignKey(HangmanGame, on_delete=models.CASCADE, related_name='options')
-    option = models.CharField('Option', max_length=255)
+    option = models.CharField('Option', max_length=9)
     hint_1 = models.CharField('hint 1', max_length=255)
     hint_2 = models.CharField('hint_2', max_length=255)
 
     def __str__(self):
         return f'Hangman Game {self.game.title} option: {self.option}'
+
+
+class SopaGame(models.Model):
+    modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE, related_name='sopagames')
+    title = models.CharField('Title', max_length=255)
+    description = models.CharField('Description', max_length=255)
+    completions = models.ManyToManyField(User, related_name="completed_sopas")
+
+    def __str__(self):
+        return f'Sopa de Letras Game module: {self.modulo.name}-{self.title}'
+
+
+class SopaOption(models.Model):
+    game = models.ForeignKey(SopaGame, on_delete=models.CASCADE, related_name='options')
+    option = models.CharField('Option', max_length=9)
+
+    def __str__(self):
+        return f'Sopa de Letras Game {self.game.title} option: {self.option}'

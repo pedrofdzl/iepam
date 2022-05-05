@@ -1,18 +1,69 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+{% load static %}
 
-{% block body %}
+<html lang="en">
 
-    <h1>{{ hangman.title }}</h1>
-    <hr>
-    <p>{{ hangman.description }}</p>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <form method="post">
-        {% csrf_token %}
-        
-        {{ option_form.as_p }}
-        <a href="{% url 'cursos:course_hangman' id=hangman.pk %}">Cancelar</a>
-        <button type="submit">Actualizar</button>
-    </form>
+    <!-- Material icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-{% endblock %}
+    <!-- CSS -->    
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+    <title>Hangman</title>
+    <link rel="icon" type="svg" href="{% static 'svg/iepam-logo-white.svg' %}">
+</head>
+<body>
+    
+    <main>
+        <div class="container">
+            <a class="title"><img src="{% static 'svg/iepam-logo-white.svg' %}"><p>IEPAM</p></a>
+            <div class="register-container">
+                <div class="register-title">Palabra hangman</div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    {{ option_form.non_field_errors }}
+            
+                    <label for="">Palabra</label>
+                    <div class="input-line">
+                        {{ option_form.option.errors }}
+                        {{ option_form.option }}
+                    </div>
+    
+                    <label for="">Pista 1</label>
+                    <div class="input-line">
+                        {{ option_form.hint_1.errors }}
+                        {{ option_form.hint_1 }}
+                    </div>
+
+                    <label for="">Pista 2</label>
+                    <div class="input-line">
+                        {{ option_form.hint_2.errors }}
+                        {{ option_form.hint_2 }}
+                    </div>
+
+                    <a class="btn-cancel margin-right-btn" href="{% url 'cursos:course_hangman' id=hangman.pk %}">Cancel</a>
+                    {% if editing %}
+                    <button style="margin-right: none;">Actualizar</button>
+                    {% else %}
+                    <button>Agregar</button>
+                    {% endif %}
+                </form>
+                
+            </div>
+        </div>
+    </main>
+</body>
+</html>
