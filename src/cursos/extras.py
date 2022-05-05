@@ -212,3 +212,42 @@ def act_completadas_curso(request, id):
                 completed_items += 1
 
     return completed_items
+
+def context_course_percentage(request, courseID):
+    user = request.user
+
+    modules = Modulo.objects.filter(curso=courseID)
+
+    total_items = 0
+    completed_items = 0
+    completion_ratio = 0
+    completion_percentage = 0
+        
+    for module in modules:
+        total_items += module.lecturas.all().count()
+        for lecture in module.lecturas.all():
+            if lecture.reads.filter(pk=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.videos.all().count()
+        for video in module.videos.all():
+            if video.watches.filter(pk=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.actividades.all().count()
+        for activity in module.actividades.all():
+            if Entrega.objects.all().filter(actividad=activity.pk, user=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.quizzes.all().count()
+        for quiz in module.quizzes.all():
+            if QuizResult.objects.all().filter(quiz=quiz.pk, user=user.pk).exists():
+                completed_items += 1
+
+    if total_items > 0:
+        completion_ratio = completed_items / total_items
+        completion_percentage = int(completion_ratio * 100)
+
+    ans = [completion_ratio, completion_percentage]
+
+    return ans

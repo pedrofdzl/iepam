@@ -120,15 +120,73 @@
                                 {% endif %}
 
                                 <script>
+                                    document.getElementById('bar{{forloop.counter}}').style.transform = 'scaleX(0)'
                                     document.getElementById('bar{{forloop.counter}}').style.transform = 'scaleX({{course.2}})'
                                 </script>
-
+                            {% empty %}
+                                <div class="progress-item">
+                                    <div class="progress-name">
+                                        No estás cursando ninguna capacitación
+                                    </div>
+                                    <div class="progress-bar">
+                                    </div>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
 
                 </div>
                 <!-- Progreso end -->
+                <br>
+                <!-- Continuar Cursos -->
+                <div class="index-section-container">
+
+                    <div class="index-section-title">Continua Capacitandote</div>
+                    <div class="index-section-body">
+                        <div class="continue-container">
+
+                            {% for curso in continue_cursos %}
+                                <a class="no-style-a" href="{% url 'cursos:course_detail' id=curso.0.pk %}">
+                                    <div class="continue-curso">
+                                        <div class="continue-curso-img">
+                                            <img src="{% static 'img/view.jpg' %}">
+                                        </div>
+                                        <div class="continue-text">
+                                            <div class="continue-curso-title">
+                                                {{ curso.0.name }}
+                                            </div>
+                                            <div class="continue-curso-continuar">
+                                                <p>Continua</p>
+                                                <span class="material-icons">east</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% empty %}
+                            <a class="no-style-a" href="{% url 'cursos:menu' %}">
+                                <div class="continue-curso">
+                                    <div class="continue-curso-img">
+                                        <img src="{% static 'img/view.jpg' %}">
+                                    </div>
+                                    <div class="continue-text">
+                                        <div class="continue-curso-title">
+                                            No estás inscrito en ninguna capacitación
+                                        </div>
+                                        <div class="continue-curso-continuar">
+                                            <p>Capacitate</p>
+                                            <span class="material-icons">east</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Continuar Cursos end -->
+
 
             </div>
 

@@ -1,18 +1,65 @@
 {% extends 'base.html' %}
 
+{% block head %}
 
+{% load static %}
+<title>Recurso</title>
+
+{% endblock %}
 
 {% block body %}
+<link rel="stylesheet" href="{% static 'css/activities.css' %}">
 
-    <h1>{{ resource.title }}</h1>
-    <hr>
+<div id="id-app" style="display: none;">cap</div>
 
+<div class="container-window">
 
-    <a href="{% url 'cursos:course_edit_item' id=resource.pk action=5 %}">Editar</a>
-    <a href="{% url 'cursos:course_resource_delete' id=resource.pk %}">Eliminar</a>
-    
-    <p>{{ resource.description }}</p>
-    <a href="{% url 'cursos:course_resource_file' id=resource.pk %}">Descargar Recurso</a>
+    <div class="course-container">
 
+        <div>
+            <div class="activity-header">
+                <a href="{% url 'cursos:course_detail' id=resource.modulo.curso.pk %}" class="no-style-a">
+                    <div class="return">
+                        <span class="material-icons">chevron_left</span>
+                        Volver al entregable
+                    </div>
+                </a>
+
+                {% if is_owner %}
+                <a href="{% url 'cursos:course_edit_item' id=resource.pk action=5 %}" class="button-edit no-style-a">
+                    <p>Editar</p>
+                    <span class="material-icons">edit</span>
+                </a>
+                <a href="{% url 'cursos:course_resource_delete' id=resource.pk %}" class="button-delete no-style-a">
+                    <p>Eliminar</p>
+                    <span class="material-icons">delete</span>
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="description">{{ resource.modulo.name }}</div>
+
+            <div class="title-smaller"> {{ resource.title }} </div>
+
+            <div class="lecture-container">
+                <div class="subtitle">Descripción</div>
+                <p>{{ resource.description }}</p>
+                <a class="button-view no-style-a" style="margin-left: 0;" href="{% url 'cursos:course_resource_file' id=resource.pk %}">
+                    Descargar Recurso
+                    <span class="material-icons" style="margin-right: -0.25rem;">file_download</span>
+                </a>
+            </div>
+
+        </div>
+
+        <div>
+            <div class="side-panel">
+                {% include 'cursos/side_panel.html' %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

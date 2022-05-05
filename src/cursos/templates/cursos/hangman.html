@@ -1,26 +1,77 @@
 {% extends 'base.html' %}
 
+{% block head %}
+
+{% load static %}
+<title>Hangman</title>
+
+{% endblock %}
+
 {% block body %}
+<link rel="stylesheet" href="{% static 'css/activities.css' %}">
 
-    <h1>{{ hangman.title }}</h1>
-    <hr>
-    <p>{{ hangman.description }}</p>
+<div id="id-app" style="display: none;">cap</div>
 
+<div class="container-window">
 
-    <a href="{% url 'cursos:course_hangman_delete' id=hangman.pk %}">Eliminar</a>
+    <div class="course-container">
 
-    <a href="{% url 'cursos:course_hangman_add_option' id=hangman.pk %}">Agregar Opción</a>
-    {% for option in options %}
-        <p>
-            {{ option.option }} <br>
-            Palabra clave 1: {{ option.hint_1 }} <br>
-            Palabra Clave 2: {{ option.hint_2 }}
-        </p>
-        <a href="{% url 'cursos:course_hangman_edit_option' id=option.pk %}">Editar</a>
-        <a href="{% url 'cursos:course_hangman_delete_option' id=option.pk %}">Eliminar</a>
-    {% empty %}
-        <p>No tiene opciones</p>
+        <div>
+            <div class="activity-header">
+                <a href="{% url 'cursos:course_detail' id=hangman.modulo.curso.pk %}" class="no-style-a">
+                    <div class="return">
+                        <span class="material-icons">chevron_left</span>
+                        Volver al entregable
+                    </div>
+                </a>
 
-    {% endfor %}
+                {% if is_owner %}
+                <a href="{% url 'cursos:course_hangman_delete' id=hangman.pk %}" class="button-delete no-style-a">
+                    <p>Eliminar</p>
+                    <span class="material-icons">delete</span>
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="description">{{ hangman.modulo.name }}</div>
+
+            <div class="title-smaller"> {{ hangman.title }} </div>
+
+            <div class="lecture-container">
+                <div class="subtitle">Descripción</div>
+                <p>{{ hangman.description }}</p>
+                {% for option in options %}
+                    <div class="word">
+                        <div>
+                            <div class="word-word">
+                                {{ forloop.counter }}). {{ option.option }}
+                            </div>
+                            <div class="word-hints">
+                                <p>Palabra clave 1: {{ option.hint_1 }}</p>
+                                <p>Palabra clave 2: {{ option.hint_2 }}</p>
+                            </div>
+                        </div>
+                        <div class="word-buttons">
+                            <a class="word-edit" href="{% url 'cursos:course_hangman_edit_option' id=option.pk %}">Editar</a>
+                            <a class="word-delete" href="{% url 'cursos:course_hangman_delete_option' id=option.pk %}">Eliminar</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No tiene palabras</p>
+                {% endfor %}
+                <a class="add-word-btn" href="{% url 'cursos:course_hangman_add_option' id=hangman.pk %}">Agregar palabras</a>
+            </div>
+
+        </div>
+
+        <div>
+            <div class="side-panel">
+                {% include 'cursos/side_panel.html' %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

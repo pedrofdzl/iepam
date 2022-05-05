@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% load static %}
+<title>Sopa de Letras</title>
+
+{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{% static 'css/activities.css' %}">
+
+<div id="id-app" style="display: none;">cap</div>
+
+<div class="container-window">
+
+    <div class="course-container">
+
+        <div>
+            <div class="activity-header">
+                <a href="{% url 'cursos:course_detail' id=sopa.modulo.curso.pk %}" class="no-style-a">
+                    <div class="return">
+                        <span class="material-icons">chevron_left</span>
+                        Volver al entregable
+                    </div>
+                </a>
+
+                {% if is_owner %}
+                <a href="{% url 'cursos:course_sopa_delete' id=sopa.pk %}" class="button-delete no-style-a">
+                    <p>Eliminar</p>
+                    <span class="material-icons">delete</span>
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="description">{{ sopa.modulo.name }}</div>
+
+            <div class="title-smaller"> {{ sopa.title }} </div>
+
+            <div class="lecture-container">
+                <div class="subtitle">Descripción</div>
+                <p>{{ sopa.description }}</p>
+                {% for option in options %}
+                    <div class="word-sopa">
+                        <div class="word-word-sopa">
+                            {{ forloop.counter }}). {{ option.option }}
+                        </div>
+                        <a class="word-edit" href="{% url 'cursos:course_sopa_edit_option' id=option.pk %}">Editar</a>
+                        <a class="word-delete" href="{% url 'cursos:course_sopa_delete_option' id=option.pk %}">Eliminar</a>
+                    </div>
+                {% empty %}
+                    <p>No tiene palabras</p>
+                {% endfor %}
+                <a class="add-word-btn" href="{% url 'cursos:course_sopa_add_option' id=sopa.pk %}">Agregar palabras</a>
+            </div>
+
+        </div>
+
+        <div>
+            <div class="side-panel">
+                {% include 'cursos/side_panel.html' %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

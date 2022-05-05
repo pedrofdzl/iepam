@@ -64,6 +64,14 @@ urlpatterns = [
     path('curso/hangman/<int:id>/eliminar-opcion/', views.course_hangman_option_delete_view, name='course_hangman_delete_option'),
 
 
+    # Sopa
+    path('curso/sopa/<int:id>/', views.course_sopa_view, name='course_sopa'),
+    path('curso/sopa/<int:id>/eliminar/', views.course_sopa_delete_view, name='course_sopa_delete'),
+    path('curso/sopa/<int:id>/crear-opcion/', views.course_sopa_option_create_view, name='course_sopa_add_option'),
+    path('curso/sopa/<int:id>/editar-opcion/', views.course_sopa_option_edit_view, name='course_sopa_edit_option'),
+    path('curso/sopa/<int:id>/eliminar-opcion/', views.course_sopa_option_delete_view, name='course_sopa_delete_option'),
+
+
     # Quiz
     path('curso/quiz/<int:id>/', views.course_quiz_view, name='course_quiz'),
     path('curso/quiz/<int:id>/eliminar/', views.course_quiz_delete_view, name='course_quiz_delete'),

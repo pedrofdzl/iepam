@@ -41,6 +41,7 @@
                     <a href="{% url 'cursos:course_create_item' id=modulo.pk action=4 %}" class="no-style-a"><div id="quiz" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Quiz</p></div></a>
                     <a href="{% url 'cursos:course_create_item' id=modulo.pk action=5 %}" class="no-style-a"><div id="resource" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Archivo</p></div></a>
                     <a href="{% url 'cursos:course_create_item' id=modulo.pk action=6 %}" class="no-style-a"><div id="hangman" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Juego: Ahorcado</p></div></a>
+                    <a href="{% url 'cursos:course_create_item' id=modulo.pk action=7 %}" class="no-style-a"><div id="sopa" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Juego: Sopa de Letras</p></div></a>
                 </div>
 
                 <div id="div-lectura" class="">
@@ -208,6 +209,29 @@
                         <div>
                             {{ hangman_form.description.errors }}
                             {{ hangman_form.description }}
+                        </div>
+
+                        <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}">Cancelar</a>
+                        <button type="submit">Crear</button>
+                    </form>
+                </div>
+
+
+                <div id="div-sopa" class="">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ sopa_form.non_field_errors }}
+
+                        <label for="">Titulo</label>
+                        <div>
+                            {{ sopa_form.title.errors }}
+                            {{ sopa_form.title }}
+                        </div>
+
+                        <label for="">Descripción</label>
+                        <div>
+                            {{ sopa_form.description.errors }}
+                            {{ sopa_form.description }}
                         </div>
 
                         <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}">Cancelar</a>
