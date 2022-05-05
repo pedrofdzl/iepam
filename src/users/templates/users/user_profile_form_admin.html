@@ -79,7 +79,6 @@
                     {% else %}
 
                     <form method="post">
-                    <a href="{% url 'users:user_update_cv' id=extended_user.user.pk %}">Actualizar CV</a>
 
                         {% csrf_token %}
                         {{ form.non_field_errors }}
@@ -141,7 +140,9 @@
                                 {{ form.academic_level }}
                             </div>
                         </div>
-        
+                        <div style="text-align: center;">
+                            <a style="text-decoration: underline;" href="{% url 'users:user_update_cv' id=extended_user.user.pk %}">Actualizar CV</a>
+                        </div>
                         <button type="submit" class="user-edit-info">Guardar cambios</button>
                     </form>
                     <br>

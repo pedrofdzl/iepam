@@ -4,6 +4,8 @@ from django.http import Http404, FileResponse
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
+from .extras import side_panel_context
+
 from django.contrib.auth.decorators import login_required, permission_required
 
 from datetime import date
@@ -277,52 +279,6 @@ def course_detail_view(request, id):
     course = get_object_or_404(Course, pk=id)
     modules = Modulo.objects.filter(curso=id)
 
-    # Calculo de actividades totales para el progreso
-    total_items = 0
-    completed_items = 0
-    completion_ratio = 0
-    completion_percentage = 0
-    
-    for module in modules:
-
-        total_items += module.lecturas.all().count()
-        for lecture in module.lecturas.all():
-            if lecture.reads.filter(pk=user.pk).exists():
-                completed_items += 1
-
-        total_items += module.videos.all().count()
-        for video in module.videos.all():
-            if video.watches.filter(pk=user.pk).exists():
-                completed_items += 1
-
-        total_items += module.actividades.all().count()
-        for activity in module.actividades.all():
-            if Entrega.objects.all().filter(actividad=activity.pk, user=user.pk).exists():
-                completed_items += 1
-
-        total_items += module.quizzes.all().count()
-        for quiz in module.quizzes.all():
-            if QuizResult.objects.all().filter(quiz=quiz.pk, user=user.pk).exists():
-                completed_items += 1
-
-    if total_items > 0:
-        completion_ratio = completed_items / total_items
-        completion_percentage = int(completion_ratio * 100)
-
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
     entregas_user = user.extended_user.entregas
     turned_activities = []
     for entrega in entregas_user.all():
@@ -333,19 +289,12 @@ def course_detail_view(request, id):
     for result in results_user.all():
         answered_quizzes.append(result.quiz)
 
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-
-
     context['course'] = course
     context['modules'] = modules
-    context['total_items'] = total_items
-    context['completed_items'] = completed_items
-    context['completion_ratio'] = completion_ratio
-    context['completion_percentage'] = completion_percentage
     context['turned_activities'] = turned_activities
     context['answered_quizzes'] = answered_quizzes
+
+    context = side_panel_context(context, user.pk, course.pk)
 
     return render(request, template_name, context)
 
@@ -380,7 +329,6 @@ def course_delete_view(request, id):
     context['is_owner'] = is_owner
     context['is_member'] = is_member
     context['liked'] = liked
-
 
     context['course'] = course
 
@@ -973,11 +921,27 @@ def course_quiz_answered_view(request, id):
     template_name = template_prefix + 'quiz_answered.html'
 
     quiz = get_object_or_404(Quiz, pk=id)
+    course = quiz.modulo.curso
+    modules = course.modulos.all()
     result = get_object_or_404(QuizResult, quiz=quiz.pk, user=user.pk)
+    
+    # Calificaciones (leaderboard)
+    results = QuizResult.objects.all().filter(quiz=quiz.pk).order_by('-grade')
+    counter = 0
+    top_results = []
+    while counter < 10 and counter < len(results):
+        top_results.append(results[counter])
+        top_results[counter].grade = int(top_results[counter].grade)
+        counter += 1
 
+    context['course'] = course
     context['user'] = extended_user
     context['quiz'] = quiz
     context['result'] = result
+    context['grade'] = int(result.grade)
+    context['top_results'] = top_results
+
+    context = side_panel_context(context, user.pk, course.pk)
 
     return render(request, template_name, context)
 
@@ -1223,31 +1187,8 @@ def course_lecture_view(request, id):
     context = {}
     template_name = template_prefix + 'lecture.html'
 
-    user = request.user
-    extended_user = user.extended_user
-
     lecture = get_object_or_404(Lectura, pk=id)
     course = lecture.modulo.curso
-    modules = Modulo.objects.all().filter(curso=course.pk)
-
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
 
     viewed = False
 
@@ -1259,38 +1200,7 @@ def course_lecture_view(request, id):
     context['lecture'] = lecture
     context['course'] = course
 
-    # Calculo de actividades totales para el progreso
-    total_items = 0
-    completed_items = 0
-    completion_ratio = 0
-    completion_percentage = 0
-    
-    for module in modules:
-
-        total_items += module.lecturas.all().count()
-        for lecture in module.lecturas.all():
-            if lecture.reads.filter(pk=user.pk).exists():
-                completed_items += 1
-
-        total_items += module.videos.all().count()
-        for video in module.videos.all():
-            if video.watches.filter(pk=user.pk).exists():
-                completed_items += 1
-
-        total_items += module.actividades.all().count()
-        for activity in module.actividades.all():
-            if Entrega.objects.all().filter(actividad=activity.pk, user=user.pk).exists():
-                completed_items += 1
-
-    if total_items > 0:
-        completion_ratio = completed_items / total_items
-        completion_percentage = int(completion_ratio * 100)
-
-    context['total_items'] = total_items
-    context['completed_items'] = completed_items
-    context['completion_ratio'] = completion_ratio
-    context['completion_percentage'] = completion_percentage
-
+    context = side_panel_context(context, user.pk, course.pk)
 
     return render(request, template_name, context)
 
@@ -1503,56 +1413,7 @@ def course_activity_view(request, id):
     context['course'] = course
     context['submited'] = submited
 
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
-
-    # Calculo de actividades totales para el progreso
-    total_items = 0
-    completed_items = 0
-    completion_ratio = 0
-    completion_percentage = 0
-    
-    for module in modules:
-
-        total_items += module.lecturas.all().count()
-        for lecture in module.lecturas.all():
-            if lecture.reads.filter(pk=user.pk).exists():
-                completed_items += 1
-
-        total_items += module.videos.all().count()
-        for video in module.videos.all():
-            if video.watches.filter(pk=user.pk).exists():
-                completed_items += 1
-
-        total_items += module.actividades.all().count()
-        for activity in module.actividades.all():
-            if Entrega.objects.all().filter(actividad=activity.pk, user=user.pk).exists():
-                completed_items += 1
-
-    if total_items > 0:
-        completion_ratio = completed_items / total_items
-        completion_percentage = int(completion_ratio * 100)
-
-    context['total_items'] = total_items
-    context['completed_items'] = completed_items
-    context['completion_ratio'] = completion_ratio
-    context['completion_percentage'] = completion_percentage
+    context = side_panel_context(context, user.pk, course.pk)
 
     return render(request, template_name, context)
 
@@ -1920,56 +1781,7 @@ def course_video_view(request, id):
     context['video'] = video
     context['course'] = course
 
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
-
-    # Calculo de actividades totales para el progreso
-    total_items = 0
-    completed_items = 0
-    completion_ratio = 0
-    completion_percentage = 0
-    
-    for module in modules:
-
-        total_items += module.lecturas.all().count()
-        for lecture in module.lecturas.all():
-            if lecture.reads.filter(pk=user.pk).exists():
-                completed_items += 1
-
-        total_items += module.videos.all().count()
-        for video in module.videos.all():
-            if video.watches.filter(pk=user.pk).exists():
-                completed_items += 1
-
-        total_items += module.actividades.all().count()
-        for activity in module.actividades.all():
-            if Entrega.objects.all().filter(actividad=activity.pk, user=user.pk).exists():
-                completed_items += 1
-
-    if total_items > 0:
-        completion_ratio = completed_items / total_items
-        completion_percentage = int(completion_ratio * 100)
-
-    context['total_items'] = total_items
-    context['completed_items'] = completed_items
-    context['completion_ratio'] = completion_ratio
-    context['completion_percentage'] = completion_percentage
+    context = side_panel_context(context, user.pk, course.pk)
 
     return render(request, template_name, context)
 

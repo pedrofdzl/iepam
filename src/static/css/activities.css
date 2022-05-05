@@ -81,7 +81,7 @@
     font-size: 18px;
     box-shadow: 0 0 10px rgb(201, 201, 201);
     max-height: 63vh;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding-bottom: 2rem;
 }
 
@@ -444,7 +444,7 @@ input[type=file]::-webkit-file-upload-button:hover {
     overflow: hidden;
     transition: all 0.2s ease-in-out;
 }
-.question:hover {
+.question:focus {
     max-height: 1000px;
 }
 .question-header {
@@ -456,7 +456,7 @@ input[type=file]::-webkit-file-upload-button:hover {
 .question .question-header span{
     transition: all 0.2s ease-in-out;
 }
-.question:hover .question-header span{
+.question:focus .question-header span{
     transform: scaleY(-1);
 }
 .question-title {
@@ -469,7 +469,7 @@ input[type=file]::-webkit-file-upload-button:hover {
     opacity: 0;
     transition: all 0.2s ease-in-out;
 }
-.question:hover .question-prompt { 
+.question:focus .question-prompt { 
     opacity: 1;
 }
 .question-options-title {
@@ -479,7 +479,7 @@ input[type=file]::-webkit-file-upload-button:hover {
     opacity: 0;
     transition: all 0.2s ease-in-out;
 }
-.question:hover .question-options-title { 
+.question:focus .question-options-title { 
     opacity: 1;
 }
 .option {
@@ -490,7 +490,7 @@ input[type=file]::-webkit-file-upload-button:hover {
     opacity: 0;
     transition: all 0.2s ease-in-out;
 }
-.question:hover .option { 
+.question:focus .option { 
     opacity: 1;
 }
 .question-edit-button {
