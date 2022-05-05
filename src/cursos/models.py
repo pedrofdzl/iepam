@@ -14,7 +14,7 @@ import os
 
 
 def resource_upload_handler(instance, filename):
-    destination = Path('resources') / str(instance.module.name)
+    destination = Path('resources') / str(instance.modulo.name)
 
     extension = str(Path(filename).suffix)
     file = Path(instance.title + extension)
