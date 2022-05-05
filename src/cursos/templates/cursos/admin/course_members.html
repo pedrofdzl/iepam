@@ -32,7 +32,7 @@
             <div class="member">
                 {% if perms.users.is_admin %}
                     <a class="member-name" href="{% url 'users:user_detail' id=member.member.user.pk %}">{{ member.member.get_full_name }}</a>
-                    <a class="delete-member tooltip" href="">
+                    <a class="delete-member tooltip" href="{% url 'cursos:adcourse_removing_member' id=course.pk user_id=member.member.user.pk %}">
                         <span class="material-icons">close</span>
                         <div class="tooltiptext">Desinscribir</div>
                     </a>

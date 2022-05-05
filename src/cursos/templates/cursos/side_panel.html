@@ -86,6 +86,10 @@
                 <p>Eliminar</p>
                 <span class="material-icons">delete</span>
             </a>
+
+        {% elif is_member %}
+            <a href="{% url 'cursos:course_quit' id=course.pk %}">Salir del Curso</a>
+
         {% endif %}
     </div>
 

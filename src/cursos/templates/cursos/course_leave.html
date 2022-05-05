@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <h1>Deseas salir de este curso</h1>
+
+    <hr>
+    <p>Todo tu progreso se perdera</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <a href="{% url 'cursos:course_detail' id=course.pk %}">Cancelar</a>
+        <button type="submit">Salir</button>
+    </form>
+
+
+{% endblock %}

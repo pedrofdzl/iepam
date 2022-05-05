@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <h1>Remover Miembro</h1>
+    <hr>
+    <p>Al remover al usuario eliminaras todo su progreso y documentos del cursos</p>
+
+
+    <form method="post">
+        {% csrf_token %}
+
+        <a href="{% url 'cursos:adcourse_members' id=course.pk %}">Cancelar</a>
+        <button type="submit">Eliminar</button>
+    </form>
+
+
+{% endblock %}

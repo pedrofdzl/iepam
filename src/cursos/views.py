@@ -141,6 +141,59 @@ def adcourse_members_view(request, id):
     return render(request, template_name, context)
 
 
+def adcourse_members_remove_view(request, id, user_id):
+    context = {}
+    template_name = template_admin_pre + 'course_remove_member.html'
+
+    course = get_object_or_404(Course, pk=id)
+    user = get_object_or_404(User, pk=user_id)
+    extended_user = user.extended_user
+
+    if course.owner == extended_user:
+        if request.META['HTTP_REFERER']:
+            return redirect(request.META['HTTP_REFERER'])
+        return redirect(reverse('cursos:adcourse_members', kwargs={'id':course.pk}))
+
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        if request.method == 'POST':
+            membership = MemberOf.objects.filter(course=course,member=extended_user).first()
+            
+            read_lecture = user.read_lectures.filter(modulo__curso=course).first()
+            entrega = Entrega.objects.filter(user=extended_user, actividad__modulo__curso=course).first()
+            watched_video = user.watched_videos.filter(modulo__curso=course).first()
+            watched_resource = user.viewed_resources.filter(modulo__curso=course).first()
+            quiz_result = QuizResult.objects.filter(user=user.extended_user, quiz__modulo__curso=course).first()
+
+            if read_lecture:
+                user.read_lectures.remove(read_lecture)
+            if watched_video:
+                user.watched_videos.remove(watched_video)
+            if watched_resource:
+                user.viewed_resources.remove(watched_resource)
+            
+            if entrega:
+                entrega.delete()
+            
+            if quiz_result:
+                quiz_result.delete()
+
+            membership.delete()
+
+            return redirect(reverse('cursos:adcourse_members', kwargs={'id':course.pk}))
+
+
+
+    else:
+        if request.META['HTTP_REFERER']:
+            return redirect(request.META['HTTP_REFERER'])
+        return redirect(reverse('cursos:adcourse_members', kwargs={'id':course.pk}))
+
+
+    context['course'] = course
+    context['extended_user'] = extended_user
+
+    return render(request, template_name, context)
+
 @login_required
 def adcourse_addmember_view(request, id):
     context = {}
@@ -366,6 +419,54 @@ def menu(request):
 
     context['cursos'] = cursos
     context['extended_user'] = extended_user
+
+    return render(request, template_name, context)
+
+
+def course_leave_view(request, id):
+    context = {}
+    template_name = template_prefix + 'course_leave.html'
+    course = get_object_or_404(Course, pk=id)
+
+    user = request.user
+    extended_user = user.extended_user
+
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        if request.method == 'POST':
+            membership = MemberOf.objects.filter(course=course,member=extended_user).first()
+            
+            read_lecture = user.read_lectures.filter(modulo__curso=course).first()
+            entrega = Entrega.objects.filter(user=extended_user, actividad__modulo__curso=course).first()
+            watched_video = user.watched_videos.filter(modulo__curso=course).first()
+            watched_resource = user.viewed_resources.filter(modulo__curso=course).first()
+            quiz_result = QuizResult.objects.filter(user=user.extended_user, quiz__modulo__curso=course).first()
+
+            if read_lecture:
+                user.read_lectures.remove(read_lecture)
+            if watched_video:
+                user.watched_videos.remove(watched_video)
+            if watched_resource:
+                user.viewed_resources.remove(watched_resource)
+            
+            if entrega:
+                entrega.delete()
+            
+            if quiz_result:
+                quiz_result.delete()
+
+            membership.delete()
+
+            return redirect(reverse('cursos:course_detail', kwargs={'id':course.pk}))
+
+    else:
+        if request.META['HTTP_REFERER']:
+            return redirect(request.META['HTTP_REFERER'])
+        return redirect(reverse('cursos:course_detail', kwargs={'id':course.pk}))
+
+
+    context['course'] = course
+    context['extended_user'] = extended_user
+
 
     return render(request, template_name, context)
 

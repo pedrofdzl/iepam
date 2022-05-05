@@ -10,9 +10,12 @@ urlpatterns = [
     path('curso/<int:id>/miembros/', views.adcourse_members_view, name='adcourse_members'),
     path('curso/<int:id>/agregar-miembros/', views.adcourse_addmember_view, name='adcourse_add_members'),
     path('curso/<int:id>/agregando-miembro/<int:user_id>/', views.adcourse_addingmember_view, name='adcourse_adding_member'),
+    path('curso/<int:id>/remover-miembro/<int:user_id>/', views.adcourse_members_remove_view, name='adcourse_removing_member'),
     path('curso/<int:id>/eliminar/', views.course_delete_view, name='adcourse_delete'),
 
     path('curso/<int:id>/add-members/', views.adcourse_addmember_view, name='adcourse_addmember'),
+    path('curso/<int:id>/salir/', views.course_leave_view, name='course_quit'),
+
 
     path('menu/', views.menu, name='menu'),
     path('like/<int:id>/', views.like_curso, name='course_like'),
@@ -20,6 +23,7 @@ urlpatterns = [
     path('watch/<int:id>/', views.watch_video, name='course_watch_video'),
     path('curso/<int:id>/', views.course_detail_view, name='course_detail'),
 
+    # Modulos
     path('curso/agregar-modulo/<int:id>/', views.course_create_module_view, name='course_create_module'),
     path('curso/editar-modulo/<int:id>/', views.course_edit_module_view, name='course_edit_module'),
 
