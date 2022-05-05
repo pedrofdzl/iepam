@@ -145,3 +145,9 @@ MEDIA_ROOT = MEDIA_DIR
 
 # Login
 LOGIN_URL = 'users:login'
+
+
+# Production Settings
+
+if not DEBUG:
+    ALLOWED_HOSTS = ['a01233838.pythonanywhere.com',]
