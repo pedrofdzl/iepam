@@ -100,6 +100,9 @@ def check_for_completion(request, id):
     total_items = 0
     completed_items = 0
     
+    if user.extended_user == course.owner:
+        return
+
     for module in modules:
 
         total_items += module.lecturas.all().count()
