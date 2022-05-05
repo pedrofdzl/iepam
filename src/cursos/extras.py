@@ -89,3 +89,126 @@ def side_panel_context(context, userId, id):
     context['completion_percentage'] = completion_percentage
 
     return context
+
+def check_for_completion(request, id):
+    user = request.user
+
+    course = get_object_or_404(Course, pk=id)
+    modules = Modulo.objects.filter(curso=id)
+
+    # Calculo de actividades totales para el progreso
+    total_items = 0
+    completed_items = 0
+    
+    for module in modules:
+
+        total_items += module.lecturas.all().count()
+        for lecture in module.lecturas.all():
+            if lecture.reads.filter(pk=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.videos.all().count()
+        for video in module.videos.all():
+            if video.watches.filter(pk=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.actividades.all().count()
+        for activity in module.actividades.all():
+            if Entrega.objects.all().filter(actividad=activity.pk, user=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.quizzes.all().count()
+        for quiz in module.quizzes.all():
+            if QuizResult.objects.all().filter(quiz=quiz.pk, user=user.pk).exists():
+                completed_items += 1
+
+    if total_items == completed_items and total_items > 0:
+        memberOf = get_object_or_404(MemberOf, member=user.pk, course=course.pk)
+        memberOf.status = "Completado"
+        memberOf.save()
+    else:
+        memberOf = get_object_or_404(MemberOf, member=user.pk, course=course.pk)
+        memberOf.status = "Cursando"
+        memberOf.save()
+
+
+def context_courses_percentage(request, context):
+    user = request.user
+
+    membersOf = MemberOf.objects.filter(member=user.pk, status='Cursando')
+
+    courses_names = []
+    courses_percentages = []
+    courses_ratios = []
+
+    for memberOf in membersOf:
+        course = get_object_or_404(Course, pk=memberOf.course.pk)
+        modules = Modulo.objects.filter(curso=course.pk)
+
+        # Calculo de actividades totales para el progreso
+        total_items = 0
+        completed_items = 0
+        completion_ratio = 0
+        completion_percentage = 0
+        
+        for module in modules:
+
+            total_items += module.lecturas.all().count()
+            for lecture in module.lecturas.all():
+                if lecture.reads.filter(pk=user.pk).exists():
+                    completed_items += 1
+
+            total_items += module.videos.all().count()
+            for video in module.videos.all():
+                if video.watches.filter(pk=user.pk).exists():
+                    completed_items += 1
+
+            total_items += module.actividades.all().count()
+            for activity in module.actividades.all():
+                if Entrega.objects.all().filter(actividad=activity.pk, user=user.pk).exists():
+                    completed_items += 1
+
+            total_items += module.quizzes.all().count()
+            for quiz in module.quizzes.all():
+                if QuizResult.objects.all().filter(quiz=quiz.pk, user=user.pk).exists():
+                    completed_items += 1
+
+        if total_items > 0:
+            completion_ratio = completed_items / total_items
+            completion_percentage = int(completion_ratio * 100)
+        
+        courses_names.append(course.name)
+        courses_percentages.append(int(completion_percentage))
+        courses_ratios.append(completion_ratio)
+
+    context['courses_percentages'] = zip(courses_names, courses_percentages, courses_ratios)
+
+    return context
+
+
+def act_completadas_curso(request, id):
+    user = request.user
+
+    modules = Modulo.objects.filter(curso=id)
+
+    completed_items = 0
+    
+    for module in modules:
+
+        for lecture in module.lecturas.all():
+            if lecture.reads.filter(pk=user.pk).exists():
+                completed_items += 1
+
+        for video in module.videos.all():
+            if video.watches.filter(pk=user.pk).exists():
+                completed_items += 1
+
+        for activity in module.actividades.all():
+            if Entrega.objects.all().filter(actividad=activity.pk, user=user.pk).exists():
+                completed_items += 1
+
+        for quiz in module.quizzes.all():
+            if QuizResult.objects.all().filter(quiz=quiz.pk, user=user.pk).exists():
+                completed_items += 1
+
+    return completed_items

@@ -4,7 +4,7 @@ from django.http import Http404, FileResponse
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
-from .extras import side_panel_context
+from .extras import side_panel_context, check_for_completion
 
 from django.contrib.auth.decorators import login_required, permission_required
 
@@ -295,6 +295,13 @@ def course_detail_view(request, id):
     context['answered_quizzes'] = answered_quizzes
 
     context = side_panel_context(context, user.pk, course.pk)
+
+    is_member = False
+    if MemberOf.objects.filter(course=course, member=extended_user).exists():
+        is_member = True
+
+    if is_member:
+        check_for_completion(request, course.pk)
 
     return render(request, template_name, context)
 
@@ -910,6 +917,8 @@ def course_quiz_grade(request, user_pk, quiz_pk, grade):
         result.grade = int(grade)
         result.save()
 
+    check_for_completion(request, quiz.modulo.curso.pk)
+
     return redirect(reverse('cursos:course_detail', kwargs={'id': quiz.modulo.curso.pk}))
 
 
@@ -1260,13 +1269,12 @@ def course_lecture_delete_view(request, id):
 def read_lecture(request, id):
     lecture = get_object_or_404(Lectura, pk=id)
     
-    liked = False
     if lecture.reads.filter(id=request.user.id).exists():
         lecture.reads.remove(request.user)
-        liked = False
     else:
         lecture.reads.add(request.user)
-        liked = True
+
+    check_for_completion(request, lecture.modulo.curso.pk)
 
     return redirect(reverse('cursos:course_lecture', kwargs={'id': lecture.pk}))
 
@@ -1352,6 +1360,8 @@ def course_resource_download_view(request, id):
     course = resource.modulo.curso
     resource_path = resource.resource.path
 
+    check_for_completion(request, resource.modulo.curso.pk)
+
     if os.path.exists(resource_path):
 
         if MemberOf.objects.filter(member=request.user.extended_user, course=course).exists():
@@ -1360,6 +1370,7 @@ def course_resource_download_view(request, id):
         return FileResponse(resource.resource.open(mode='rb'), as_attachment=True)
     else:
         raise Http404()
+
 
 
 
@@ -1840,27 +1851,11 @@ def course_video_delete_view(request, id):
 def watch_video(request, id):
     video = get_object_or_404(Video, pk=id)
     
-    liked = False
-    if video.reads.filter(id=request.user.id).exists():
-        video.reads.remove(request.user)
-        liked = False
-    else:
-        video.reads.add(request.user)
-        liked = True
-
-    return redirect(reverse('cursos:course_video', kwargs={'id': video.pk}))
-
-
-@login_required
-def watch_video(request, id):
-    video = get_object_or_404(Video, pk=id)
-    
-    liked = False
     if video.watches.filter(id=request.user.id).exists():
         video.watches.remove(request.user)
-        liked = False
     else:
         video.watches.add(request.user)
-        liked = True
+
+    check_for_completion(request, video.modulo.curso.pk)
 
     return redirect(reverse('cursos:course_video', kwargs={'id': video.pk}))

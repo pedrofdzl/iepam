@@ -44,40 +44,6 @@
 
                     <br>
 
-                    {% for lec in mod.lecturas.all %}
-                        {% if is_member or is_owner %}
-                            <a href="{% url 'cursos:course_lecture' id=lec.pk %}" class="no-style-a">
-                                {% if lec in user.read_lectures.all %}
-                                    <div class="module-item checked">
-                                        <span class="material-icons module-item-icon checked-text">book</span>
-                                        <div>
-                                            <div class="module-item-title checked-text">Lectura: {{ lec.name }}</div>
-                                                <div class="module-item-grade checked-text">Leído</div>
-                                        </div>
-                                        <span class="material-icons checkmark">done</span>
-                                    </div>
-                                {% else %}
-                                    <div class="module-item">
-                                        <span class="material-icons module-item-icon">book</span>
-                                        <div>
-                                            <div class="module-item-title">Lectura: {{ lec.name }}</div>
-                                                <div class="module-item-grade">No leído</div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            </a>
-                        {% else %}
-                            <div class="module-item locked">
-                                <span class="material-icons module-item-icon locked-text">book</span>
-                                <div>
-                                    <div class="module-item-title locked-text">Lectura: {{ lec.name }}</div>
-                                        <div class="module-item-grade locked-text">No leído</div>
-                                </div>
-                                <span class="material-icons lock">lock</span>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                    
                     <!-- ! Agregar cambios para resources -->
                     {% for resource in mod.archivos.all %}
                         {% if is_member or is_owner %}
@@ -113,15 +79,14 @@
                         {% endif %}
                     {% endfor %}
 
-                    <!-- ! Agregar cambios de hangman -->
-                    {% for hangman in mod.hangmangames.all %}
+                    {% for lec in mod.lecturas.all %}
                         {% if is_member or is_owner %}
-                            <a href="{% url 'cursos:course_hangman' id=hangman.pk %}" class="no-style-a">
-                                {% if resource in user.read_lectures.all %}
+                            <a href="{% url 'cursos:course_lecture' id=lec.pk %}" class="no-style-a">
+                                {% if lec in user.read_lectures.all %}
                                     <div class="module-item checked">
                                         <span class="material-icons module-item-icon checked-text">book</span>
                                         <div>
-                                            <div class="module-item-title checked-text">Juego: {{ hangman.name }}</div>
+                                            <div class="module-item-title checked-text">Lectura: {{ lec.name }}</div>
                                                 <div class="module-item-grade checked-text">Leído</div>
                                         </div>
                                         <span class="material-icons checkmark">done</span>
@@ -130,7 +95,7 @@
                                     <div class="module-item">
                                         <span class="material-icons module-item-icon">book</span>
                                         <div>
-                                            <div class="module-item-title">Juego: {{ hangman.title }}</div>
+                                            <div class="module-item-title">Lectura: {{ lec.name }}</div>
                                                 <div class="module-item-grade">No leído</div>
                                         </div>
                                     </div>
@@ -140,15 +105,13 @@
                             <div class="module-item locked">
                                 <span class="material-icons module-item-icon locked-text">book</span>
                                 <div>
-                                    <div class="module-item-title locked-text">Juego: {{ hangman.name }}</div>
+                                    <div class="module-item-title locked-text">Lectura: {{ lec.name }}</div>
                                         <div class="module-item-grade locked-text">No leído</div>
                                 </div>
                                 <span class="material-icons lock">lock</span>
                             </div>
                         {% endif %}
                     {% endfor %}
-
-                    
 
                     {% for act in mod.actividades.all %}
                         {% if is_member or is_owner %}
@@ -266,6 +229,41 @@
                         </div>
                     {% endif %}
                     
+                    {% endfor %}
+
+                    <!-- ! Agregar cambios de hangman -->
+                    {% for hangman in mod.hangmangames.all %}
+                        {% if is_member or is_owner %}
+                            <a href="{% url 'cursos:course_hangman' id=hangman.pk %}" class="no-style-a">
+                                {% if resource in user.read_lectures.all %}
+                                    <div class="module-item checked">
+                                        <span class="material-icons module-item-icon checked-text">book</span>
+                                        <div>
+                                            <div class="module-item-title checked-text">Juego: {{ hangman.name }}</div>
+                                                <div class="module-item-grade checked-text">Completado</div>
+                                        </div>
+                                        <span class="material-icons checkmark">done</span>
+                                    </div>
+                                {% else %}
+                                    <div class="module-item">
+                                        <span class="material-icons module-item-icon">book</span>
+                                        <div>
+                                            <div class="module-item-title">Juego: {{ hangman.title }}</div>
+                                                <div class="module-item-grade">No Completado</div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            <div class="module-item locked">
+                                <span class="material-icons module-item-icon locked-text">book</span>
+                                <div>
+                                    <div class="module-item-title locked-text">Juego: {{ hangman.name }}</div>
+                                        <div class="module-item-grade locked-text">No Completado</div>
+                                </div>
+                                <span class="material-icons lock">lock</span>
+                            </div>
+                        {% endif %}
                     {% endfor %}
 
                 </div>

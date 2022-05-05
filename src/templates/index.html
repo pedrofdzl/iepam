@@ -74,19 +74,19 @@
                     <div class="index-section-title">Estadísticas</div>
                     <div class="index-section-body">
                         <div class="statistics-card">
-                            <div class="statistics-card-number">5</div>
+                            <div class="statistics-card-number">{{ cap_actuales }}</div>
                             <div class="statistics-card-text">Capacitaciones en curso</div>
                         </div>
                         <div class="statistics-card">
-                            <div class="statistics-card-number">2</div>
+                            <div class="statistics-card-number">{{ cap_cursadas }}</div>
                             <div class="statistics-card-text">Capacitaciones completadas</div>
                         </div>
                         <div class="statistics-card">
-                            <div class="statistics-card-number">34</div>
+                            <div class="statistics-card-number">{{ act_completadas }}</div>
                             <div class="statistics-card-text">Actividades realizadas</div>
                         </div>
                         <div class="statistics-card">
-                            <div class="statistics-card-number">1</div>
+                            <div class="statistics-card-number">{{ cap_creadas }}</div>
                             <div class="statistics-card-text">Capacitaciones creadas</div>
                         </div>
                     </div>
@@ -101,74 +101,29 @@
                     <div class="index-section-body">
                         <div class="progress-container">
 
-                            <div class="progress-item">
-                                <div class="progress-name">
-                                    Capacitacion en Microsoft Office
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-bar-bar">
-                                        <div class="progress-bar-fill"></div>
+                            {% for course in courses_percentages %}
+
+                                <div class="progress-item">
+                                    <div class="progress-name">
+                                        {{ course.0 }}
                                     </div>
-                                    <p>50%</p>
-                                </div>
-                            </div>
-
-                            <div class="progress-separator"></div>
-
-                            <div class="progress-item">
-                                <div class="progress-name">
-                                    Capacitacion en Computadoras
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-bar-bar">
-                                        <div class="progress-bar-fill"></div>
+                                    <div class="progress-bar">
+                                        <div class="progress-bar-bar">
+                                            <div id="bar{{forloop.counter}}" class="progress-bar-fill"></div>
+                                        </div>
+                                        <p>{{ course.1 }}%</p>
                                     </div>
-                                    <p>50%</p>
                                 </div>
-                            </div>
 
-                            <div class="progress-separator"></div>
+                                {% if not forloop.last %}
+                                    <div class="progress-separator"></div>
+                                {% endif %}
 
-                            <div class="progress-item">
-                                <div class="progress-name">
-                                    Capacitacion para vivir saludable
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-bar-bar">
-                                        <div class="progress-bar-fill"></div>
-                                    </div>
-                                    <p>50%</p>
-                                </div>
-                            </div>
+                                <script>
+                                    document.getElementById('bar{{forloop.counter}}').style.transform = 'scaleX({{course.2}})'
+                                </script>
 
-                            <div class="progress-separator"></div>
-
-                            <div class="progress-item">
-                                <div class="progress-name">
-                                    Capacitacion en uso del celular
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-bar-bar">
-                                        <div class="progress-bar-fill"></div>
-                                    </div>
-                                    <p>50%</p>
-                                </div>
-                            </div>
-
-                            <div class="progress-separator"></div>
-
-                            <div class="progress-item">
-                                <div class="progress-name">
-                                    Capacitacion en Manejo de archivos
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-bar-bar">
-                                        <div class="progress-bar-fill"></div>
-                                    </div>
-                                    <p>50%</p>
-                                </div>
-                            </div>
-
+                            {% endfor %}
                         </div>
                     </div>
 

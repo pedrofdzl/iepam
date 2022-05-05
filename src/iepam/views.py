@@ -2,6 +2,7 @@ from datetime import datetime
 from django.shortcuts import render
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required, permission_required
+from iepam.extras import get_dashboard_context
 
 from users.models import ExtendedUser
 from cursos.models import Course
@@ -17,6 +18,8 @@ def index(request):
     dateToday = datetime.now()
 
     context['date'] = dateToday
+
+    context = get_dashboard_context(request, context)
 
     return render(request, 'index.html', context)
 
