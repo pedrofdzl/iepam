@@ -1,18 +1,48 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+{% load static %}
 
-{% block body %}
+<html lang="en">
 
-    <h1>Remover Miembro</h1>
-    <hr>
-    <p>Al remover al usuario eliminaras todo su progreso y documentos del cursos</p>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Material icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <form method="post">
-        {% csrf_token %}
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-        <a href="{% url 'cursos:adcourse_members' id=course.pk %}">Cancelar</a>
-        <button type="submit">Eliminar</button>
-    </form>
+    <!-- CSS -->    
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
 
+    <title>Remover Usuario</title>
+    <link rel="icon" type="svg" href="{% static 'svg/iepam-logo-white.svg' %}">
+</head>
+<body>
+    
+    <main>
+        <div class="container">
+            <a class="title"><img src="{% static 'svg/iepam-logo-white.svg' %}"><p>IEPAM</p></a>
+            <div class="register-container  confirm-container">
+                <div class="register-subtitle">Remover usuario</div>
+                <p>Al remover al usuario eliminaras todo su progreso y documentos del cursos</p>
+                <br>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="btn-container-vertical">
+                        <button class="red-color" type="submit">Eliminar</button>
+                        <a class="btn-cancel" href="{% url 'cursos:adcourse_members' id=course.pk %}">Cancelar</a>
+                    </div>
+                </form>
 
-{% endblock %}
+            </div>
+        </div>
+    </main>
+</body>
+</html>

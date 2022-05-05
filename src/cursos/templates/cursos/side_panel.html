@@ -67,11 +67,13 @@
     
         {% else %}
     
-        <a href="{% url 'cursos:adcourse_adding_member' id=course.pk user_id=user.pk %}" class="button-edit-2 no-style-a">
+        <a href="{% url 'cursos:adcourse_adding_member' id=course.pk user_id=user.pk %}" class="button-green no-style-a">
+            <div></div>
             <p>Unirse capacitación</p>
             <span class="material-symbols-outlined">
                 person_add
             </span>
+            <div></div>
         </a>
     
         {% endif %}
@@ -88,8 +90,12 @@
             </a>
 
         {% elif is_member %}
-            <a href="{% url 'cursos:course_quit' id=course.pk %}">Salir del Curso</a>
-
+            <a href="{% url 'cursos:course_quit' id=course.pk %}" class="button-gray no-style-a">
+                <div></div>
+               <p>Salir del Curso</p>
+               <span class="material-icons">logout</span>
+                <div></div>
+            </a>
         {% endif %}
     </div>
 

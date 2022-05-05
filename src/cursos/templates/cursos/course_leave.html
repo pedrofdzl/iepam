@@ -1,17 +1,48 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+{% load static %}
 
-{% block body %}
-    <h1>Deseas salir de este curso</h1>
+<html lang="en">
 
-    <hr>
-    <p>Todo tu progreso se perdera</p>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <form method="post">
-        {% csrf_token %}
+    <!-- Material icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        <a href="{% url 'cursos:course_detail' id=course.pk %}">Cancelar</a>
-        <button type="submit">Salir</button>
-    </form>
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+    <!-- CSS -->    
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
 
-{% endblock %}
+    <title>Salir</title>
+    <link rel="icon" type="svg" href="{% static 'svg/iepam-logo-white.svg' %}">
+</head>
+<body>
+    
+    <main>
+        <div class="container">
+            <a class="title"><img src="{% static 'svg/iepam-logo-white.svg' %}"><p>IEPAM</p></a>
+            <div class="register-container  confirm-container">
+                <div class="register-subtitle">¿Estás seguro?</div>
+                <p>Al salir de la capacitación todo tu progreso se perderá</p>
+                <br>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="btn-container-vertical">
+                        <button class="red-color" type="submit">Salir</button>
+                        <a class="btn-cancel" href="{% url 'cursos:course_detail' id=course.pk %}">Cancelar</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </main>
+</body>
+</html>
