@@ -118,10 +118,16 @@ def aduser_detail_view(request, id):
     user = get_object_or_404(User, pk=id)
     extended_user = user.extended_user
 
+    if user.has_perm('users.is_teacher'):
+        own_courses = extended_user.own_courses.all()
+        context['own_courses'] = own_courses
+
     incomplete_courses = extended_user.courses.filter(status='Cursando')
+    completed_courses = extended_user.courses.filter(status='Completado')
 
     context["extended_user"] = extended_user
     context['incomplete_courses'] = incomplete_courses
+    context['completed_courses'] = completed_courses
 
     return render(request, template_name, context)
 
@@ -146,8 +152,10 @@ def aduser_update_view(request, id):
     }
 
     incomplete_courses = extended_user.courses.filter(status='Cursando')
+    completed_courses = extended_user.courses.filter(status='Completado')
     # print(incomplete_courses)
 
+    context['completed_courses'] = completed_courses
     context['incomplete_courses'] = incomplete_courses
     context['extended_user'] = extended_user
 
@@ -355,7 +363,11 @@ def memuser_profile_view(request):
         context['own_courses'] = own_courses
 
     incomplete_courses = extended_user.courses.filter(status='Cursando')
+    completed_courses = extended_user.courses.filter(status='Completado')
+
+
     context['incomplete_courses'] = incomplete_courses
+    context['completed_courses'] = completed_courses
 
     context["user"] = user
 
@@ -421,7 +433,11 @@ def memuser_update_view(request):
         context['own_courses'] = own_courses
 
     incomplete_courses = extended_user.courses.filter(status='Cursando')
+    completed_courses = extended_user.courses.filter(status='Completado')
+
+
     context['incomplete_courses'] = incomplete_courses
+    context['completed_courses'] = completed_courses
 
     context["form"] = user_form
 

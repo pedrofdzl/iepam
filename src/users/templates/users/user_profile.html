@@ -90,7 +90,7 @@
                     <p class="user-info-title">Capacitaciones Completadas</p>
                     <hr class="hr-nice">
             
-                        {% include 'users/_user_courses_snippet.html' %}
+                        {% include 'users/_user_courses_snippet.html' with courses=completed_courses %}
             
                     <br>
                 </div>

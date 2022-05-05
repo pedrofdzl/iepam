@@ -597,9 +597,10 @@ def course_create_item_view(request, id, action):
 
             if resource_form.is_valid():
                 resource = resource_form.save(commit=False)
-                resource.module = modulo
+                resource.modulo  = modulo
                 resource.save()
-
+                
+                
                 return redirect(reverse('cursos:course_detail', kwargs={'id': modulo.curso.pk}))
             else:
                 print(resource_form.errors)
