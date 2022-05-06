@@ -676,12 +676,18 @@ def course_edit_item_view(request, id, action):
         stuff = get_object_or_404(Quiz, pk=id)
     if action == 5:
         stuff = get_object_or_404(FileResource, pk=id)
+    if action == 6:
+        stuff = get_object_or_404(HangmanGame, pk=id)
+    if action == 7:
+        stuff = get_object_or_404(SopaGame, pk=id)
 
     lecture_form = LectureAddForm()
     activity_form = ActivityAddForm()
     video_form = VideoAddForm()
     resource_form = FileResourceForm()
     quiz_form = QuizForm()
+    hangman_form = HangmanForm()
+    sopa_form = SopaForm()
 
     module = stuff.modulo
     if module.curso.owner != request.user.extended_user:
@@ -698,6 +704,11 @@ def course_edit_item_view(request, id, action):
             quiz_form = QuizForm(instance=stuff)
         if action == 5:
             resource_form = FileResourceForm(instance=stuff)
+        if action == 6:
+            hangman_form = HangmanForm(instance=stuff)
+        if action == 7:
+            sopa_form = SopaForm(instance=stuff)
+
 
     if request.method == 'POST':
         if action == 1:
@@ -705,9 +716,9 @@ def course_edit_item_view(request, id, action):
 
             if lecture_form.is_valid():
 
-                stuff.save()
+                lecture_form.save()
 
-                return redirect(reverse('cursos:course_detail', kwargs={'id': stuff.modulo.curso.pk}))
+                return redirect(reverse('cursos:course_lecture', kwargs={'id': stuff.pk}))
             else:
                 print(lecture_form.errors)
         if action == 2:
@@ -715,20 +726,24 @@ def course_edit_item_view(request, id, action):
 
             if activity_form.is_valid():
 
-                stuff.save()
+                activity_form.save()
 
-                return redirect(reverse('cursos:course_detail', kwargs={'id': stuff.modulo.curso.pk}))
+                return redirect(reverse('cursos:course_activity', kwargs={'id': stuff.pk}))
             else:
                 print(activity_form.errors)
         if action == 3:
             video_form = VideoAddForm(request.POST, instance=stuff)
 
             if video_form.is_valid():
-
+               
+                
                 stuff.url = get_iframe_url(video_form.cleaned_data['url'])
+                stuff.name = video_form.cleaned_data['name']
+                stuff.description = video_form.cleaned_data['description']
+
                 stuff.save()
 
-                return redirect(reverse('cursos:course_detail', kwargs={'id': stuff.modulo.curso.pk}))
+                return redirect(reverse('cursos:course_video', kwargs={'id': stuff.pk}))
             else:
                 print(video_form.errors)
 
@@ -737,7 +752,7 @@ def course_edit_item_view(request, id, action):
 
             if quiz_form.is_valid():
 
-                stuff.save()
+                quiz_form.save()
 
                 return redirect(reverse('cursos:course_quiz', kwargs={'id':stuff.pk}))
             else:
@@ -755,9 +770,32 @@ def course_edit_item_view(request, id, action):
 
                 stuff.save()
 
-                return redirect(reverse('cursos:course_detail', kwargs={'id': stuff.modulo.curso.pk}))
+                return redirect(reverse('cursos:course_resource', kwargs={'id': stuff.pk}))
             else:
                 print(resource_form.errors)
+
+        if action == 6:
+            hangman_form = HangmanForm(request.POST, instance=stuff)
+
+            if hangman_form.is_valid():
+                hangman_form.save()
+
+                return redirect(reverse('cursos:course_hangman', kwargs={'id': stuff.pk}))
+            else:
+                print(hangman_form.errors)
+        
+        if action == 7:
+            sopa_form = SopaForm(request.POST, instance=stuff)
+
+            if sopa_form.is_valid():
+                sopa_form.save()
+            
+                return redirect(reverse('cursos:course_sopa', kwargs={'id': stuff.pk}))
+            else:
+                print(sopa_form.errors)
+
+
+
 
     context['modulo'] = stuff.modulo
     context['lec_form'] = lecture_form
@@ -765,6 +803,8 @@ def course_edit_item_view(request, id, action):
     context['vid_form'] = video_form
     context['quiz_form'] = quiz_form
     context['resource_form'] = resource_form
+    context['hangman_form'] = hangman_form
+    context['sopa_form'] = sopa_form
     context['action'] = action
 
     return render(request, template_name, context)
@@ -1051,10 +1091,11 @@ def course_quiz_option_update_view(request, id):
 
     if request.method == 'POST':
         option_form = QuestionOptionsForm(request.POST, instance=option)
+        option_form.is_updating = True
 
         if option_form.is_valid():
             option = option_form.save(commit=False)
-            option.question = question
+            # option.question = question
             option.save()
             return redirect(reverse('cursos:course_quiz_edit_question', kwargs={'id': question.pk}))
 
@@ -1202,10 +1243,6 @@ def course_resource_download_view(request, id):
         return FileResponse(resource.resource.open(mode='rb'), as_attachment=True)
     else:
         raise Http404()
-
-
-
-
 
 
 
@@ -1449,11 +1486,11 @@ def course_hangman_option_create_view(request, id):
 
     if request.method == 'POST':
         option_form = HangmanOptionForm(request.POST)
+        option_form.instance.game = hangman
 
         if option_form.is_valid():
             option = option_form.save(commit=False)
 
-            option.game = hangman
             option.save()
 
             return redirect(reverse('cursos:course_hangman', kwargs={'id': hangman.pk}))
@@ -1486,6 +1523,7 @@ def course_hangman_option_edit_view(request, id):
 
     if request.method == 'POST':
         option_form = HangmanOptionForm(request.POST, instance=option)
+        option_form.is_updating = True
 
         if option_form.is_valid():
             option = option_form.save()
@@ -1581,11 +1619,12 @@ def course_sopa_option_create_view(request, id):
 
     if request.method == 'POST':
         option_form = SopaOptionForm(request.POST)
+        option_form.instance.game = sopa
 
         if option_form.is_valid():
             option = option_form.save(commit=False)
 
-            option.game = sopa
+            # option.game = sopa
             option.save()
 
             return redirect(reverse('cursos:course_sopa', kwargs={'id': sopa.pk}))
@@ -1618,6 +1657,7 @@ def course_sopa_option_edit_view(request, id):
 
     if request.method == 'POST':
         option_form = SopaOptionForm(request.POST, instance=option)
+        option_form.is_updating =True
 
         if option_form.is_valid():
             option = option_form.save()

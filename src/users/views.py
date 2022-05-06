@@ -251,10 +251,10 @@ def aduser_change_profilepic_view(request, id):
         picture_form = ProfilePicForm(request.POST, files=request.FILES, instance=extended_user)
 
         if picture_form.is_valid():
-
+            # print(picture_form.profile_pic)
             extended_user = picture_form.save(commit=False)
 
-            if extended_user.profile_pic.path != picture_path:
+            if extended_user.profile_pic.path != picture_path and picture_path != '':
                 os.remove(picture_path)
             
             extended_user.save()
@@ -459,6 +459,7 @@ def memuser_changeCV_view(request):
     cv_form = UserCVForm(instance=user.extended_user)
 
     if request.method == 'POST':
+        print(request.FILES)
         cv_form = UserCVForm(request.POST, instance=user.extended_user, files=request.FILES)
 
         if cv_form.is_valid():
@@ -468,6 +469,7 @@ def memuser_changeCV_view(request):
                 os.remove(cv_path)
             
             extended_user.save()
+            return redirect(reverse('users:user_profile'))
             
         else:
             print(cv_form.errors)
@@ -493,13 +495,16 @@ def memuser_change_profilepic_view(request):
         picture_path = ''
 
     if request.method == 'POST':
-        picture_form = ProfilePicForm(request.POST, files=request.FILES, instance=extended_user)
+        picture_form = ProfilePicForm(data=request.POST, files=request.FILES, instance=extended_user)
 
         if picture_form.is_valid():
 
             extended_user = picture_form.save(commit=False)
+            
+            if 'profile_pic' in request.FILES:
+                extended_user.profile_pic = request.FILES['profile_pic']
 
-            if extended_user.profile_pic.path != picture_path:
+            if extended_user.profile_pic.path != picture_path and picture_path != '':
                 os.remove(picture_path)
             
             extended_user.save()
@@ -524,6 +529,17 @@ def user_get_cv_view(request, id):
 
     if os.path.exists(file_path):
         return FileResponse(extended_user.cv.open(mode='rb'), as_attachment=False)
+    else:
+        raise Http404()
+
+def user_download_cv_view(request, id):
+    user = get_object_or_404(User, pk=id)
+    extended_user = user.extended_user
+
+    file_path = extended_user.cv.path
+
+    if os.path.exists(file_path):
+        return FileResponse(extended_user.cv.open(mode='rb'), as_attachment=True)
     else:
         raise Http404()
 

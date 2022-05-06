@@ -26,6 +26,10 @@
                 </a>
 
                 {% if is_owner %}
+                <a href="{% url 'cursos:course_edit_item' id=sopa.pk action=7 %}" class="button-edit no-style-a">
+                    <p>Editar</p>
+                    <span class="material-icons">edit</span>
+                </a>
                 <a href="{% url 'cursos:course_sopa_delete' id=sopa.pk %}" class="button-delete no-style-a">
                     <p>Eliminar</p>
                     <span class="material-icons">delete</span>

@@ -50,7 +50,7 @@ urlpatterns = [
     path('curso/video/<int:id>/eliminar/', views.course_video_delete_view, name='course_video_delete'),
 
 
-    # Cursos
+    # Resource
     path('curso/recurso/<int:id>/', views.course_resource_view, name='course_resource'),
     path('curso/recurso/<int:id>/eliminar/', views.course_resource_delete_view, name='course_resource_delete'),
     path('curso/recurso/<int:id>/archivo/', views.course_resource_download_view, name='course_resource_file'),

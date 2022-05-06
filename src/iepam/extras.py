@@ -1,7 +1,6 @@
 import re
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from requests import get
 from cursos.models import Course, Entrega, MemberOf, Modulo, Lectura, Actividad, Question, Video, Quiz, QuestionOption, QuizResult
 from cursos.extras import act_completadas_curso, context_course_percentage, context_courses_percentage
 from users.models import ExtendedUser
