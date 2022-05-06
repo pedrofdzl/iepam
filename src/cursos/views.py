@@ -23,7 +23,7 @@ from .models import (
                     )
 from .forms import (
                     CourseCreateForm, EntregaAddForm, HangmanOptionForm, LectureAddForm, 
-                    ModuleAddForm, ActivityAddForm, VideoAddForm,
+                    ModuleAddForm, ActivityAddForm, PuzzleForm, VideoAddForm,
                     QuizForm, QuestionForm, QuestionOptionsForm, FileResourceForm,
                     HangmanForm, HangmanOption, SopaForm, SopaOptionForm,
                 )
@@ -302,6 +302,11 @@ def course_detail_view(request, id):
     for resource in resources_user.all():
         viewed_resources.append(resource)
 
+    puzzles_user = user.completed_puzzles
+    completed_puzzles = []
+    for puzzle in puzzles_user.all():
+        completed_puzzles.append(puzzle)
+
 
     context['course'] = course
     context['modules'] = modules
@@ -309,6 +314,7 @@ def course_detail_view(request, id):
     context['answered_quizzes'] = answered_quizzes
     context['completed_hangmans'] = completed_hangmans
     context['viewed_resources'] = viewed_resources
+    context['completed_puzzles'] = completed_puzzles
 
     context = side_panel_context(context, user.pk, course.pk)
 
@@ -540,6 +546,7 @@ def course_create_item_view(request, id, action):
     resource_form = FileResourceForm()
     hangman_form = HangmanForm() 
     sopa_form = SopaForm()
+    puzzle_form = PuzzleForm()
 
     if request.method == 'POST':
         if action == 1:
@@ -644,6 +651,17 @@ def course_create_item_view(request, id, action):
                 return redirect(reverse('cursos:course_sopa', kwargs={'id': sopa_game.pk}))
             else:
                 print(sopa_form.errors)
+        if action == 8:
+            puzzle_form = PuzzleForm(request.POST)
+
+            if puzzle_form.is_valid():
+                puzzle_game = puzzle_form.save(commit=False)
+                puzzle_game.modulo = modulo
+                puzzle_game.save()
+
+                return redirect(reverse('cursos:course_puzzle', kwargs={'id': puzzle_game.pk}))
+            else:
+                print(puzzle_form.errors)
                 
 
 
@@ -655,6 +673,7 @@ def course_create_item_view(request, id, action):
     context['resource_form'] = resource_form
     context['hangman_form'] = hangman_form
     context['sopa_form'] = sopa_form
+    context['puzzle_form'] = puzzle_form
     context['action'] = action
 
     return render(request, template_name, context)
@@ -1693,11 +1712,9 @@ def course_puzzle_view(request, id):
 
     puzzle = get_object_or_404(PuzzleGame, pk=id)
     course = puzzle.modulo.curso
-    options = puzzle.options.all()
 
     context['puzzle'] = puzzle
     context['course'] = course
-    context['options'] = options
 
     context = side_panel_context(context, user.pk, course.pk)
 

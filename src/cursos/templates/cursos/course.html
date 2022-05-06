@@ -48,7 +48,7 @@
                     {% for resource in mod.archivos.all %}
                         {% if is_member or is_owner %}
                             <a href="{% url 'cursos:course_resource' id=resource.pk %}" class="no-style-a">
-                                {% if resource in user.read_lectures.all %}
+                                {% if resource in viewed_resources %}
                                     <div class="module-item checked">
                                         <span class="material-icons module-item-icon checked-text">folder</span>
                                         <div>
@@ -233,22 +233,32 @@
 
                     <!-- ! Agregar cambios de hangman -->
                     {% for hangman in mod.hangmangames.all %}
-                        {% if is_member or is_owner %}
+                        {% if is_owner %}
                             <a href="{% url 'cursos:course_hangman' id=hangman.pk %}" class="no-style-a">
-                                {% if resource in user.read_lectures.all %}
+                                <div class="module-item">
+                                    <span class="material-icons module-item-icon">text_fields</span>
+                                    <div>
+                                        <div class="module-item-title">Ahorcado: {{ hangman.title }}</div>
+                                        <div class="module-item-grade">No Completado</div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% elif is_member %}
+                            <a href="{% url 'cursos:course_hangman_play' id=hangman.pk %}" class="no-style-a">
+                                {% if hangman in user.completed_hangmans.all %}
                                     <div class="module-item checked">
-                                        <span class="material-icons module-item-icon checked-text">extension</span>
+                                        <span class="material-icons module-item-icon checked-text">text_fields</span>
                                         <div>
-                                            <div class="module-item-title checked-text">Juego: {{ hangman.title }}</div>
+                                            <div class="module-item-title checked-text">Ahorcado: {{ hangman.title }}</div>
                                                 <div class="module-item-grade checked-text">Completado</div>
                                         </div>
                                         <span class="material-icons checkmark">done</span>
                                     </div>
                                 {% else %}
                                     <div class="module-item">
-                                        <span class="material-icons module-item-icon">extension</span>
+                                        <span class="material-icons module-item-icon">text_fields</span>
                                         <div>
-                                            <div class="module-item-title">Juego: {{ hangman.title }}</div>
+                                            <div class="module-item-title">Ahorcado: {{ hangman.title }}</div>
                                                 <div class="module-item-grade">No Completado</div>
                                         </div>
                                     </div>
@@ -256,9 +266,9 @@
                             </a>
                         {% else %}
                             <div class="module-item locked">
-                                <span class="material-icons module-item-icon locked-text">extension</span>
+                                <span class="material-icons module-item-icon locked-text">text_fields</span>
                                 <div>
-                                    <div class="module-item-title locked-text">Juego: {{ hangman.title }}</div>
+                                    <div class="module-item-title locked-text">Ahorcado: {{ hangman.title }}</div>
                                         <div class="module-item-grade locked-text">No Completado</div>
                                 </div>
                                 <span class="material-icons lock">lock</span>
@@ -268,13 +278,23 @@
 
                     <!-- ! Agregar cambios de sopa -->
                     {% for sopa in mod.sopagames.all %}
-                        {% if is_member or is_owner %}
+                        {% if is_owner %}
                             <a href="{% url 'cursos:course_sopa' id=sopa.pk %}" class="no-style-a">
-                                {% if resource in user.read_lectures.all %}
+                                <div class="module-item">
+                                    <span class="material-icons module-item-icon">pattern</span>
+                                    <div>
+                                        <div class="module-item-title">Sopa de letras: {{ sopa.title }}</div>
+                                        <div class="module-item-grade">No Completado</div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% elif is_member %}
+                            <a href="{% url 'cursos:course_sopa_complete' id=sopa.pk %}" class="no-style-a">
+                                {% if sopa in user.completed_sopas.all %}
                                     <div class="module-item checked">
                                         <span class="material-icons module-item-icon checked-text">pattern</span>
                                         <div>
-                                            <div class="module-item-title checked-text">Juego: {{ sopa.title }}</div>
+                                            <div class="module-item-title checked-text">Sopa de letras: {{ sopa.title }}</div>
                                                 <div class="module-item-grade checked-text">Completado</div>
                                         </div>
                                         <span class="material-icons checkmark">done</span>
@@ -283,7 +303,7 @@
                                     <div class="module-item">
                                         <span class="material-icons module-item-icon">pattern</span>
                                         <div>
-                                            <div class="module-item-title">Juego: {{ sopa.title }}</div>
+                                            <div class="module-item-title">Sopa de letras: {{ sopa.title }}</div>
                                                 <div class="module-item-grade">No Completado</div>
                                         </div>
                                     </div>
@@ -293,7 +313,52 @@
                             <div class="module-item locked">
                                 <span class="material-icons module-item-icon locked-text">pattern</span>
                                 <div>
-                                    <div class="module-item-title locked-text">Juego: {{ sopa.title }}</div>
+                                    <div class="module-item-title locked-text">Sopa de letras: {{ sopa.title }}</div>
+                                        <div class="module-item-grade locked-text">No Completado</div>
+                                </div>
+                                <span class="material-icons lock">lock</span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <!-- ! Agregar cambios de puzzle -->
+                    {% for puzzle in mod.puzzlegames.all %}
+                        {% if is_owner %}
+                            <a href="{% url 'cursos:course_puzzle' id=puzzle.pk %}" class="no-style-a">
+                                <div class="module-item">
+                                    <span class="material-icons module-item-icon">extension</span>
+                                    <div>
+                                        <div class="module-item-title">Rompecabezas: {{ puzzle.title }}</div>
+                                        <div class="module-item-grade">No Completado</div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% elif is_member %}
+                            <a href="{% url 'cursos:course_puzzle_complete' id=puzzle.pk %}" class="no-style-a">
+                                {% if puzzle in completed_puzzles %}
+                                    <div class="module-item checked">
+                                        <span class="material-icons module-item-icon checked-text">extension</span>
+                                        <div>
+                                            <div class="module-item-title checked-text">Rompecabezas: {{ puzzle.title }}</div>
+                                                <div class="module-item-grade checked-text">Completado</div>
+                                        </div>
+                                        <span class="material-icons checkmark">done</span>
+                                    </div>
+                                {% else %}
+                                    <div class="module-item">
+                                        <span class="material-icons module-item-icon">extension</span>
+                                        <div>
+                                            <div class="module-item-title">Rompecabezas: {{ puzzle.title }}</div>
+                                                <div class="module-item-grade">No Completado</div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            <div class="module-item locked">
+                                <span class="material-icons module-item-icon locked-text">extension</span>
+                                <div>
+                                    <div class="module-item-title locked-text">Rompecabezas: {{ puzzle.title }}</div>
                                         <div class="module-item-grade locked-text">No Completado</div>
                                 </div>
                                 <span class="material-icons lock">lock</span>

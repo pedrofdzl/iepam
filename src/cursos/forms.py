@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Course, Modulo, Lectura, Actividad, Question, Quiz, SopaGame, SopaOption, Video, QuestionOption, FileResource, HangmanGame, HangmanOption
+from .models import Course, Modulo, Lectura, Actividad, PuzzleGame, Question, Quiz, SopaGame, SopaOption, Video, QuestionOption, FileResource, HangmanGame, HangmanOption
 from django.core.validators import MaxLengthValidator, FileExtensionValidator, MinLengthValidator
 
 
@@ -188,3 +188,11 @@ class SopaOptionForm(forms.ModelForm):
         if len(SopaOption.objects.filter(game=game)) >= 5 and not self.is_updating:
             raise forms.ValidationError('No se pueden tener mas de 5 opciones')
 
+class PuzzleForm(forms.ModelForm):
+    class Meta:
+        model = PuzzleGame
+        fields = ('title', 'description')
+
+        widgets = {
+            'description': forms.Textarea(attrs={'rows':3})
+        }

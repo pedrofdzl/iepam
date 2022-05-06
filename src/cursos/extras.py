@@ -76,6 +76,11 @@ def side_panel_context(context, userId, id):
             if sopa in user.completed_sopas.all():
                 completed_items += 1
 
+        total_items += module.puzzlegames.all().count()
+        for puzzle in module.puzzlegames.all():
+            if puzzle in user.completed_puzzles.all():
+                completed_items += 1
+
     if total_items > 0:
         completion_ratio = completed_items / total_items
         completion_percentage = int(completion_ratio * 100)
@@ -157,6 +162,11 @@ def check_for_completion(request, id):
             if sopa in user.completed_sopas.all():
                 completed_items += 1
 
+        total_items += module.puzzlegames.all().count()
+        for puzzle in module.puzzlegames.all():
+            if puzzle in user.completed_puzzles.all():
+                completed_items += 1
+
     if total_items == completed_items and total_items > 0:
         memberOf = get_object_or_404(MemberOf, member=user.pk, course=course.pk)
         memberOf.status = "Completado"
@@ -223,6 +233,11 @@ def context_courses_percentage(request, context):
                 if sopa in user.completed_sopas.all():
                     completed_items += 1
 
+            total_items += module.puzzlegames.all().count()
+            for puzzle in module.puzzlegames.all():
+                if puzzle in user.completed_puzzles.all():
+                    completed_items += 1
+
         if total_items > 0:
             completion_ratio = completed_items / total_items
             completion_percentage = int(completion_ratio * 100)
@@ -273,6 +288,10 @@ def act_completadas_curso(request, id):
             if sopa in user.completed_sopas.all():
                 completed_items += 1
 
+        for puzzle in module.puzzlegames.all():
+            if puzzle in user.completed_puzzles.all():
+                completed_items += 1
+
     return completed_items
 
 def context_course_percentage(request, courseID):
@@ -319,6 +338,11 @@ def context_course_percentage(request, courseID):
         total_items += module.sopagames.all().count()
         for sopa in module.sopagames.all():
             if sopa in user.completed_sopas.all():
+                completed_items += 1
+
+        total_items += module.puzzlegames.all().count()
+        for puzzle in module.puzzlegames.all():
+            if puzzle in user.completed_puzzles.all():
                 completed_items += 1
 
     if total_items > 0:
