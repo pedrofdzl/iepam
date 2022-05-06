@@ -174,6 +174,11 @@ def adcourse_members_remove_view(request, id, user_id):
             watched_video = user.watched_videos.filter(modulo__curso=course).first()
             watched_resource = user.viewed_resources.filter(modulo__curso=course).first()
             quiz_result = QuizResult.objects.filter(user=user.extended_user, quiz__modulo__curso=course).first()
+            viewed_resource = user.viewed_resources.filter(modulo__curso=course).first()
+            completed_hangman = user.completed_hangmans.filter(modulo__curso=course).first()
+            completed_sopas = user.completed_sopas.filter(modulo__curso=course).first()
+            completed_puzzle = user.completed_puzzles.filter(modulo__curso=course).first()
+
 
             if read_lecture:
                 user.read_lectures.remove(read_lecture)
@@ -181,6 +186,14 @@ def adcourse_members_remove_view(request, id, user_id):
                 user.watched_videos.remove(watched_video)
             if watched_resource:
                 user.viewed_resources.remove(watched_resource)
+            if viewed_resource:
+                user.viewed_resources.remove(viewed_resource)
+            if completed_hangman:
+                user.completed_hangmans.remove(completed_hangman)
+            if completed_sopas:
+                user.completed_sopas.remove(completed_sopas)
+            if completed_puzzle:
+                user.completed_puzzles.remove(completed_puzzle)
             
             if entrega:
                 entrega.delete()
