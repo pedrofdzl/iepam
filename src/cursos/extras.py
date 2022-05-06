@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from .models import Course, Entrega, MemberOf, Modulo, Lectura, Actividad, Question, Video, Quiz, QuestionOption, QuizResult
+from .models import Course, Entrega, MemberOf, Modulo, Lectura, Actividad, Question, Video, Quiz, QuestionOption, QuizResult, FileResource, HangmanGame, SopaGame
 from users.models import ExtendedUser
 User = get_user_model()
 
@@ -59,6 +59,26 @@ def side_panel_context(context, userId, id):
         total_items += module.quizzes.all().count()
         for quiz in module.quizzes.all():
             if QuizResult.objects.all().filter(quiz=quiz.pk, user=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.archivos.all().count()
+        for archivo in module.archivos.all():
+            if archivo in user.viewed_resources.all():
+                completed_items += 1
+
+        total_items += module.hangmangames.all().count()
+        for hangman in module.hangmangames.all():
+            if hangman in user.completed_hangmans.all():
+                completed_items += 1
+
+        total_items += module.sopagames.all().count()
+        for sopa in module.sopagames.all():
+            if sopa in user.completed_sopas.all():
+                completed_items += 1
+
+        total_items += module.puzzlegames.all().count()
+        for puzzle in module.puzzlegames.all():
+            if puzzle in user.completed_puzzles.all():
                 completed_items += 1
 
     if total_items > 0:
@@ -127,6 +147,26 @@ def check_for_completion(request, id):
             if QuizResult.objects.all().filter(quiz=quiz.pk, user=user.pk).exists():
                 completed_items += 1
 
+        total_items += module.archivos.all().count()
+        for archivo in module.archivos.all():
+            if archivo in user.viewed_resources.all():
+                completed_items += 1
+
+        total_items += module.hangmangames.all().count()
+        for hangman in module.hangmangames.all():
+            if hangman in user.completed_hangmans.all():
+                completed_items += 1
+
+        total_items += module.sopagames.all().count()
+        for sopa in module.sopagames.all():
+            if sopa in user.completed_sopas.all():
+                completed_items += 1
+
+        total_items += module.puzzlegames.all().count()
+        for puzzle in module.puzzlegames.all():
+            if puzzle in user.completed_puzzles.all():
+                completed_items += 1
+
     if total_items == completed_items and total_items > 0:
         memberOf = get_object_or_404(MemberOf, member=user.pk, course=course.pk)
         memberOf.status = "Completado"
@@ -178,6 +218,26 @@ def context_courses_percentage(request, context):
                 if QuizResult.objects.all().filter(quiz=quiz.pk, user=user.pk).exists():
                     completed_items += 1
 
+            total_items += module.archivos.all().count()
+            for archivo in module.archivos.all():
+                if archivo in user.viewed_resources.all():
+                    completed_items += 1
+
+            total_items += module.hangmangames.all().count()
+            for hangman in module.hangmangames.all():
+                if hangman in user.completed_hangmans.all():
+                    completed_items += 1
+
+            total_items += module.sopagames.all().count()
+            for sopa in module.sopagames.all():
+                if sopa in user.completed_sopas.all():
+                    completed_items += 1
+
+            total_items += module.puzzlegames.all().count()
+            for puzzle in module.puzzlegames.all():
+                if puzzle in user.completed_puzzles.all():
+                    completed_items += 1
+
         if total_items > 0:
             completion_ratio = completed_items / total_items
             completion_percentage = int(completion_ratio * 100)
@@ -216,6 +276,22 @@ def act_completadas_curso(request, id):
             if QuizResult.objects.all().filter(quiz=quiz.pk, user=user.pk).exists():
                 completed_items += 1
 
+        for archivo in module.archivos.all():
+            if archivo in user.viewed_resources.all():
+                completed_items += 1
+
+        for hangman in module.hangmangames.all():
+            if hangman in user.completed_hangmans.all():
+                completed_items += 1
+
+        for sopa in module.sopagames.all():
+            if sopa in user.completed_sopas.all():
+                completed_items += 1
+
+        for puzzle in module.puzzlegames.all():
+            if puzzle in user.completed_puzzles.all():
+                completed_items += 1
+
     return completed_items
 
 def context_course_percentage(request, courseID):
@@ -247,6 +323,26 @@ def context_course_percentage(request, courseID):
         total_items += module.quizzes.all().count()
         for quiz in module.quizzes.all():
             if QuizResult.objects.all().filter(quiz=quiz.pk, user=user.pk).exists():
+                completed_items += 1
+
+        total_items += module.archivos.all().count()
+        for archivo in module.archivos.all():
+            if archivo in user.viewed_resources.all():
+                completed_items += 1
+
+        total_items += module.hangmangames.all().count()
+        for hangman in module.hangmangames.all():
+            if hangman in user.completed_hangmans.all():
+                completed_items += 1
+
+        total_items += module.sopagames.all().count()
+        for sopa in module.sopagames.all():
+            if sopa in user.completed_sopas.all():
+                completed_items += 1
+
+        total_items += module.puzzlegames.all().count()
+        for puzzle in module.puzzlegames.all():
+            if puzzle in user.completed_puzzles.all():
                 completed_items += 1
 
     if total_items > 0:

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% load static %}
+<title>Juego</title>
+
+{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{% static 'css/activities.css' %}">
+
+<div id="id-app" style="display: none;">cap</div>
+
+<div class="container-window">
+
+    <div class="activity-header">
+        <a href="{% url 'cursos:course_detail' id=hangman.modulo.curso.pk %}" class="no-style-a">
+            <div class="return">
+                <span class="material-icons">chevron_left</span>
+                Volver a la capacitación
+            </div>
+        </a>
+                
+        {% if is_owner %}
+        <a href="" class="button-delete no-style-a">
+            <p>Eliminar</p>
+            <span class="material-icons">delete</span>
+        </a>
+
+        {% endif %}
+    </div>
+
+    <div class="description">{{ hangman.modulo.name }}</div>
+
+    <div class="title">{{ hangman.title }}</div>
+
+    <div class="description">{{ hangman.description }}</div>
+
+    <div class="quiz-container">
+
+        <!-- UNITY -->
+
+        {% include 'cursos/hangman_index.html' %}
+
+        <!-- UNITY END -->
+        
+    </div>
+</div>
+
+{% endblock %}

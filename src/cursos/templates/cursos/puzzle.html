@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% load static %}
+<title>Puzzle</title>
+
+{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{% static 'css/activities.css' %}">
+
+<div id="id-app" style="display: none;">cap</div>
+
+<div class="container-window">
+
+    <div class="course-container">
+
+        <div>
+            <div class="activity-header">
+                <a href="{% url 'cursos:course_detail' id=puzzle.modulo.curso.pk %}" class="no-style-a">
+                    <div class="return">
+                        <span class="material-icons">chevron_left</span>
+                        Volver al entregable
+                    </div>
+                </a>
+
+                {% if is_owner %}
+                <a href="{% url 'cursos:course_puzzle_delete' id=puzzle.pk %}" class="button-delete no-style-a">
+                    <p>Eliminar</p>
+                    <span class="material-icons">delete</span>
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="description">{{ puzzle.modulo.name }}</div>
+
+            <div class="title-smaller"> {{ puzzle.title }} </div>
+
+            <div class="lecture-container">
+                <div class="subtitle">Descripción</div>
+                <p>{{ sopa.description }}</p>
+            </div>
+
+        </div>
+
+        <div>
+            <div class="side-panel">
+                {% include 'cursos/side_panel.html' %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

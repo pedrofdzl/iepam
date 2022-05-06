@@ -4,6 +4,8 @@ from django.http import Http404, FileResponse
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
+import random
+
 from .extras import side_panel_context, check_for_completion
 
 from django.contrib.auth.decorators import login_required, permission_required
@@ -14,14 +16,14 @@ import os
 
 from .models import (
                         Course, Entrega, MemberOf, Modulo, 
-                        Lectura, Actividad, Question, Video,
+                        Lectura, Actividad, PuzzleGame, Question, Video,
                         Quiz, QuestionOption, QuizResult,
                         FileResource, HangmanGame, HangmanOption, SopaGame,
                         SopaOption,
                     )
 from .forms import (
                     CourseCreateForm, EntregaAddForm, HangmanOptionForm, LectureAddForm, 
-                    ModuleAddForm, ActivityAddForm, VideoAddForm,
+                    ModuleAddForm, ActivityAddForm, PuzzleForm, VideoAddForm,
                     QuizForm, QuestionForm, QuestionOptionsForm, FileResourceForm,
                     HangmanForm, HangmanOption, SopaForm, SopaOptionForm,
                 )
@@ -296,10 +298,29 @@ def course_detail_view(request, id):
     for result in results_user.all():
         answered_quizzes.append(result.quiz)
 
+    hangmans_user = user.completed_hangmans
+    completed_hangmans = []
+    for hangman in hangmans_user.all():
+        completed_hangmans.append(hangman)
+
+    resources_user = user.viewed_resources
+    viewed_resources = []
+    for resource in resources_user.all():
+        viewed_resources.append(resource)
+
+    puzzles_user = user.completed_puzzles
+    completed_puzzles = []
+    for puzzle in puzzles_user.all():
+        completed_puzzles.append(puzzle)
+
+
     context['course'] = course
     context['modules'] = modules
     context['turned_activities'] = turned_activities
     context['answered_quizzes'] = answered_quizzes
+    context['completed_hangmans'] = completed_hangmans
+    context['viewed_resources'] = viewed_resources
+    context['completed_puzzles'] = completed_puzzles
 
     context = side_panel_context(context, user.pk, course.pk)
 
@@ -531,6 +552,7 @@ def course_create_item_view(request, id, action):
     resource_form = FileResourceForm()
     hangman_form = HangmanForm() 
     sopa_form = SopaForm()
+    puzzle_form = PuzzleForm()
 
     if request.method == 'POST':
         if action == 1:
@@ -635,6 +657,17 @@ def course_create_item_view(request, id, action):
                 return redirect(reverse('cursos:course_sopa', kwargs={'id': sopa_game.pk}))
             else:
                 print(sopa_form.errors)
+        if action == 8:
+            puzzle_form = PuzzleForm(request.POST)
+
+            if puzzle_form.is_valid():
+                puzzle_game = puzzle_form.save(commit=False)
+                puzzle_game.modulo = modulo
+                puzzle_game.save()
+
+                return redirect(reverse('cursos:course_puzzle', kwargs={'id': puzzle_game.pk}))
+            else:
+                print(puzzle_form.errors)
                 
 
 
@@ -646,6 +679,7 @@ def course_create_item_view(request, id, action):
     context['resource_form'] = resource_form
     context['hangman_form'] = hangman_form
     context['sopa_form'] = sopa_form
+    context['puzzle_form'] = puzzle_form
     context['action'] = action
 
     return render(request, template_name, context)
@@ -820,27 +854,6 @@ def course_quiz_view(request, id):
     questions = quiz.questions.all()
     results = quiz.results.all().order_by('-grade')
 
-
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['course'] = quiz.modulo.curso
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
-
     context['quiz'] = quiz
     context['questions'] = questions
     context['results'] = results
@@ -863,26 +876,6 @@ def course_quiz_delete_view(request, id):
         quiz.delete()
         return redirect(reverse('cursos:course_detail', kwargs={'id':course.pk}))
 
-
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
-
     context['quiz'] = quiz
 
     return render(request, template_name, context)
@@ -897,29 +890,8 @@ def course_quiz_answer_view(request, id):
     template_name = template_prefix + 'quiz_answer.html'
 
     quiz = get_object_or_404(Quiz, pk=id)
-    course = quiz.modulo.curso
 
     questions = quiz.questions.all()
-
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['course'] = quiz.modulo.curso
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
 
     quizData = quiz.name + '|' + str(quiz.questions.all().count()) + '|'
     quizQuestions = Question.objects.filter(quiz=quiz.pk)
@@ -1040,24 +1012,6 @@ def course_quiz_create_question_view(request, id):
         else:
             print(question_form.errors)
 
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
 
     context['quiz'] = quiz
     context['form'] = question_form
@@ -1105,26 +1059,6 @@ def course_quiz_update_question_view(request, id):
     context['editing'] = True
     context['question'] = question
 
-
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
-
     return render(request, template_name, context)
 
 
@@ -1160,26 +1094,6 @@ def course_quiz_option_create_view(request, id):
     context['form'] = option_form
     context['quiz'] = quiz
     context['question'] = question
-
-
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
 
     return render(request, template_name, context)
 
@@ -1218,26 +1132,6 @@ def course_quiz_option_update_view(request, id):
     context['quiz'] = quiz
     context['question'] = question
     context['editing'] = True
-
-
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
 
     return render(request, template_name, context)
 
@@ -1292,25 +1186,6 @@ def course_lecture_delete_view(request, id):
         lecture.delete()
         return redirect(reverse('cursos:course_detail', kwargs={'id':course.pk}))
 
-
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
 
     viewed = False
 
@@ -1372,26 +1247,6 @@ def course_resource_delete_view(request, id):
     if request.method == 'POST':
         resource.delete()
         return redirect(reverse('cursos:course_detail', kwargs={'id': course.pk}))
-
-
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
 
 
     return render(request, template_name, context)
@@ -1582,6 +1437,42 @@ def course_hangman_view(request, id):
     return render(request, template_name, context)
 
 
+@login_required
+def course_hangman_answer_view(request, id):
+    user = request.user
+    extended_user = user.extended_user
+    context = {}
+    template_name = template_prefix + 'hangman_answer.html'
+
+    hangman = get_object_or_404(HangmanGame, pk=id)
+
+    questions = hangman.options.all()
+
+    quizData = str(questions.all().count()) + '|'
+    quizQuestions = HangmanOption.objects.filter(game=hangman.pk)
+    for question in quizQuestions:
+        quizData += question.option + '|'
+    for question in quizQuestions:
+        if random.randint(0, 1) == 0:
+            quizData += question.hint_1 + '|'
+        else:
+            quizData += question.hint_1 + '|'
+    quizData += str(hangman.pk) + '|'
+
+    context['quizData'] = quizData
+    context['hangman'] = hangman
+    context['questions'] = questions
+
+    return render(request, template_name, context)
+
+
+def course_hangman_complete_view(request, id):
+    hangman = get_object_or_404(HangmanGame, pk=id)
+    
+    if not hangman.completions.filter(id=request.user.id).exists():
+        hangman.completions.add(request.user)
+
+    return redirect(reverse('cursos:course_detail', kwargs={'id': hangman.modulo.curso.pk}))
 
 
 def course_hangman_delete_view(request, id):
@@ -1703,6 +1594,20 @@ def course_sopa_view(request, id):
     return render(request, template_name, context)
 
 
+def course_sopa_complete_view(request, id):
+    context = {}
+    template_name = template_prefix + 'sopa_answer.html'
+
+    sopa = get_object_or_404(SopaGame, pk=id)
+    
+    if not sopa.completions.filter(id=request.user.id).exists():
+        sopa.completions.add(request.user)
+
+    context['sopa'] = sopa
+
+    return render(request, template_name, context)
+
+
 def course_sopa_delete_view(request, id):
     context = {}
     template_name = template_prefix + 'sopa_confirm_delete.html'
@@ -1803,6 +1708,62 @@ def course_sopa_option_delete_view(request, id):
     option.delete()
     return redirect(reverse('cursos:course_sopa', kwargs={'id': sopa.pk}))
 
+
+
+def course_puzzle_view(request, id):
+    context = {}
+    template_name = template_prefix + 'puzzle.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    puzzle = get_object_or_404(PuzzleGame, pk=id)
+    course = puzzle.modulo.curso
+
+    context['puzzle'] = puzzle
+    context['course'] = course
+
+    context = side_panel_context(context, user.pk, course.pk)
+
+    return render(request, template_name, context)
+
+
+def course_puzzle_complete_view(request, id):
+    context = {}
+    template_name = template_prefix + 'puzzle_answer.html'
+
+    puzzle = get_object_or_404(PuzzleGame, pk=id)
+    
+    if not puzzle.completions.filter(id=request.user.id).exists():
+        puzzle.completions.add(request.user)
+
+    context['puzzle'] = puzzle
+
+    return render(request, template_name, context)
+
+
+def course_puzzle_delete_view(request, id):
+    context = {}
+    template_name = template_prefix + 'puzzle_confirm_delete.html'
+    user = request.user
+    extended_user = user.extended_user
+
+    puzzle = get_object_or_404(PuzzleGame, pk=id)
+    course = puzzle.modulo.curso
+
+    if request.method == 'POST':
+        puzzle.delete()
+        return redirect(reverse('cursos:course_detail', kwargs={'id': course.pk}))
+
+
+    context['puzzle'] = puzzle
+    context['course'] = course
+
+    context = side_panel_context(context, user.pk, course.pk)
+
+    return render(request, template_name, context)
+
+
+
 @login_required
 def course_video_view(request, id):
     user = request.user
@@ -1846,26 +1807,6 @@ def course_video_delete_view(request, id):
     if request.method == 'POST':
         video.delete()
         return redirect(reverse('cursos:course_detail', kwargs={'id':course.pk}))
-
-
-    # Side Panel Variables
-    liked = False
-    is_member = False
-    is_owner = False
-
-    if user.likes.filter(pk=id).exists():
-        liked = True
-    
-    if MemberOf.objects.filter(course=course, member=extended_user).exists():
-        is_member = True
-
-    if extended_user == course.owner:
-        is_owner = True
-
-    context['is_owner'] = is_owner
-    context['is_member'] = is_member
-    context['liked'] = liked
-    # end of side panel
 
     viewed = False
 

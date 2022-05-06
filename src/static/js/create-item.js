@@ -35,6 +35,12 @@ else if (action == 7) {
     hideAll();
     document.getElementById('div-sopa').style.display = 'block';
 }
+else if (action == 8) {
+    document.getElementById('puzzle').classList.add('active');
+    hideAll();
+    document.getElementById('div-puzzle').style.display = 'block';
+}
+
 
 function hideAll() {
     document.getElementById('div-lectura').style.display = 'none';
@@ -44,4 +50,5 @@ function hideAll() {
     document.getElementById('div-resource').style.display = 'none'
     document.getElementById('div-hangman').style.display = 'none'
     document.getElementById('div-sopa').style.display = 'none'
+    document.getElementById('div-puzzle').style.display = 'none'
 }

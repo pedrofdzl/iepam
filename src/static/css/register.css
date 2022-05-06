@@ -386,6 +386,7 @@ a {
     padding-right: 1rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
+    max-height: 25px;
 }
 .register-activity-type-item:hover {
     background-color: lightgray;

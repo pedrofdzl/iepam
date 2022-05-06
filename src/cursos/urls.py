@@ -62,6 +62,8 @@ urlpatterns = [
     path('curso/hangman/<int:id>/crear-opcion/', views.course_hangman_option_create_view, name='course_hangman_add_option'),
     path('curso/hangman/<int:id>/editar-opcion/', views.course_hangman_option_edit_view, name='course_hangman_edit_option'),
     path('curso/hangman/<int:id>/eliminar-opcion/', views.course_hangman_option_delete_view, name='course_hangman_delete_option'),
+    path('curso/hangman/<int:id>/play/', views.course_hangman_answer_view, name='course_hangman_play'),
+    path('curso/hangman/<int:id>/complete/', views.course_hangman_complete_view, name='course_hangman_complete'),
 
 
     # Sopa
@@ -70,7 +72,12 @@ urlpatterns = [
     path('curso/sopa/<int:id>/crear-opcion/', views.course_sopa_option_create_view, name='course_sopa_add_option'),
     path('curso/sopa/<int:id>/editar-opcion/', views.course_sopa_option_edit_view, name='course_sopa_edit_option'),
     path('curso/sopa/<int:id>/eliminar-opcion/', views.course_sopa_option_delete_view, name='course_sopa_delete_option'),
+    path('curso/sopa/<int:id>/play/', views.course_sopa_complete_view, name='course_sopa_complete'),
 
+    # Puzzle
+    path('curso/puzzle/<int:id>/', views.course_puzzle_view, name='course_puzzle'),
+    path('curso/puzzle/<int:id>/eliminar/', views.course_puzzle_delete_view, name='course_puzzle_delete'),
+    path('curso/puzzle/<int:id>/play/', views.course_puzzle_complete_view, name='course_puzzle_complete'),
 
     # Quiz
     path('curso/quiz/<int:id>/', views.course_quiz_view, name='course_quiz'),

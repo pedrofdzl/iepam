@@ -239,3 +239,13 @@ class SopaOption(models.Model):
 
     def __str__(self):
         return f'Sopa de Letras Game {self.game.title} option: {self.option}'
+
+
+class PuzzleGame(models.Model):
+    modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE, related_name='puzzlegames')
+    title = models.CharField('Title', max_length=255)
+    description = models.CharField('Description', max_length=255)
+    completions = models.ManyToManyField(User, related_name="completed_puzzles")
+
+    def __str__(self):
+        return f'Puzzle Game module: {self.modulo.name}-{self.title}'

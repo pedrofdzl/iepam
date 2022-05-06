@@ -40,8 +40,9 @@
                     <a href="{% url 'cursos:course_create_item' id=modulo.pk action=3 %}" class="no-style-a"><div id="video" class="register-activity-type-item"><span class="material-icons">smart_display</span><p>Video</p></div></a>
                     <a href="{% url 'cursos:course_create_item' id=modulo.pk action=4 %}" class="no-style-a"><div id="quiz" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Quiz</p></div></a>
                     <a href="{% url 'cursos:course_create_item' id=modulo.pk action=5 %}" class="no-style-a"><div id="resource" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Archivo</p></div></a>
-                    <a href="{% url 'cursos:course_create_item' id=modulo.pk action=6 %}" class="no-style-a"><div id="hangman" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Juego: Ahorcado</p></div></a>
-                    <a href="{% url 'cursos:course_create_item' id=modulo.pk action=7 %}" class="no-style-a"><div id="sopa" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Juego: Sopa de Letras</p></div></a>
+                    <a href="{% url 'cursos:course_create_item' id=modulo.pk action=6 %}" class="no-style-a"><div id="hangman" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Ahorcado</p></div></a>
+                    <a href="{% url 'cursos:course_create_item' id=modulo.pk action=7 %}" class="no-style-a"><div id="sopa" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Sopa letras</p></div></a>
+                    <a href="{% url 'cursos:course_create_item' id=modulo.pk action=8 %}" class="no-style-a"><div id="puzzle" class="register-activity-type-item"><span class="material-icons">quiz</span><p>Rompecabezas</p></div></a>
                 </div>
 
                 <div id="div-lectura" class="">
@@ -171,25 +172,27 @@
                         {{ resource_form.non_field_errors }}
 
                         <label for="">Titulo</label>
-                        <div>
+                        <div class="input-line">
                             {{ resource_form.title.errors }}
                             {{ resource_form.title }}
                         </div>
 
                         <label for="">Descripción</label>
-                        <div>
+                        <div class="input-line">
                             {{ resource_form.description.errors }}
                             {{ resource_form.description }}
                         </div>
 
                         <label for="">Archivo</label>
-                        <div>
+                        <div class="custom-file-input">
                             {{ resource_form.resource.errors }}
                             {{ resource_form.resource }}
                         </div>
 
-                        <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}">Cancelar</a>
-                        <button type="submit">Crear</button>
+                        <div style="text-align: center;">
+                            <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
+                            <button type="submit">Añadir</button>
+                        </div>
                     </form>
                 </div>
                
@@ -200,19 +203,21 @@
                         {{ hangman_form.non_field_errors }}
 
                         <label for="">Titulo</label>
-                        <div>
+                        <div class="input-line">
                             {{ hangman_form.title.errors }}
                             {{ hangman_form.title }}
                         </div>
 
                         <label for="">Descripción</label>
-                        <div>
+                        <div class="input-line">
                             {{ hangman_form.description.errors }}
                             {{ hangman_form.description }}
                         </div>
 
-                        <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}">Cancelar</a>
-                        <button type="submit">Crear</button>
+                        <div style="text-align: center;">
+                            <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
+                            <button type="submit">Añadir</button>
+                        </div>
                     </form>
                 </div>
 
@@ -223,19 +228,45 @@
                         {{ sopa_form.non_field_errors }}
 
                         <label for="">Titulo</label>
-                        <div>
+                        <div class="input-line">
                             {{ sopa_form.title.errors }}
                             {{ sopa_form.title }}
                         </div>
 
                         <label for="">Descripción</label>
-                        <div>
+                        <div class="input-line">
                             {{ sopa_form.description.errors }}
                             {{ sopa_form.description }}
                         </div>
 
-                        <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}">Cancelar</a>
-                        <button type="submit">Crear</button>
+                        <div style="text-align: center;">
+                            <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
+                            <button type="submit">Añadir</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="div-puzzle" class="">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ puzzle_form.non_field_errors }}
+
+                        <label for="">Titulo</label>
+                        <div class="input-line">
+                            {{ puzzle_form.title.errors }}
+                            {{ puzzle_form.title }}
+                        </div>
+
+                        <label for="">Descripción</label>
+                        <div class="input-line">
+                            {{ puzzle_form.description.errors }}
+                            {{ puzzle_form.description }}
+                        </div>
+
+                        <div style="text-align: center;">
+                            <a href="{% url 'cursos:course_detail' id=modulo.curso.pk %}" class="btn-cancel margin-right-btn">Cancelar</a>
+                            <button type="submit">Añadir</button>
+                        </div>
                     </form>
                 </div>
 
