@@ -8,6 +8,7 @@ from datetime import date
 from django.utils import timezone
 User = get_user_model()
 from pathlib import Path
+from PIL import Image
 
 import os
 
@@ -31,6 +32,15 @@ def entrega_upload_handler(instance, filename):
     destination = str(destination / file)
     return destination
 
+def course_image_upload_handler(instance, filename):
+    destination = Path('cursos') / 'image' / str(instance.name)
+
+    extension = str(Path(filename).suffix)
+    file = Path(f'{instance.name}_image' + extension)
+
+    destination = str(destination / file)
+    return destination
+
 
 PERMITTED_FILE_EXTENSIONS = [
     'pdf', 'docx', 'xlsx', 'pptx'
@@ -41,12 +51,29 @@ class Course(models.Model):
     owner = models.ForeignKey(ExtendedUser, on_delete=models.CASCADE, related_name='own_courses')
     name = models.CharField("name", max_length=255)
     description = models.CharField("description", max_length=255)
+    bg_image = models.ImageField('BG Image', upload_to=course_image_upload_handler, blank=True, null=True)
     date_created = models.DateField(default=date.today)
     members = models.ManyToManyField(ExtendedUser, through='MemberOf')
     likes = models.ManyToManyField(User, related_name="likes")
 
     def __str__(self):
         return self.name
+
+    def delete(self):
+        if self.bg_image and os.path.exists(self.bg_image.path):
+            os.remove(self.bg_image.path)
+        return super().delete()
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        # width = 1280
+        # heigh = 960
+        if self.bg_image:
+            img = Image.open(self.bg_image.path)
+            dimensions = (1280, 960)
+            img.thumbnail(dimensions)
+            img.save(self.bg_image.path)
 
 
 # ? Approved Status:

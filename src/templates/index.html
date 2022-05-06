@@ -149,7 +149,11 @@
                                 <a class="no-style-a" href="{% url 'cursos:course_detail' id=curso.0.pk %}">
                                     <div class="continue-curso">
                                         <div class="continue-curso-img">
-                                            <img src="{% static 'img/view.jpg' %}">
+                                            {% if curso.0.bg_image %}
+                                                <img src="{{ curso.0.bg_image.url }}">
+                                            {% else %}
+                                                <img src="{% static 'img/view.jpg' %}">
+                                            {% endif %}
                                         </div>
                                         <div class="continue-text">
                                             <div class="continue-curso-title">

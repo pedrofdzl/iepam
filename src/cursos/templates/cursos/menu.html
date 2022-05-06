@@ -60,7 +60,11 @@
         <a href="{% url 'cursos:course_detail' id=curso.pk %}">
             <div class="card">
                 <div class="card-img-container">
-                    <img src="{% static 'img/view.jpg' %}">
+                    {% if curso.bg_image %}
+                        <img src="{{ curso.bg_image.url }}">
+                    {% else %}
+                        <img src="{% static 'img/view.jpg' %}">
+                    {% endif %}
                 </div>
                 <div class="card-body">
                     <div class="card-title">

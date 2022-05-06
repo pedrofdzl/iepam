@@ -102,7 +102,7 @@ def aduser_list_view(request):
     context = {}
     template_name = admin_template_pre + 'user_detail.html'
 
-    users = ExtendedUser.objects.all()
+    users = ExtendedUser.objects.all().exclude(user__is_staff=True)
     
     context["users"] = users
 

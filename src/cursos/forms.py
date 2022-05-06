@@ -4,6 +4,15 @@ from .models import Course, Modulo, Lectura, Actividad, Question, Quiz, SopaGame
 from django.core.validators import MaxLengthValidator, FileExtensionValidator, MinLengthValidator
 
 
+CV_MAX_SIZE = 1024 * 1024 * 5
+# CV_MAX_SIZE = 5
+
+def file_max_size(max_size: int):
+    def helper(value):
+        if value.size > max_size:
+            raise forms.ValidationError('Archivo excede limite de espacio')
+    return helper
+
 PERMITTED_FILE_EXTENSIONS = [
     'pdf', 'docx', 'xlsx', 'pptx'
 ]
@@ -11,12 +20,13 @@ PERMITTED_FILE_EXTENSIONS = [
 class CourseCreateForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ['name', 'description']
+        fields = ['name', 'description', 'bg_image']
         widgets = {
             'description': forms.Textarea()
         }
         validators = {
-            'description': MaxLengthValidator(255)
+            'description': MaxLengthValidator(255),
+            'bg_image': file_max_size(CV_MAX_SIZE)
         }
 
 class ModuleAddForm(forms.ModelForm):

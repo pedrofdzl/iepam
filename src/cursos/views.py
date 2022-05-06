@@ -62,7 +62,7 @@ def adcourse_create_view(request):
     course_form = CourseCreateForm()
 
     if request.method == 'POST':
-        course_form = CourseCreateForm(request.POST)
+        course_form = CourseCreateForm(request.POST, files=request.FILES)
 
         if course_form.is_valid():
 
@@ -72,6 +72,9 @@ def adcourse_create_view(request):
             course.description = course_form.cleaned_data['description']
             course.date_created = date.today()
             course.owner = extendedUser
+
+            if 'bg_image' in request.FILES:
+                course.bg_image = request.FILES['bg_image']
 
             course.save()
 
@@ -94,9 +97,12 @@ def adcourse_edit_view(request, id):
         course_form = CourseCreateForm(instance=course)
 
     if request.method == 'POST':
-        course_form = CourseCreateForm(request.POST, instance=course)
+        course_form = CourseCreateForm(request.POST, files=request.FILES, instance=course)
 
         if course_form.is_valid():
+
+            if 'bg_image' in request.FILES:
+                course.bg_image = request.FILES['bg_image']
 
             course.save()
 

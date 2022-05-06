@@ -31,7 +31,7 @@
             <a class="title"><img src="{% static 'svg/iepam-logo-white.svg' %}"><p>IEPAM</p></a>
             <div class="register-container">
                 <div class="register-title">Crear capacitación</div>
-                <form method="post">
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.non_field_errors }}
                     <div class="input-line">
@@ -46,6 +46,14 @@
                         <div>
                             {{ form.description.errors }}
                             {{ form.description }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="">Imagen</label>
+                        <div>
+                            {{ form.bg_image.erros }}
+                            {{ form.bg_image }}
                         </div>
                     </div>
                     <a href="{% url 'cursos:menu' %}" class="btn-cancel margin-right-btn">Cancelar</a>
