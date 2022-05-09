@@ -718,6 +718,8 @@ def course_edit_item_view(request, id, action):
         stuff = get_object_or_404(HangmanGame, pk=id)
     if action == 7:
         stuff = get_object_or_404(SopaGame, pk=id)
+    if action == 8:
+        stuff = get_object_or_404(PuzzleGame, pk=id)
 
     lecture_form = LectureAddForm()
     activity_form = ActivityAddForm()
@@ -726,6 +728,7 @@ def course_edit_item_view(request, id, action):
     quiz_form = QuizForm()
     hangman_form = HangmanForm()
     sopa_form = SopaForm()
+    puzzle_form = PuzzleForm()
 
     module = stuff.modulo
     if module.curso.owner != request.user.extended_user:
@@ -746,6 +749,8 @@ def course_edit_item_view(request, id, action):
             hangman_form = HangmanForm(instance=stuff)
         if action == 7:
             sopa_form = SopaForm(instance=stuff)
+        if action == 8:
+            puzzle_form = PuzzleForm(instance=stuff)
 
 
     if request.method == 'POST':
@@ -832,6 +837,16 @@ def course_edit_item_view(request, id, action):
             else:
                 print(sopa_form.errors)
 
+        if action == 8:
+            puzzle_form = PuzzleForm(request.POST, instance=stuff)
+
+            if puzzle_form.is_valid():
+                puzzle_form.save()
+            
+                return redirect(reverse('cursos:course_puzzle', kwargs={'id': stuff.pk}))
+            else:
+                print(puzzle_form.errors)
+
 
 
 
@@ -843,6 +858,7 @@ def course_edit_item_view(request, id, action):
     context['resource_form'] = resource_form
     context['hangman_form'] = hangman_form
     context['sopa_form'] = sopa_form
+    context['puzzle_form'] = puzzle_form
     context['action'] = action
 
     return render(request, template_name, context)
@@ -870,6 +886,8 @@ def course_quiz_view(request, id):
     context['quiz'] = quiz
     context['questions'] = questions
     context['results'] = results
+
+    context = side_panel_context(context, user.pk, course.pk)
  
     return render(request, template_name, context)
 

@@ -257,6 +257,32 @@
                     </form>
                 </div>
 
+                <div id="div-puzzle" class="">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ puzzle_form.non_field_errors }}
+
+                        <label for="">Titulo</label>
+                        <div>
+                            {{ puzzle_form.title.errors }}
+                            {{ puzzle_form.title }}
+                        </div>
+
+                        <label for="">Descripción</label>
+                        <div>
+                            {{ puzzle_form.description.errors }}
+                            {{ puzzle_form.description }}
+                        </div>
+                        <div style="text-align: center;">
+                            {% if puzzle_form.instance.pk %}
+                            <a href="{% url 'cursos:course_puzzle' id=puzzle_form.instance.pk %}">Cancelar</a>
+                            <button type="submit">Guardar</button>
+                            {% endif %}
+                        </div>
+
+                    </form>
+                </div>
+
 
             </div>
         </div>
